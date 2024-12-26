@@ -1,7 +1,7 @@
 @extends('auth.admin.layout')
 @section('content')
     <div class="row" style="height: 100vh">
-        <div class="col align-items-center justify-content-center d-none d-sm-flex" style="background-color: #d0ae3d">
+        <div class="col align-items-center justify-content-center d-none d-sm-flex" style="background-color: #003b95">
             <img src="{{asset('admin/img/login-image.png')}}" alt="" style="" class="img-fluid">
         </div>
         <div class="col d-flex align-items-center justify-content-center bg-gray-light">

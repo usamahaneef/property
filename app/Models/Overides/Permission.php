@@ -47,51 +47,20 @@ class Permission extends Model
     public static function getAdminPermissions(): array
     {
         return [
-            "universities" =>  [
-                "universities.bulk-view",
-                "universities.view",
-                "universities.detail",
-                "universities.create",
-                "universities.edit",
-                "universities.delete",
+            "properties" =>  [
+                "properties.bulk-view",
+                "properties.view",
+                "properties.detail",
+                "properties.create",
+                "properties.edit",
+                "properties.delete",
             ],
-            "societies" =>  [
-                "societies.bulk-view",
-                "societies.view",
-                "societies.detail",
-                "societies.create",
-                "societies.edit",
-                "societies.delete",
+            "members" =>  [
+                "members.bulk-view",
+                "members.view",
+                "members.detail",
+                "members.delete",
             ],
-            "students" =>  [
-                "students.bulk-view",
-                "students.view",
-                "students.detail",
-                "students.delete",
-            ],
-            "venues" => [
-                "venues.bulk-view",
-                "venues.view",
-                "venues.detail",
-                "venues.create",
-                "venues.edit",
-                "venues.delete",
-            ],
-            "events" => [
-                "events.bulk-view",
-                "events.view",
-                "events.detail",
-                "events.create",
-                "events.edit",
-                "events.delete",
-            ],
-            "partners" =>  [
-                "partners.bulk-view",
-                "partners.view",
-                "partners.detail",
-                "partners.delete",
-            ],
-
         ];
     }
 

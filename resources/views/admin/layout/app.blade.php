@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UniSocial Solutions Admin | {{$title}}</title>
+    <title>Property Admin | {{$title}}</title>
     
     <link rel="icon" type="image/png" href="{{asset('admin/img/favicon.png')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -21,7 +21,7 @@
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars" style="color: black;"></i></a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -51,10 +51,10 @@
                     <img src="{{ auth('admin')->user()->avatar_url}}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block" style="color: black">{{ auth('admin')->user()->name }}</a>
+                    <a href="#" class="d-block">{{ auth('admin')->user()->name }}</a>
                 </div>
             </div>
-            <nav class="mt-2"> hello
+            <nav class="mt-2">
                 
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
@@ -91,7 +91,14 @@
                     </li>
                     @endif
                     <li class="nav-header">Manage Panel</li>
-
+                    <li class="nav-item">
+                        <a href="{{route('admin.property')}}" class="nav-link {{$menu_active == 'property' ? 'active' : ''}} text-white">
+                            <i class="nav-icon fas fa-building"></i>
+                            <p>
+                                Properties
+                            </p>
+                        </a>
+                    </li>
                     <li class="nav-header">CONFIGURATION</li>
                     <li class="nav-item">
                         <a href="{{route('admin.setting')}}" class="nav-link {{$menu_active == 'setting' ? 'active' : ''}} text-white">
@@ -118,7 +125,7 @@
         <div class="float-right d-none d-sm-block">
             <b>Version</b> 1.0.
         </div>
-        <strong>Copyright &copy; {{@date('Y')}} <a href="#">UniSocial Solutions LLP
+        <strong>Copyright &copy; {{@date('Y')}} <a href="#">
             </a>.</strong> All rights reserved.
     </footer>
 

@@ -2,8 +2,8 @@
     /* --primary-color: #3753b1;
     --secondary-color: #516aba; */
 
-    --primary-color: #edca56;
-    --secondary-color: #d0ae3d;
+    --primary-color: #003b95;
+    --secondary-color: #003b95;
 }
 
 .bootstrap-switch-handle-on .bootstrap-switch-primary {
@@ -127,10 +127,10 @@
     padding: .5rem !important;
 }
 .nav-item > a {
-    color: #000 !important;
+    color: white !important;
 }
 .nav-header {
-    color: #000 !important;
+    color: white !important;
 }
 .nav-link.active{
     background-color: #ffffff2b;
