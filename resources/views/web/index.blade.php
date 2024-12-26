@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-7">
 
-                <div class="d-flex justify-content-between ">
+                <div class="d-flex justify-content-between flex-wrap">
                     <!-- Dropdown 1 -->
                     <div class="dropdown mb-3">
                         <button class="btn btn-outline-light border-1 border-primary dropdown-toggle " type="button" data-bs-toggle="dropdown"
