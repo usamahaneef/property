@@ -20,8 +20,8 @@ Route::get('/', function () {
 });
 
 Route::get('/', [\App\Http\Controllers\Web\HomeController::class, 'index'])->name('home');
-Route::get('login', [AuthController::class, 'login']);
-Route::get('register', [AuthController::class, 'register']);
+Route::get('login', [AuthController::class, 'login'])->name('user.login');
+Route::get('register', [AuthController::class, 'register'])->name('user.register');
 // user controller in web
 Route::get('profile', [UserController::class, 'profile']);
 // Route::get('/become-partner',[\App\Http\Controllers\Web\HomeController::class,'becomePartner'])->name('web.partner');

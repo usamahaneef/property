@@ -78,7 +78,8 @@
                         </div>
                     </form>
 
-                    <div class="mt-3">New to Zillow? <a href="#" class="fw-bold text-decoration-none">Sign
+                    <div class="mt-3">New to {{ env('APP_NAME') }}? <a href="{{ route('user.register') }}"
+                            class="fw-bold text-decoration-none">Sign
                             up</a></div>
 
                     <div class="divider d-flex align-items-center my-4">
@@ -86,14 +87,21 @@
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button class="btn btn-outline-light py-2 text-normal text-black small border text-start" type="submit"><img class="pe-3" src="{{ asset('web/img/google.png') }}" height="30" alt="">Continue with Google</button>
-                        <button class="btn btn-outline-light py-2 text-normal text-black small border text-start" type="submit"><img class="pe-3" src="{{ asset('web/img/apple.png') }}" height="30" alt="">Continue with Apple</button>
-                        <button class="btn btn-outline-light py-2 text-normal text-black small border text-start" type="submit"><img class="pe-3" src="{{ asset('web/img/fb.png') }}" height="30" alt="">Continue with Facebook</button>
+                        <button class="btn btn-outline-light py-2 text-normal text-black small border text-start"
+                            type="submit"><img class="pe-3" src="{{ asset('web/img/google.png') }}" height="30"
+                                alt="">Continue with Google</button>
+                        <button class="btn btn-outline-light py-2 text-normal text-black small border text-start"
+                            type="submit"><img class="pe-3" src="{{ asset('web/img/apple.png') }}" height="30"
+                                alt="">Continue with Apple</button>
+                        <button class="btn btn-outline-light py-2 text-normal text-black small border text-start"
+                            type="submit"><img class="pe-3" src="{{ asset('web/img/fb.png') }}" height="30"
+                                alt="">Continue with Facebook</button>
                     </div>
                     <div>
-                        <small  class="fw-small">By submitting, I accept Zillow's <a href="#" class="fw-bold text-decoration-none">terms of use</a></small>
+                        <small class="fw-small">By submitting, I accept Zillow's <a href="#"
+                                class="fw-bold text-decoration-none">terms of use</a></small>
                     </div>
-                    
+
 
                 </div>
             </div>
