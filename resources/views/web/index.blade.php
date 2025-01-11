@@ -1,6 +1,86 @@
 @extends('web.layout.app')
 @push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
+    #map {
+        position: relative;
+        width: 100%;
+        /* this height must be same as in scrollable/map class or give body overflow:hidden */
+        height: calc(100vh - 130px);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .zoom-message {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        z-index: 1000;
+    }
+
+    .custom-popup img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+    }
+
+    .custom-popup h6 {
+        margin: 5px 0;
+        font-size: 16px;
+    }
+
+    .custom-popup p {
+        font-size: 14px;
+        color: #666;
+    }
+
+    #map-options {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        z-index: 1000;
+        width: 250px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #map-options h5 {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    #map-options label {
+        display: block;
+        margin-bottom: 8px;
+        cursor: pointer;
+    }
+
+
+
+    .carousel-indicators button {
+        width: 5px !important;
+
+        height: 5px !important;
+        border-radius: 50% !important;
+    }
+
+    /* Make the section scrollable */
+    .scrollable {
+        /* this height must be same as in scrollable/map class or give body overflow:hidden */
+        height: calc(100vh - 130px);
+        overflow: auto;
+        transition: all 0.3s ease-in-out;
+    }
+
+
     .featureContainer {
         padding-right: 15px;
         padding-left: 15px;
@@ -26,7 +106,12 @@
         }
     }
 
+
     @media (max-width: 767px) {
+        #map {
+            display: none;
+        }
+
         .featureContainer .carousel-inner .carousel-item>div {
             display: none;
         }
@@ -120,23 +205,6 @@
         margin-right: 20px;
     }
 
-    .google_map {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        top: 25%;
-        width: 42%;
-        height: -webkit-fill-available;
-
-    }
-
-    @media only screen and (max-width: 768px) {
-        .google_map {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-    }
 </style>
 
 <style>
@@ -155,9 +223,50 @@
         height: 24px;
         margin-right: 10px;
     }
+
 </style>
 @endpush
 @section('content')
+<div class="container-fluid">
+    <div class="map-sort-bar z-1 d-md-none rounded mb-3 d-flex shadow position-fixed bottom-0 start-50 translate-middle-x  px-3 py-2" style="background-color:#E0F2FF">
+        <div id="toggle_map_button" class=" text-primary d-flex align-items-center">
+            <i class="fa-regular fa-map me-2"></i> Map
+        </div>
+        <div class="border-end mx-1"></div>
+        <div id="toggle_sort_button" class=" d-flex align-items-center text-primary" data-bs-toggle="offcanvas" data-bs-target="#sortOffcanvas" aria-controls="sortOffcanvas">
+            <i class="fa-solid fa-arrow-up-short-wide me-2"></i> Sort
+        </div>
+
+        <div id="toggle_property_listing_button" class="z-1 d-flex align-items-center text-primary d-none"><i class="fa-solid fa-list-ul me-2"></i>List</div>
+
+        <!-- Button to Open Off-Canvas -->
+
+
+
+
+    </div>
+    <!-- Off-Canvas -->
+    <div class="offcanvas offcanvas-start w-100" tabindex="-1" id="sortOffcanvas" aria-labelledby="sortOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 id="sortOffcanvasLabel">Sort results by</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-center">Homes for You</li>
+                <li class="list-group-item text-center">Price (High to Low)</li>
+                <li class="list-group-item text-center">Price (Low to High)</li>
+                <li class="list-group-item text-center">Newest</li>
+                <li class="list-group-item text-center">Bedrooms</li>
+                <li class="list-group-item text-center">Bathrooms</li>
+                <li class="list-group-item text-center">Square Feet</li>
+                <li class="list-group-item text-center">Lot Size</li>
+            </ul>
+        </div>
+    </div>
+
+
+</div>
 <div class="container-fluid">
 
 
@@ -186,12 +295,9 @@
                     <div class="">
                         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-indicators">
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                                    class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                                    aria-label="Slide 2"></button>
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                                    aria-label="Slide 3"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
@@ -221,30 +327,23 @@
                             <div class="col-md-8">
                                 <div class="accordion bg-white" id="accordionExample">
                                     <div class="accordion-item">
-                                        <h2 class="accordion-header justify-content-center align-items-center"
-                                            id="headingOne">
-                                            <button class="accordion-button " type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseOne" aria-expanded="true"
-                                                aria-controls="collapseOne">
-                                                <span class="me-md-3">Mark Reling</span> | <img class="ms-3"
-                                                    src="{{ asset('web/img/logo.png') }}" width="30" alt="">
+                                        <h2 class="accordion-header justify-content-center align-items-center" id="headingOne">
+                                            <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <span class="me-md-3">Mark Reling</span> | <img class="ms-3" src="{{ asset('web/img/logo.png') }}" width="30" alt="">
                                                 MVPS Realtors
                                             </button>
                                         </h2>
-                                        <div id="collapseOne" class="accordion-collapse collapse"
-                                            aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
                                                 <div class="d-flex">
                                                     <div>
-                                                        <img width="100" class="rounded-circle border border-light "
-                                                            src="{{ asset('web/img/user.png') }}" alt="">
+                                                        <img width="100" class="rounded-circle border border-light " src="{{ asset('web/img/user.png') }}" alt="">
                                                     </div>
 
                                                     <div class="ms-md-3">
                                                         <h5 class="m-0">Mark Reling</h5>
                                                         <h6 class="m-0">MVPS Realtors</h6>
-                                                        <h6 class="m-0"><a href=""
-                                                                class="text-decoration-none">586-634-4545</a></h6>
+                                                        <h6 class="m-0"><a href="" class="text-decoration-none">586-634-4545</a></h6>
                                                     </div>
 
                                                 </div>
@@ -344,8 +443,7 @@
                                         <span class="ps-2"> saves </span>
                                     </div>
                                     <div class="text-black-50">
-                                        Source: Realcomp II,MLS#: 20240093392 <img src="{{ asset('web/img/logo.png') }}"
-                                            width="40" alt="">
+                                        Source: Realcomp II,MLS#: 20240093392 <img src="{{ asset('web/img/logo.png') }}" width="40" alt="">
                                     </div>
                                 </div>
 
@@ -353,10 +451,8 @@
                                     <!-- All Photos -->
                                     <div class="col-md-4">
                                         <div class="position-relative rounded overflow-hidden">
-                                            <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid"
-                                                alt="All Photos">
-                                            <div
-                                                class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 text-white text-center py-2">
+                                            <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" alt="All Photos">
+                                            <div class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 text-white text-center py-2">
                                                 All photos
                                             </div>
                                         </div>
@@ -364,10 +460,8 @@
                                     <!-- Floor Plans -->
                                     <div class="col-md-4">
                                         <div class="position-relative rounded overflow-hidden">
-                                            <img src="{{ asset('web/img/h2.webp') }}" class="img-fluid"
-                                                alt="Floor Plans">
-                                            <div
-                                                class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 text-white text-center py-2">
+                                            <img src="{{ asset('web/img/h2.webp') }}" class="img-fluid" alt="Floor Plans">
+                                            <div class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 text-white text-center py-2">
                                                 Floor plans
                                             </div>
                                         </div>
@@ -376,8 +470,7 @@
                                     <div class="col-md-4">
                                         <div class="position-relative rounded overflow-hidden">
                                             <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" alt="3D Home">
-                                            <div
-                                                class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 text-white text-center py-2">
+                                            <div class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 text-white text-center py-2">
                                                 3D home
                                             </div>
                                         </div>
@@ -388,15 +481,11 @@
                                     <div class="col-md-12">
                                         <div class="position-relative bg-light rounded" style="height: 500px;">
                                             <!-- Placeholder for Google Map -->
-                                            <iframe class="w-100 h-100 border rounded"
-                                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24176.231892173613!2d-73.98930819999999!3d40.748817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1689182866251!5m2!1sen!2sus"
-                                                style="border:0;" allowfullscreen="" loading="lazy"
-                                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                            <iframe class="w-100 h-100 border rounded" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24176.231892173613!2d-73.98930819999999!3d40.748817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1689182866251!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                             <!-- Street View Overlay -->
                                             <div class="position-absolute top-0 start-0 p-2">
                                                 <div class="bg-white border rounded shadow-sm">
-                                                    <img src="https://via.placeholder.com/150x100"
-                                                        class="img-fluid rounded" alt="Street View">
+                                                    <img src="https://via.placeholder.com/150x100" class="img-fluid rounded" alt="Street View">
                                                     <div class="text-center">Street View</div>
                                                 </div>
                                             </div>
@@ -416,22 +505,19 @@
                                     </div>
                                     <div class="col">
                                         <div class="d-flex align-items-center">
-                                            <div class="rounded bg-success"
-                                                style="width: 20px; height: 20px; margin-right: 8px;"></div>
+                                            <div class="rounded bg-success" style="width: 20px; height: 20px; margin-right: 8px;"></div>
                                             <span>Kitchen</span>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="d-flex align-items-center">
-                                            <div class="rounded bg-danger"
-                                                style="width: 20px; height: 20px; margin-right: 8px;"></div>
+                                            <div class="rounded bg-danger" style="width: 20px; height: 20px; margin-right: 8px;"></div>
                                             <span>Living Room</span>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="d-flex align-items-center">
-                                            <div class="rounded bg-primary"
-                                                style="width: 20px; height: 20px; margin-right: 8px;"></div>
+                                            <div class="rounded bg-primary" style="width: 20px; height: 20px; margin-right: 8px;"></div>
                                             <span>Dining Room</span>
                                         </div>
                                     </div>
@@ -439,39 +525,27 @@
 
                                 <div class="row my-3">
                                     <div class="input-group flex-nowrap">
-                                        <span class="input-group-text bg-white" id="addon-wrapping"><i
-                                                class="fa-solid fa-car-side text-primary"></i></span>
-                                        <input type="text" class="form-control" placeholder="" aria-label=""
-                                            aria-describedby="addon-wrapping">
+                                        <span class="input-group-text bg-white" id="addon-wrapping"><i class="fa-solid fa-car-side text-primary"></i></span>
+                                        <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="addon-wrapping">
                                     </div>
                                 </div>
 
                                 <div class="row my-3">
 
-                                    <ul class="nav nav-pills mb-3 justify-content-between align-items-center"
-                                        id="pills-tab" role="tablist">
+                                    <ul class="nav nav-pills mb-3 justify-content-between align-items-center" id="pills-tab" role="tablist">
                                         <li class="nav-item h6 fw-bold">Kitchen</li>
                                         <li class="nav-item " role="presentation" aria-label="Basic example">
                                             <div class="btn-group" role="group">
 
-                                                <button class="nav-link rounded-pill active p-2"
-                                                    id="pills-photoes-kitchen-tab" data-bs-toggle="pill"
-                                                    data-bs-target="#pills-photoes-kitchen" type="button" role="tab"
-                                                    aria-controls="pills-photoes-kitchen"
-                                                    aria-selected="true">Photoes</button>
-                                                <button class="nav-link rounded-pill" id="pills-3d-kitchen-tab"
-                                                    data-bs-toggle="pill" data-bs-target="#pills-3d-kitchen"
-                                                    type="button" role="tab" aria-controls="pills-3d-kitchen"
-                                                    aria-selected="false">3D
+                                                <button class="nav-link rounded-pill active p-2" id="pills-photoes-kitchen-tab" data-bs-toggle="pill" data-bs-target="#pills-photoes-kitchen" type="button" role="tab" aria-controls="pills-photoes-kitchen" aria-selected="true">Photoes</button>
+                                                <button class="nav-link rounded-pill" id="pills-3d-kitchen-tab" data-bs-toggle="pill" data-bs-target="#pills-3d-kitchen" type="button" role="tab" aria-controls="pills-3d-kitchen" aria-selected="false">3D
                                                     Tour</button>
                                             </div>
                                         </li>
-                                        <li class="nav-item"><img src="{{ asset('web/img/floor1.png') }}" width="100"
-                                                alt=""></li>
+                                        <li class="nav-item"><img src="{{ asset('web/img/floor1.png') }}" width="100" alt=""></li>
                                     </ul>
                                     <div class="tab-content" id="pills-tabContent">
-                                        <div class="tab-pane fade show active" id="pills-photoes-kitchen"
-                                            role="tabpanel" aria-labelledby="pills-photoes-kitchen-tab">
+                                        <div class="tab-pane fade show active" id="pills-photoes-kitchen" role="tabpanel" aria-labelledby="pills-photoes-kitchen-tab">
                                             <div class="row">
                                                 <div class="col-12 pb-2">
                                                     <img class="img-fluid" src="{{ asset('web/img/h1.webp') }}" alt="">
@@ -484,41 +558,29 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-3d-kitchen" role="tabpanel"
-                                            aria-labelledby="pills-3d-kitchen-tab">
+                                        <div class="tab-pane fade" id="pills-3d-kitchen" role="tabpanel" aria-labelledby="pills-3d-kitchen-tab">
                                             <div class="d-flex justify-content-center">
-                                                <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid"
-                                                    alt="3D Image">
+                                                <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" alt="3D Image">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row my-3">
 
-                                    <ul class="nav nav-pills mb-3 justify-content-between align-items-center"
-                                        id="pills-tab" role="tablist">
+                                    <ul class="nav nav-pills mb-3 justify-content-between align-items-center" id="pills-tab" role="tablist">
                                         <li class="nav-item h6 fw-bold">Living Room</li>
                                         <li class="nav-item " role="presentation" aria-label="Basic example">
                                             <div class="btn-group" role="group">
 
-                                                <button class="nav-link rounded-pill active p-2"
-                                                    id="pills-photoes-living-room-tab" data-bs-toggle="pill"
-                                                    data-bs-target="#pills-photoes-living-room" type="button" role="tab"
-                                                    aria-controls="pills-photoes-living-room"
-                                                    aria-selected="true">Photoes</button>
-                                                <button class="nav-link rounded-pill" id="pills-3d-living-room-tab"
-                                                    data-bs-toggle="pill" data-bs-target="#pills-3d-living-room"
-                                                    type="button" role="tab" aria-controls="pills-3d-living-room"
-                                                    aria-selected="false">3D
+                                                <button class="nav-link rounded-pill active p-2" id="pills-photoes-living-room-tab" data-bs-toggle="pill" data-bs-target="#pills-photoes-living-room" type="button" role="tab" aria-controls="pills-photoes-living-room" aria-selected="true">Photoes</button>
+                                                <button class="nav-link rounded-pill" id="pills-3d-living-room-tab" data-bs-toggle="pill" data-bs-target="#pills-3d-living-room" type="button" role="tab" aria-controls="pills-3d-living-room" aria-selected="false">3D
                                                     Tour</button>
                                             </div>
                                         </li>
-                                        <li class="nav-item"><img src="{{ asset('web/img/floor1.png') }}" width="100"
-                                                alt=""></li>
+                                        <li class="nav-item"><img src="{{ asset('web/img/floor1.png') }}" width="100" alt=""></li>
                                     </ul>
                                     <div class="tab-content" id="pills-tabContent">
-                                        <div class="tab-pane fade show active" id="pills-photoes-living-room"
-                                            role="tabpanel" aria-labelledby="pills-photoes-living-room-tab">
+                                        <div class="tab-pane fade show active" id="pills-photoes-living-room" role="tabpanel" aria-labelledby="pills-photoes-living-room-tab">
                                             <div class="row">
 
                                                 <div class="col-md-6 pe-0">
@@ -529,41 +591,29 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-3d-living-room" role="tabpanel"
-                                            aria-labelledby="pills-3d-living-room-tab">
+                                        <div class="tab-pane fade" id="pills-3d-living-room" role="tabpanel" aria-labelledby="pills-3d-living-room-tab">
                                             <div class="d-flex justify-content-center">
-                                                <img src="{{ asset('web/img/h2.webp') }}" class="img-fluid"
-                                                    alt="3D Image">
+                                                <img src="{{ asset('web/img/h2.webp') }}" class="img-fluid" alt="3D Image">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row my-3">
 
-                                    <ul class="nav nav-pills mb-3 justify-content-between align-items-center"
-                                        id="pills-tab" role="tablist">
+                                    <ul class="nav nav-pills mb-3 justify-content-between align-items-center" id="pills-tab" role="tablist">
                                         <li class="nav-item h6 fw-bold">Primary Bedroom</li>
                                         <li class="nav-item " role="presentation" aria-label="Basic example">
                                             <div class="btn-group" role="group">
 
-                                                <button class="nav-link rounded-pill active p-2"
-                                                    id="pills-photoes-bedroom-tab" data-bs-toggle="pill"
-                                                    data-bs-target="#pills-photoes-bedroom" type="button" role="tab"
-                                                    aria-controls="pills-photoes-bedroom"
-                                                    aria-selected="true">Photoes</button>
-                                                <button class="nav-link rounded-pill" id="pills-3d-bedroom-tab"
-                                                    data-bs-toggle="pill" data-bs-target="#pills-3d-bedroom"
-                                                    type="button" role="tab" aria-controls="pills-3d-bedroom"
-                                                    aria-selected="false">3D
+                                                <button class="nav-link rounded-pill active p-2" id="pills-photoes-bedroom-tab" data-bs-toggle="pill" data-bs-target="#pills-photoes-bedroom" type="button" role="tab" aria-controls="pills-photoes-bedroom" aria-selected="true">Photoes</button>
+                                                <button class="nav-link rounded-pill" id="pills-3d-bedroom-tab" data-bs-toggle="pill" data-bs-target="#pills-3d-bedroom" type="button" role="tab" aria-controls="pills-3d-bedroom" aria-selected="false">3D
                                                     Tour</button>
                                             </div>
                                         </li>
-                                        <li class="nav-item"><img src="{{ asset('web/img/floor1.png') }}" width="100"
-                                                alt=""></li>
+                                        <li class="nav-item"><img src="{{ asset('web/img/floor1.png') }}" width="100" alt=""></li>
                                     </ul>
                                     <div class="tab-content" id="pills-tabContent">
-                                        <div class="tab-pane fade show active" id="pills-photoes-bedroom"
-                                            role="tabpanel" aria-labelledby="pills-photoes-bedroom-tab">
+                                        <div class="tab-pane fade show active" id="pills-photoes-bedroom" role="tabpanel" aria-labelledby="pills-photoes-bedroom-tab">
                                             <div class="row">
 
                                                 <div class="col-md-6 pe-0">
@@ -574,19 +624,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-3d-bedroom" role="tabpanel"
-                                            aria-labelledby="pills-3d-bedroom-tab">
+                                        <div class="tab-pane fade" id="pills-3d-bedroom" role="tabpanel" aria-labelledby="pills-3d-bedroom-tab">
                                             <div class="d-flex justify-content-center">
-                                                <img src="{{ asset('web/img/h2.webp') }}" class="img-fluid"
-                                                    alt="3D Image">
+                                                <img src="{{ asset('web/img/h2.webp') }}" class="img-fluid" alt="3D Image">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12 ms-md-3 align-items-center">
-                                        <button
-                                            class="btn btn-outline-light text-primary fw-bold border border-primary align-items-center btn-block">See
+                                        <button class="btn btn-outline-light text-primary fw-bold border border-primary align-items-center btn-block">See
                                             all media <i class="fa fa-arrow-right"></i> </button>
                                     </div>
                                 </div>
@@ -751,8 +798,7 @@
                                             <tr>
                                                 <td>12/13/2024
                                                     <div class="text-muted small">
-                                                        <small>🏘️ St Augustine St Johns County BOR #245880</small> <a
-                                                            href="#" class="text-primary">Report</a>
+                                                        <small>🏘️ St Augustine St Johns County BOR #245880</small> <a href="#" class="text-primary">Report</a>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -768,8 +814,7 @@
                                             <tr>
                                                 <td>10/12/2023
                                                     <div class="text-muted small">
-                                                        <small>🏠 realMLS #1231826</small> <a href="#"
-                                                            class="text-primary">Report</a>
+                                                        <small>🏠 realMLS #1231826</small> <a href="#" class="text-primary">Report</a>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -784,8 +829,7 @@
                                             <tr>
                                                 <td>10/3/2023
                                                     <div class="text-muted small">
-                                                        <small>🏠 realMLS #1231826</small> <a href="#"
-                                                            class="text-primary">Report</a>
+                                                        <small>🏠 realMLS #1231826</small> <a href="#" class="text-primary">Report</a>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -845,22 +889,18 @@
                                 <div class="accordion" id="monthlyCostAccordion">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingOne">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseOne" aria-expanded="true"
-                                                aria-controls="collapseOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                                 Principal & interest
                                                 <span class="ms-auto">$2,449</span>
                                             </button>
                                         </h2>
-                                        <div id="collapseOne" class="accordion-collapse collapse show"
-                                            aria-labelledby="headingOne" data-bs-parent="#monthlyCostAccordion">
+                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#monthlyCostAccordion">
                                             <div class="accordion-body">
                                                 <label class="form-label fw-bold mb-3" for="">Home
                                                     Price</label>
                                                 <div class="input-group flex-nowrap">
                                                     <span class="input-group-text bg-white" id="addon-wrapping">$</span>
-                                                    <input type="text" class="form-control" placeholder="" aria-label=""
-                                                        aria-describedby="addon-wrapping">
+                                                    <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="addon-wrapping">
                                                 </div>
 
                                                 <label class="form-label fw-bold" for="">Down Payment</label>
@@ -868,10 +908,8 @@
                                                 <div class="input-group mb-3">
 
                                                     <span class="input-group-text bg-white" id="addon-wrapping">$</span>
-                                                    <input type="text" class="form-control" placeholder="" aria-label=""
-                                                        aria-describedby="addon-wrapping">
-                                                    <input type="text" class="form-control"
-                                                        aria-label="Dollar amount (with dot and two decimal places)">
+                                                    <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="addon-wrapping">
+                                                    <input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
                                                     <span class="input-group-text bg-white">%</span>
                                                 </div>
                                                 <div class="row">
@@ -889,10 +927,8 @@
                                                             Rate</label>
 
                                                         <div class="input-group mb-3">
-                                                            <input type="text" class="form-control" placeholder=""
-                                                                aria-label="" aria-describedby="basic-addon2">
-                                                            <span class="input-group-text bg-white"
-                                                                id="basic-addon2">%</span>
+                                                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                                            <span class="input-group-text bg-white" id="basic-addon2">%</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -902,19 +938,15 @@
 
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingTwo">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                                                aria-expanded="false" aria-controls="collapseTwo">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                 Mortgage insurance
                                                 <span class="ms-auto">$0</span>
                                             </button>
                                         </h2>
-                                        <div id="collapseTwo" class="accordion-collapse collapse"
-                                            aria-labelledby="headingTwo" data-bs-parent="#monthlyCostAccordion">
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#monthlyCostAccordion">
                                             <div class="accordion-body">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        id="flexCheckChecked" checked>
+                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
                                                     <label class="form-check-label" for="flexCheckChecked">
                                                         Include mortgage insurance
                                                     </label>
@@ -930,15 +962,12 @@
 
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingThree">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapseThree"
-                                                aria-expanded="false" aria-controls="collapseThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                                 Property taxes
                                                 <span class="ms-auto">$273</span>
                                             </button>
                                         </h2>
-                                        <div id="collapseThree" class="accordion-collapse collapse"
-                                            aria-labelledby="headingThree" data-bs-parent="#monthlyCostAccordion">
+                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#monthlyCostAccordion">
                                             <div class="accordion-body">
                                                 <div class="form-text">
                                                     This estimate is based on the home value, property type, and an
@@ -949,12 +978,8 @@
                                                         <label for="" class="form-label fw-bold">Home
                                                             Price</label>
                                                         <div class="input-group mb-3">
-                                                            <input type="text" readonly
-                                                                class="form-control plaintext border-0" placeholder=""
-                                                                value="4000" aria-label="Recipient's username"
-                                                                aria-describedby="basic-addon2">
-                                                            <span class="input-group-text bg-white border-0"
-                                                                id="basic-addon2">X</span>
+                                                            <input type="text" readonly class="form-control plaintext border-0" placeholder="" value="4000" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                            <span class="input-group-text bg-white border-0" id="basic-addon2">X</span>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-7">
@@ -962,16 +987,13 @@
                                                             Rate</label>
 
                                                         <div class="input-group mb-3">
-                                                            <input type="number" class="form-control" placeholder=""
-                                                                aria-label="" aria-describedby="basic-addon2">
+                                                            <input type="number" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
                                                             <span class="input-group-text" id="basic-addon2">%</span>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 align-items-center">
                                                         <label for="" class="form-label fw-bold"></label>
-                                                        <input type="text" readonly
-                                                            class="form-control-plaintext border-0" name=""
-                                                            value="= $4000 /year" id="">
+                                                        <input type="text" readonly class="form-control-plaintext border-0" name="" value="= $4000 /year" id="">
                                                     </div>
                                                 </div>
 
@@ -981,15 +1003,12 @@
 
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingFour">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapseFour"
-                                                aria-expanded="false" aria-controls="collapseFour">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                                 Home insurance
                                                 <span class="ms-auto">$166</span>
                                             </button>
                                         </h2>
-                                        <div id="collapseFour" class="accordion-collapse collapse"
-                                            aria-labelledby="headingFour" data-bs-parent="#monthlyCostAccordion">
+                                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#monthlyCostAccordion">
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
                                                     <span class="input-group-text bg-white">$</span>
@@ -1005,15 +1024,12 @@
 
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingFive">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapseFive"
-                                                aria-expanded="false" aria-controls="collapseFive">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                                                 HOA fees
                                                 <span class="ms-auto">N/A</span>
                                             </button>
                                         </h2>
-                                        <div id="collapseFive" class="accordion-collapse collapse"
-                                            aria-labelledby="headingFive" data-bs-parent="#monthlyCostAccordion">
+                                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#monthlyCostAccordion">
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
                                                     <span class="input-group-text bg-white">$</span>
@@ -1028,19 +1044,15 @@
 
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingSix">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapseSix"
-                                                aria-expanded="false" aria-controls="collapseSix">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                                                 Utilities
                                                 <span class="ms-auto">Not included</span>
                                             </button>
                                         </h2>
-                                        <div id="collapseSix" class="accordion-collapse collapse"
-                                            aria-labelledby="headingSix" data-bs-parent="#monthlyCostAccordion">
+                                        <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#monthlyCostAccordion">
                                             <div class="accordion-body">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        id="flexCheckDefault">
+                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         Include utilities in payment
                                                     </label>
@@ -1105,8 +1117,7 @@
                                 <div class="row my-3">
                                     <p>See how much you could borrow to make a competitive offer.</p>
                                     <div>
-                                        <button class="btn btn-outline-light  mb-3 text-primary border fw-bold"><span
-                                                class="badge bg-primary rounded-cirlce">$</span>
+                                        <button class="btn btn-outline-light  mb-3 text-primary border fw-bold"><span class="badge bg-primary rounded-cirlce">$</span>
                                             Get
                                             Pre-Qualified</button>
                                     </div>
@@ -1363,8 +1374,7 @@
                                                     Augustine</a>
                                             </div>
                                             <div class="col-md-2 col-sm-4">
-                                                <a href="#"
-                                                    class="d-block text-decoration-none text-primary">Refinance</a>
+                                                <a href="#" class="d-block text-decoration-none text-primary">Refinance</a>
                                             </div>
                                         </div>
                                     </div>
@@ -1375,13 +1385,11 @@
                                 <div class="card mb-3">
                                     <p class="small-text ps-3">Listed by</p>
                                     <div class="text-center">
-                                        <img class="rounded-circle" width="100" src="{{ asset('web/img/user.png') }}"
-                                            alt="Realtor">
+                                        <img class="rounded-circle" width="100" src="{{ asset('web/img/user.png') }}" alt="Realtor">
                                         <h5 class="mb-1">Mark Reling</h5>
                                         <p class="mb-3 text-muted">MVPS Realtors</p>
                                         <div class="d-grid gap-2 px-3">
-                                            <button
-                                                class="btn btn-outline-light btn-block mb-3 text-primary border">Contact
+                                            <button class="btn btn-outline-light btn-block mb-3 text-primary border">Contact
                                                 Mark</button>
                                         </div>
                                     </div>
@@ -1435,14 +1443,10 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="row">
-                                    <div class="col-md-6 p-1"><img src="{{ asset('web/img/h2.webp') }}" alt=""
-                                            class="img-fluid"></div>
-                                    <div class="col-md-6 p-1"><img src="{{ asset('web/img/h1.webp') }}" alt=""
-                                            class="img-fluid"></div>
-                                    <div class="col-md-6 p-1"><img src="{{ asset('web/img/h1.webp') }}" alt=""
-                                            class="img-fluid"></div>
-                                    <div class="col-md-6 p-1"><img src="{{ asset('web/img/h2.webp') }}" alt=""
-                                            class="img-fluid"></div>
+                                    <div class="col-md-6 p-1"><img src="{{ asset('web/img/h2.webp') }}" alt="" class="img-fluid"></div>
+                                    <div class="col-md-6 p-1"><img src="{{ asset('web/img/h1.webp') }}" alt="" class="img-fluid"></div>
+                                    <div class="col-md-6 p-1"><img src="{{ asset('web/img/h1.webp') }}" alt="" class="img-fluid"></div>
+                                    <div class="col-md-6 p-1"><img src="{{ asset('web/img/h2.webp') }}" alt="" class="img-fluid"></div>
                                 </div>
                             </div>
                         </div>
@@ -1455,8 +1459,7 @@
                                 <div class="">
 
                                     <div>
-                                        <h2 class="fw-bold">DLP Portofino <i
-                                                class="fa-solid fa-circle-check text-success"></i></h2>
+                                        <h2 class="fw-bold">DLP Portofino <i class="fa-solid fa-circle-check text-success"></i></h2>
                                         <p class="mt-0">213 Cantabria Way St, Augustine, FL 32086 </p>
                                     </div>
                                 </div>
@@ -1511,21 +1514,14 @@
                                     <!-- Tabs for filtering -->
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="btn btn-outline-light text-dark ms-1 active"
-                                                id="pills-all-tab" data-bs-toggle="pill" data-bs-target="#pills-all"
-                                                type="button" role="tab" aria-controls="pills-all"
-                                                aria-selected="true">All</button>
+                                            <button class="btn btn-outline-light text-dark ms-1 active" id="pills-all-tab" data-bs-toggle="pill" data-bs-target="#pills-all" type="button" role="tab" aria-controls="pills-all" aria-selected="true">All</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="btn btn-outline-light text-dark ms-1" id="pills-2bed-tab"
-                                                data-bs-toggle="pill" data-bs-target="#pills-2bed" type="button"
-                                                role="tab" aria-controls="pills-2bed" aria-selected="false">2
+                                            <button class="btn btn-outline-light text-dark ms-1" id="pills-2bed-tab" data-bs-toggle="pill" data-bs-target="#pills-2bed" type="button" role="tab" aria-controls="pills-2bed" aria-selected="false">2
                                                 bed</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="btn btn-outline-light text-dark ms-1" id="pills-3bed-tab"
-                                                data-bs-toggle="pill" data-bs-target="#pills-3bed" type="button"
-                                                role="tab" aria-controls="pills-3bed" aria-selected="false">3
+                                            <button class="btn btn-outline-light text-dark ms-1" id="pills-3bed-tab" data-bs-toggle="pill" data-bs-target="#pills-3bed" type="button" role="tab" aria-controls="pills-3bed" aria-selected="false">3
                                                 bed</button>
                                         </li>
                                     </ul>
@@ -1533,13 +1529,11 @@
                                     <!-- Cards Container -->
                                     <div class="tab-content" id="pills-tabContent">
                                         <!-- All Tab -->
-                                        <div class="tab-pane fade show active" id="pills-all" role="tabpanel"
-                                            aria-labelledby="pills-all-tab">
+                                        <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
                                             <div class="card mb-3">
                                                 <div class="row g-0 align-items-center">
                                                     <div class="col-md-2 text-center">
-                                                        <img src="https://via.placeholder.com/100"
-                                                            alt="placeholder image" class="img-fluid">
+                                                        <img src="https://via.placeholder.com/100" alt="placeholder image" class="img-fluid">
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="card-body">
@@ -1556,8 +1550,7 @@
                                             <div class="card mb-3">
                                                 <div class="row g-0 align-items-center">
                                                     <div class="col-md-2 text-center">
-                                                        <img src="https://via.placeholder.com/100"
-                                                            alt="placeholder image" class="img-fluid">
+                                                        <img src="https://via.placeholder.com/100" alt="placeholder image" class="img-fluid">
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="card-body">
@@ -1573,13 +1566,11 @@
                                             </div>
                                         </div>
                                         <!-- Other Tabs  -->
-                                        <div class="tab-pane fade" id="pills-2bed" role="tabpanel"
-                                            aria-labelledby="pills-2bed-tab">
+                                        <div class="tab-pane fade" id="pills-2bed" role="tabpanel" aria-labelledby="pills-2bed-tab">
                                             <div class="card mb-3">
                                                 <div class="row g-0 align-items-center">
                                                     <div class="col-md-2 text-center">
-                                                        <img src="https://via.placeholder.com/100"
-                                                            alt="placeholder image" class="img-fluid">
+                                                        <img src="https://via.placeholder.com/100" alt="placeholder image" class="img-fluid">
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="card-body">
@@ -1594,13 +1585,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-3bed" role="tabpanel"
-                                            aria-labelledby="pills-3bed-tab">
+                                        <div class="tab-pane fade" id="pills-3bed" role="tabpanel" aria-labelledby="pills-3bed-tab">
                                             <div class="card mb-3">
                                                 <div class="row g-0 align-items-center">
                                                     <div class="col-md-2 text-center">
-                                                        <img src="https://via.placeholder.com/100"
-                                                            alt="placeholder image" class="img-fluid">
+                                                        <img src="https://via.placeholder.com/100" alt="placeholder image" class="img-fluid">
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="card-body">
@@ -1661,8 +1650,7 @@
                                         <h5 class="mt-4">Listed by management company</h5>
                                         <div class="d-flex align-items-center mt-3">
                                             <div class="management-logo">
-                                                <img src="{{ asset('web/img/dreamLiveProsper.jpg') }}" width="70"
-                                                    alt="Logo">
+                                                <img src="{{ asset('web/img/dreamLiveProsper.jpg') }}" width="70" alt="Logo">
                                             </div>
                                             <div class="ms-3">
                                                 <p class="mb-0 fw-bold">Leasing Agent</p>
@@ -1761,18 +1749,14 @@
                                 <div class="row my-3">
                                     <div class="col-md-6">
                                         <div class="d-grid gap-2">
-                                            <input type="radio" checked class="btn-check" id="btn-check-outlined"
-                                                name="bed" autocomplete="off">
-                                            <label class="btn btn-outline-light text-dark border"
-                                                for="btn-check-outlined">2 bed</label>
+                                            <input type="radio" checked class="btn-check" id="btn-check-outlined" name="bed" autocomplete="off">
+                                            <label class="btn btn-outline-light text-dark border" for="btn-check-outlined">2 bed</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-grid gap-2">
-                                            <input type="radio" class="btn-check" id="btn-check-outlined2" name="bed"
-                                                autocomplete="off">
-                                            <label class="btn btn-outline-light text-dark border"
-                                                for="btn-check-outlined2">3 bed</label>
+                                            <input type="radio" class="btn-check" id="btn-check-outlined2" name="bed" autocomplete="off">
+                                            <label class="btn btn-outline-light text-dark border" for="btn-check-outlined2">3 bed</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4 ">
@@ -1827,7 +1811,8 @@
                                 <div class="row my-3">
                                     <h5 class="mb-3">One-time costs</h5>
                                     <table class="table border">
-                                        <caption style="font-size: 10px">Pricing is subject to change. All calculations
+                                        <caption style="font-size: 10px">Pricing is subject to change. All
+                                            calculations
                                             are estimates and provided for informational purposes only. Actual amounts
                                             may include additional mandatory or optional fees. Please consult the
                                             community manager for a complete breakdown of all rental costs.</caption>
@@ -1872,15 +1857,11 @@
                                         <div class="col-md-12">
                                             <div class="position-relative bg-light rounded" style="height: 230px;">
                                                 <!-- Placeholder for Google Map -->
-                                                <iframe class="w-100 h-100 border rounded"
-                                                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24176.231892173613!2d-73.98930819999999!3d40.748817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1689182866251!5m2!1sen!2sus"
-                                                    style="border:0;" allowfullscreen="" loading="lazy"
-                                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                                <iframe class="w-100 h-100 border rounded" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24176.231892173613!2d-73.98930819999999!3d40.748817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1689182866251!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                                 <!-- Street View Overlay -->
                                                 <div class="position-absolute bottom-0 end-0 p-2">
                                                     <div class="bg-white border rounded shadow-sm">
-                                                        <img src="{{ asset(" web/img/h1.webp") }}" width="100"
-                                                            class="img-fluid rounded" alt="Street View">
+                                                        <img src="{{ asset('web/img/h1.webp') }}" width="100" class="img-fluid rounded" alt="Street View">
                                                         <div class="text-center">Street View</div>
                                                     </div>
                                                 </div>
@@ -1895,10 +1876,8 @@
                                     <div class="row mt-3">
                                         <div class="col-12 d-flex justify-content-start">
                                             <div class="ms-2">
-                                                <button type="button"
-                                                    class="btn btn-outline-light text-dark rounded-pill">Highlights</button>
-                                                <button type="button"
-                                                    class="btn btn-outline-light text-dark rounded-pill">Active
+                                                <button type="button" class="btn btn-outline-light text-dark rounded-pill">Highlights</button>
+                                                <button type="button" class="btn btn-outline-light text-dark rounded-pill">Active
                                                     life</button>
                                             </div>
                                         </div>
@@ -1910,10 +1889,8 @@
                                     <h4>Travel times</h4>
 
                                     <div class="input-group flex-nowrap mt-3">
-                                        <span class="input-group-text bg-white " id="addon-wrapping"><i
-                                                class="fa-solid fa-car-side text-primary"></i></span>
-                                        <input type="text" class="form-control" placeholder="" aria-label=""
-                                            aria-describedby="addon-wrapping">
+                                        <span class="input-group-text bg-white " id="addon-wrapping"><i class="fa-solid fa-car-side text-primary"></i></span>
+                                        <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="addon-wrapping">
                                     </div>
                                 </div>
 
@@ -2037,8 +2014,7 @@
                                         <!-- Name Field -->
                                         <div class="mb-3">
                                             <label for="name" class="form-label">First & last name</label>
-                                            <input type="text" class="form-control" id="name" value="Mahr Zohaib"
-                                                placeholder="Enter your name">
+                                            <input type="text" class="form-control" id="name" value="Mahr Zohaib" placeholder="Enter your name">
                                         </div>
 
                                         <!-- Phone Field -->
@@ -2051,15 +2027,13 @@
                                         <!-- Email Field -->
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Signed in email</label>
-                                            <input type="email" class="form-control" id="email" value="abc@gmail.com"
-                                                readonly>
+                                            <input type="email" class="form-control" id="email" value="abc@gmail.com" readonly>
                                         </div>
 
                                         <!-- Message Field -->
                                         <div class="mb-3">
                                             <label for="message" class="form-label">Message</label>
-                                            <textarea class="form-control" id="message"
-                                                rows="3">I would like to schedule a tour </textarea>
+                                            <textarea class="form-control" id="message" rows="3">I would like to schedule a tour </textarea>
                                         </div>
 
                                         <!-- Submit Button -->
@@ -2073,21 +2047,18 @@
                                     <!-- Header Section -->
                                     <h6 class="mb-3">Will be sent to</h6>
                                     <div class="d-flex align-items-center mb-3">
-                                        <div class="rounded-circle bg-light d-flex justify-content-center align-items-center me-3"
-                                            style="width: 60px; height: 60px;">
+                                        <div class="rounded-circle bg-light d-flex justify-content-center align-items-center me-3" style="width: 60px; height: 60px;">
                                             <i class="bi bi-person text-muted fs-3"></i>
                                         </div>
                                         <div>
                                             <h5 class="mb-0">Leasing Agent</h5>
                                             <p class="mb-1 text-muted">Leasing consultant</p>
-                                            <span class="text-success ">Verified <i
-                                                    class="fa-solid fa-circle-info"></i></span>
+                                            <span class="text-success ">Verified <i class="fa-solid fa-circle-info"></i></span>
                                             <i class="bi bi-info-circle text-muted" title="Verified agent"> </i>
                                         </div>
                                     </div>
                                     <p class="mb-0">
-                                        <a href="tel:(213)401-9986"
-                                            class="text-decoration-none text-primary fw-bold">(213) 401-9986</a>
+                                        <a href="tel:(213)401-9986" class="text-decoration-none text-primary fw-bold">(213) 401-9986</a>
                                     </p>
 
                                     <!-- Divider -->
@@ -2102,8 +2073,7 @@
                                                 a question</button>
                                         </div>
                                         <div class="col-6">
-                                            <button
-                                                class="btn btn-outline-light text-primary border fw-bold w-100 ">Request
+                                            <button class="btn btn-outline-light text-primary border fw-bold w-100 ">Request
                                                 to apply</button>
 
                                         </div>
@@ -2112,9 +2082,11 @@
                                     <!-- Disclaimer -->
                                     <p class="mt-4 text-muted small">
                                         By contacting this property, you agree to our
-                                        <a href="#" class="text-primary text-decoration-none">Terms of Use</a>. Visit
+                                        <a href="#" class="text-primary text-decoration-none">Terms of
+                                            Use</a>. Visit
                                         our
-                                        <a href="#" class="text-primary text-decoration-none">Privacy Portal</a> for
+                                        <a href="#" class="text-primary text-decoration-none">Privacy
+                                            Portal</a> for
                                         more information.
                                         When you click Send request, we’ll send your inquiry to the property manager so
                                         they can reach out and answer your questions.
@@ -2130,12 +2102,10 @@
                                                     <h4> Nearby apartments for rent</h4>
                                                 </div>
                                                 <div class="float-end mb-2">
-                                                    <a class="indicator" href="#featureCarousel" role="button"
-                                                        data-bs-slide="prev">
+                                                    <a class="indicator" href="#featureCarousel" role="button" data-bs-slide="prev">
                                                         <i class="fa-solid fa-less-than"></i>
                                                     </a> &nbsp;&nbsp;
-                                                    <a class="w-aut indicator" href="#featureCarousel" role="button"
-                                                        data-bs-slide="next">
+                                                    <a class="w-aut indicator" href="#featureCarousel" role="button" data-bs-slide="next">
                                                         <i class="fa-solid fa-greater-than"></i>
                                                     </a>
                                                 </div>
@@ -2144,8 +2114,7 @@
                                                     <div class="carousel-item active">
                                                         <div class="col-md-3 mx-1 border">
                                                             <div class="card">
-                                                                <img src="{{ asset('web/img/h1.webp') }}"
-                                                                    class="img-fluid" class="card-img-top" alt="...">
+                                                                <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" class="card-img-top" alt="...">
                                                                 <div class="card-body p-1">
                                                                     <h5 class="card-title">$500 - $700</h5>
                                                                     <p class="card-text small">
@@ -2163,8 +2132,7 @@
                                                     <div class="carousel-item">
                                                         <div class="col-md-3 mx-1 border">
                                                             <div class="card">
-                                                                <img src="{{ asset('web/img/h1.webp') }}"
-                                                                    class="img-fluid" class="card-img-top" alt="...">
+                                                                <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" class="card-img-top" alt="...">
                                                                 <div class="card-body p-1">
                                                                     <h5 class="card-title">$500 - $700</h5>
                                                                     <p class="card-text small">
@@ -2182,8 +2150,7 @@
                                                     <div class="carousel-item">
                                                         <div class="col-md-3 mx-1 border">
                                                             <div class="card">
-                                                                <img src="{{ asset('web/img/h1.webp') }}"
-                                                                    class="img-fluid" class="card-img-top" alt="...">
+                                                                <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" class="card-img-top" alt="...">
                                                                 <div class="card-body p-1">
                                                                     <h5 class="card-title">$500 - $700</h5>
                                                                     <p class="card-text small">
@@ -2206,7 +2173,8 @@
                                 <div class="row my-3">
                                     <h2 class="mb-3">Local legal protections</h2>
                                     <p class="text-muted">
-                                        Current <a href="#" class="text-decoration-underline">legal protections</a> at
+                                        Current <a href="#" class="text-decoration-underline">legal
+                                            protections</a> at
                                         the city level in Saint Augustine
                                     </p>
 
@@ -2219,23 +2187,19 @@
                                                 refused the ability to rent or buy housing.
                                             </small>
                                             <div class="d-flex flex-column gap-2">
-                                                <div
-                                                    class="border p-2 d-flex align-items-center justify-content-between rounded">
+                                                <div class="border p-2 d-flex align-items-center justify-content-between rounded">
                                                     <span><i class="fa-regular fa-circle-xmark"></i> Gender
                                                         identity</span>
                                                 </div>
-                                                <div
-                                                    class="border p-2 d-flex align-items-center justify-content-between rounded">
+                                                <div class="border p-2 d-flex align-items-center justify-content-between rounded">
                                                     <span><i class="fa-regular fa-circle-check"></i> Sexual
                                                         orientation</span>
                                                 </div>
-                                                <div
-                                                    class="border p-2 d-flex align-items-center justify-content-between rounded">
+                                                <div class="border p-2 d-flex align-items-center justify-content-between rounded">
                                                     <span><i class="fa-regular fa-circle-xmark"></i> Housing choice
                                                         voucher (Section 8)</span>
                                                 </div>
-                                                <div
-                                                    class="border p-2 d-flex align-items-center justify-content-between rounded">
+                                                <div class="border p-2 d-flex align-items-center justify-content-between rounded">
                                                     <span><i class="fa-regular fa-circle-xmark"></i> Source of
                                                         income</span>
                                                 </div>
@@ -2250,13 +2214,11 @@
                                                 discriminated against by an employer.
                                             </small>
                                             <div class="d-flex flex-column gap-2">
-                                                <div
-                                                    class="border p-2 d-flex align-items-center justify-content-between rounded">
+                                                <div class="border p-2 d-flex align-items-center justify-content-between rounded">
                                                     <span><i class="fa-regular fa-circle-xmark"></i> Gender
                                                         identity</span>
                                                 </div>
-                                                <div
-                                                    class="border p-2 d-flex align-items-center justify-content-between rounded">
+                                                <div class="border p-2 d-flex align-items-center justify-content-between rounded">
                                                     <span><i class="fa-regular fa-circle-xmark"></i> Sexual
                                                         orientation</span>
                                                 </div>
@@ -2271,13 +2233,11 @@
                                                 places accessible to the public (stores, restaurants, parks, etc.).
                                             </small>
                                             <div class="d-flex flex-column gap-2">
-                                                <div
-                                                    class="border p-2 d-flex align-items-center justify-content-between rounded">
+                                                <div class="border p-2 d-flex align-items-center justify-content-between rounded">
                                                     <span><i class="fa-regular fa-circle-xmark"></i> Gender
                                                         identity</span>
                                                 </div>
-                                                <div
-                                                    class="border p-2 d-flex align-items-center justify-content-between rounded">
+                                                <div class="border p-2 d-flex align-items-center justify-content-between rounded">
                                                     <span><i class="fa-regular fa-circle-xmark"></i> Sexual
                                                         orientation</span>
                                                 </div>
@@ -2286,7 +2246,8 @@
                                     </div>
 
                                     <p class="text-muted mt-4">
-                                        Data Source: <a href="#" class="text-decoration-underline">Movement Advancement
+                                        Data Source: <a href="#" class="text-decoration-underline">Movement
+                                            Advancement
                                             Project (MAP)</a>
                                     </p>
                                 </div>
@@ -2299,12 +2260,10 @@
                                                     <h4> Similar apartments for rent</h4>
                                                 </div>
                                                 <div class="float-end mb-2">
-                                                    <a class="indicator" href="#featureCarousel2" role="button"
-                                                        data-bs-slide="prev">
+                                                    <a class="indicator" href="#featureCarousel2" role="button" data-bs-slide="prev">
                                                         <i class="fa-solid fa-less-than"></i>
                                                     </a> &nbsp;&nbsp;
-                                                    <a class="w-aut indicator" href="#featureCarousel2" role="button"
-                                                        data-bs-slide="next">
+                                                    <a class="w-aut indicator" href="#featureCarousel2" role="button" data-bs-slide="next">
                                                         <i class="fa-solid fa-greater-than"></i>
                                                     </a>
                                                 </div>
@@ -2313,8 +2272,7 @@
                                                     <div class="carousel-item active">
                                                         <div class="col-md-3 mx-1 border">
                                                             <div class="card">
-                                                                <img src="{{ asset('web/img/h1.webp') }}"
-                                                                    class="img-fluid" class="card-img-top" alt="...">
+                                                                <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" class="card-img-top" alt="...">
                                                                 <div class="card-body p-1">
                                                                     <h5 class="card-title">$500 - $700</h5>
                                                                     <p class="card-text small">
@@ -2332,8 +2290,7 @@
                                                     <div class="carousel-item">
                                                         <div class="col-md-3 mx-1 border">
                                                             <div class="card">
-                                                                <img src="{{ asset('web/img/h1.webp') }}"
-                                                                    class="img-fluid" class="card-img-top" alt="...">
+                                                                <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" class="card-img-top" alt="...">
                                                                 <div class="card-body p-1">
                                                                     <h5 class="card-title">$500 - $700</h5>
                                                                     <p class="card-text small">
@@ -2351,8 +2308,7 @@
                                                     <div class="carousel-item">
                                                         <div class="col-md-3 mx-1 border">
                                                             <div class="card">
-                                                                <img src="{{ asset('web/img/h1.webp') }}"
-                                                                    class="img-fluid" class="card-img-top" alt="...">
+                                                                <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" class="card-img-top" alt="...">
                                                                 <div class="card-body p-1">
                                                                     <h5 class="card-title">$500 - $700</h5>
                                                                     <p class="card-text small">
@@ -2376,7 +2332,8 @@
                                     <h2 class="mb-4">Frequently asked questions</h2>
                                     <div class="mb-4">
                                         <h5>What is the walk score of DLP Portofino?</h5>
-                                        <p class="text-muted">DLP Portofino has a walk score of 21, it's car-dependent.
+                                        <p class="text-muted">DLP Portofino has a walk score of 21, it's
+                                            car-dependent.
                                         </p>
                                     </div>
                                     <div class="mb-4">
@@ -2388,7 +2345,8 @@
                                     </div>
                                     <div class="mb-4">
                                         <h5>Does DLP Portofino have in-unit laundry?</h5>
-                                        <p class="text-muted">Yes, DLP Portofino has in-unit laundry for some or all of
+                                        <p class="text-muted">Yes, DLP Portofino has in-unit laundry for some or all
+                                            of
                                             the units.</p>
                                     </div>
                                     <div>
@@ -2489,7 +2447,7 @@
                                         </div>
                                     </div>
 
-                                 
+
 
                                 </div>
                             </div>
@@ -2520,278 +2478,262 @@
     </div>
 </div>
 <div class="container-fluid my-2">
-    <div class="row">
-        <div class="col-md-5">
-            <div class="input-group mb-3">
-                <input type="search" class="form-control" placeholder="Address neighborhood, city, Zip"
-                    aria-label="Address neighborhood, city, Zip" aria-describedby="button-addon2">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
+    <div class="d-flex align-items-center justify-content-start flex-wrap">
+        <div class="input-group w-25 ms-1 d-md-flex d-none ">
+            <input type="search" class="form-control" placeholder="Address neighborhood, city, Zip" aria-label="Address neighborhood, city, Zip" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <!-- Dropdown 1 -->
+        <div class="dropdown ms-1">
+            <button class="btn btn-outline-light border-1 border text-black" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="selected-filter   small">For Sale</span>
+                <i class="fa fa-angle-down"></i>
+            </button>
+            <div class="dropdown-menu p-3">
+                <form>
+                    <!-- Radio Buttons -->
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="filterOptions1" id="filter1Option1" value="Option 1" checked>
+                        <label class="form-check-label" for="filter1Option1">Option 1</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="filterOptions1" id="filter1Option2" value="Option 2">
+                        <label class="form-check-label" for="filter1Option2">Option 2</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="filterOptions1" id="filter1Option3" value="Option 3">
+                        <label class="form-check-label" for="filter1Option3">Option 3</label>
+                    </div>
+                    <!-- Apply Button -->
+                    <div class="mt-3 apply-button d-grid gap-2">
+                        <button type="button" class="btn btn-primary fw-bold apply-filter">Apply</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dropdown 2 -->
+        <div class="dropdown ms-1 d-md-block d-none">
+            <button class="btn btn-outline-light border-1 border text-black " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="selected-filter   small">Price</span>
+                <i class="fa fa-angle-down"></i>
+            </button>
+            <div class="dropdown-menu p-3">
+                <form>
+                    <!-- Minimum and Maximum Dropdowns -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="">
+                            <label class="form-check-label" for="minSelect">Minimum</label>
+                            <select class="form-select w-auto" id="minSelect">
+                                <option value="0">$0</option>
+                                <option value="10">$10</option>
+                                <option value="100">$100</option>
+                            </select>
+                        </div>
+                        <div class="mx-3 mt-3">-</div>
+                        <div class="">
+                            <label class="form-check-label" for="maxSelect">Maximum</label>
+                            <select class="form-select w-auto" id="maxSelect">
+                                <option value="0">$0</option>
+                                <option value="10">$10</option>
+                                <option value="100">$100</option>
+                                <option value="10000">$10000</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Apply Button -->
+                    <div class="mt-3 apply-button d-grid gap-2">
+                        <button type="button" class="btn btn-primary fw-bold apply-filter">Apply</button>
+                    </div>
+                </form>
             </div>
 
         </div>
-        <div class="col-md-7">
+        <!-- Dropdown 3 -->
 
-            <div class="d-flex justify-content-between flex-wrap">
-                <!-- Dropdown 1 -->
-                <div class="dropdown mb-3">
-                    <button class="btn btn-outline-light border-1 border-primary dropdown-toggle " type="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="selected-filter text-black  small">For Sale</span>
-                    </button>
-                    <div class="dropdown-menu p-3">
-                        <form>
-                            <!-- Radio Buttons -->
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="filterOptions1" id="filter1Option1"
-                                    value="Option 1" checked>
-                                <label class="form-check-label" for="filter1Option1">Option 1</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="filterOptions1" id="filter1Option2"
-                                    value="Option 2">
-                                <label class="form-check-label" for="filter1Option2">Option 2</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="filterOptions1" id="filter1Option3"
-                                    value="Option 3">
-                                <label class="form-check-label" for="filter1Option3">Option 3</label>
-                            </div>
-                            <!-- Apply Button -->
-                            <div class="mt-3 apply-button d-grid gap-2">
-                                <button type="button" class="btn btn-primary fw-bold apply-filter">Apply</button>
-                            </div>
-                        </form>
+        <div class="dropdown ms-1 d-md-block d-none">
+            <button class="btn btn-outline-light border-1 border text-black " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="selected-filter  small">Beds &amp; Baths</span>
+                <i class="fa fa-angle-down"></i>
+            </button>
+            <div class="dropdown-menu">
+                <form class="p-3">
+                    <div class="h6">Bedrooms</div>
+
+
+                    <div class="btn-group my-2" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                        <label class="btn btn-outline-light text-black" for="btnradio1">Any</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-light text-black" for="btnradio2">1+</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                        <label class="btn btn-outline-light text-black" for="btnradio3">2+</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+                        <label class="btn btn-outline-light text-black" for="btnradio4">3+</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+                        <label class="btn btn-outline-light text-black" for="btnradio5">4+</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off">
+                        <label class="btn btn-outline-light text-black" for="btnradio6">5+</label>
                     </div>
-                </div>
-
-                <!-- Dropdown 2 -->
-                <div class="dropdown mb-3">
-                    <button class="btn btn-outline-light border-1 border-primary dropdown-toggle " type="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="selected-filter text-black  small">Price</span>
-                    </button>
-                    <div class="dropdown-menu p-3">
-                        <form>
-                            <!-- Minimum and Maximum Dropdowns -->
-                            <div class="d-flex justify-content-evenly align-items-center">
-                                <div class="form-check">
-                                    <label class="form-check-label" for="minSelect">Minimum</label>
-                                    <select class="form-select" id="minSelect">
-                                        <option value="0">$0</option>
-                                        <option value="10">$10</option>
-                                        <option value="100">$100</option>
-                                    </select>
-                                </div>
-                                <div class="form-check mt-3">-</div>
-                                <div class="form-check">
-                                    <label class="form-check-label" for="maxSelect">Maximum</label>
-                                    <select class="form-select" id="maxSelect">
-                                        <option value="0">$0</option>
-                                        <option value="10">$10</option>
-                                        <option value="100">$100</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- Apply Button -->
-                            <div class="mt-3 apply-button d-grid gap-2">
-                                <button type="button" class="btn btn-primary fw-bold apply-filter">Apply</button>
-                            </div>
-                        </form>
+                    <div class="form-check my-2">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Use exact match
+                        </label>
                     </div>
-                </div>
-                <!-- Dropdown 3 -->
 
-                <div class="dropdown mb-3">
-                    <button class="btn btn-outline-light border-1 border-primary dropdown-toggle " type="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="selected-filter text-black  small">Beds &amp; Baths</span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <form class="p-3">
-                            <div class="h6">Bedrooms</div>
+                    <div class="h6">Bathrooms</div>
 
 
-                            <div class="btn-group my-2" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
-                                    checked>
-                                <label class="btn btn-outline-light text-black" for="btnradio1">Any</label>
+                    <div class="btn-group my-2" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="bathroom" id="bathroom1" autocomplete="off" checked>
+                        <label class="btn btn-outline-light text-black" for="bathroom1">Any</label>
 
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                                <label class="btn btn-outline-light text-black" for="btnradio2">1+</label>
+                        <input type="radio" class="btn-check" name="bathroom" id="bathroom2" autocomplete="off">
+                        <label class="btn btn-outline-light text-black" for="bathroom2">1+</label>
 
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                                <label class="btn btn-outline-light text-black" for="btnradio3">2+</label>
+                        <input type="radio" class="btn-check" name="bathroom" id="bathroom3" autocomplete="off">
+                        <label class="btn btn-outline-light text-black" for="bathroom3">1.5+</label>
 
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-                                <label class="btn btn-outline-light text-black" for="btnradio4">3+</label>
+                        <input type="radio" class="btn-check" name="bathroom" id="bathroom4" autocomplete="off">
+                        <label class="btn btn-outline-light text-black" for="bathroom4">2+</label>
 
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
-                                <label class="btn btn-outline-light text-black" for="btnradio5">4+</label>
+                        <input type="radio" class="btn-check" name="bathroom" id="bathroom5" autocomplete="off">
+                        <label class="btn btn-outline-light text-black" for="bathroom5">3+</label>
 
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off">
-                                <label class="btn btn-outline-light text-black" for="btnradio6">5+</label>
-                            </div>
-                            <div class="form-check my-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Use exact match
-                                </label>
-                            </div>
-
-                            <div class="h6">Bathrooms</div>
-
-
-                            <div class="btn-group my-2" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="bathroom" id="bathroom1" autocomplete="off"
-                                    checked>
-                                <label class="btn btn-outline-light text-black" for="bathroom1">Any</label>
-
-                                <input type="radio" class="btn-check" name="bathroom" id="bathroom2" autocomplete="off">
-                                <label class="btn btn-outline-light text-black" for="bathroom2">1+</label>
-
-                                <input type="radio" class="btn-check" name="bathroom" id="bathroom3" autocomplete="off">
-                                <label class="btn btn-outline-light text-black" for="bathroom3">1.5+</label>
-
-                                <input type="radio" class="btn-check" name="bathroom" id="bathroom4" autocomplete="off">
-                                <label class="btn btn-outline-light text-black" for="bathroom4">2+</label>
-
-                                <input type="radio" class="btn-check" name="bathroom" id="bathroom5" autocomplete="off">
-                                <label class="btn btn-outline-light text-black" for="bathroom5">3+</label>
-
-                                <input type="radio" class="btn-check" name="bathroom" id="bathroom6" autocomplete="off">
-                                <label class="btn btn-outline-light text-black" for="bathroom6">4+</label>
-                            </div>
-
-                            <!-- Apply Button -->
-                            <div class="mt-3 apply-button d-grid gap-2">
-                                <button type="button" class="btn btn-primary fw-bold apply-filter">Apply</button>
-                            </div>
-                        </form>
+                        <input type="radio" class="btn-check" name="bathroom" id="bathroom6" autocomplete="off">
+                        <label class="btn btn-outline-light text-black" for="bathroom6">4+</label>
                     </div>
-                </div>
 
-                <!-- Dropdown 4 -->
-
-                <div class="dropdown mb-3">
-                    <button class="btn btn-outline-light border-1 border-primary dropdown-toggle " type="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="selected-filter text-black  small">Home Type</span>
-                    </button>
-                    <div class="dropdown-menu p-3">
-                        <form>
-
-                            <div class="h6">Home Type</div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault2" checked>
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                    Deselect All
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="housetype1" checked>
-                                <label class="form-check-label" for="housetype1">
-                                    Houses
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="housetype2" checked>
-                                <label class="form-check-label" for="housetype2">
-                                    Townhomes
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="housetype3" checked>
-                                <label class="form-check-label" for="housetype3">
-                                    Multi-family
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="housetype4" checked>
-                                <label class="form-check-label" for="housetype4">
-                                    Condos/Co-ops
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="housetype5" checked>
-                                <label class="form-check-label" for="housetype5">
-                                    Lots/Lands
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="housetype6" checked>
-                                <label class="form-check-label" for="housetype6">
-                                    Apartment
-                                </label>
-                            </div>
-                            <!-- Apply Button -->
-                            <div class="mt-3 apply-button d-grid gap-2">
-                                <button type="button" class="btn btn-primary fw-bold apply-filter">Apply</button>
-                            </div>
-                        </form>
+                    <!-- Apply Button -->
+                    <div class="mt-3 apply-button d-grid gap-2">
+                        <button type="button" class="btn btn-primary fw-bold apply-filter">Apply</button>
                     </div>
-                </div>
-                <div class="dropdown mb-3">
-                    <button class="btn btn-outline-light border-1 border-primary dropdown-toggle " type="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="selected-filter text-black  small">More</span>
-                    </button>
-                    <div class="dropdown-menu p-3 w-100">
-                        <form>
-                            <label for="">Max HOA</label>
-                            <select class="form-select" aria-label="Max HOA">
-                                <option selected>Any</option>
-                                <option value="no HOA">No HOA fee</option>
-                                <option value="50">$50/month</option>
-                                <option value="2">$100/month</option>
-                            </select>
-                            <label for="" class="mt-2">Parking Spots</label>
-                            <select class="form-select" aria-label="Max HOA">
-                                <option selected>Any</option>
-                                <option value="1">1+</option>
-                                <option value="2">2+</option>
-                                <option value="3">3+/month</option>
-                            </select>
-
-                            <div class="form-check my-2">
-                                <input class="form-check-input" type="checkbox" value="" id="garage">
-                                <label class="form-check-label" for="garage">
-                                    must have garange
-                                </label>
-                            </div>
-
-
-                            <label for="" class="mt-2">Square Feet</label>
-                            <div class="d-flex ">
-                                <select class="form-select me-2" id="">
-                                    <option value="" selected>No Min</option>
-                                    <option value="500">500</option>
-                                    <option value="750">750</option>
-                                </select>
-                                <select class="form-select" id="">
-                                    <option value="" selected>No max</option>
-                                    <option value="">3500</option>
-                                    <option value="">4000</option>
-                                    <option value="">7000</option>
-                                </select>
-                            </div>
-
-                            <!-- Apply Button -->
-                            <div class="mt-3 apply-button d-grid gap-2">
-                                <button type="button" class="btn btn-primary fw-bold apply-filter">Apply</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="">
-
-                    <button class="btn btn-primary fw-bold">Save Search</button>
-                </div>
-
-
+                </form>
             </div>
+        </div>
 
+        <!-- Dropdown 4 -->
+
+        <div class="dropdown ms-1 d-md-block d-none">
+            <button class="btn btn-outline-light border-1 border text-black " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="selected-filter small">Home Type</span>
+                <i class="fa fa-angle-down"></i>
+            </button>
+            <div class="dropdown-menu p-3">
+                <form>
+
+                    <div class="h6">Home Type</div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            Deselect All
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="housetype1" checked>
+                        <label class="form-check-label" for="housetype1">
+                            Houses
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="housetype2" checked>
+                        <label class="form-check-label" for="housetype2">
+                            Townhomes
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="housetype3" checked>
+                        <label class="form-check-label" for="housetype3">
+                            Multi-family
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="housetype4" checked>
+                        <label class="form-check-label" for="housetype4">
+                            Condos/Co-ops
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="housetype5" checked>
+                        <label class="form-check-label" for="housetype5">
+                            Lots/Lands
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="housetype6" checked>
+                        <label class="form-check-label" for="housetype6">
+                            Apartment
+                        </label>
+                    </div>
+                    <!-- Apply Button -->
+                    <div class="mt-3 apply-button d-grid gap-2">
+                        <button type="button" class="btn btn-primary fw-bold apply-filter">Apply</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Dropdown 5 -->
+        <div class="dropdown mx-1">
+            <button class="btn btn-outline-light border-1 border text-black " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="selected-filter  small">More</span>
+                <i class="fa fa-angle-down"></i>
+            </button>
+            <div class="dropdown-menu p-3">
+                <form>
+                    <label for="">Max HOA</label>
+                    <select class="form-select" aria-label="Max HOA">
+                        <option selected>Any</option>
+                        <option value="no HOA">No HOA fee</option>
+                        <option value="50">$50/month</option>
+                        <option value="2">$100/month</option>
+                    </select>
+                    <label for="" class="mt-2">Parking Spots</label>
+                    <select class="form-select" aria-label="Max HOA">
+                        <option selected>Any</option>
+                        <option value="1">1+</option>
+                        <option value="2">2+</option>
+                        <option value="3">3+/month</option>
+                    </select>
+
+                    <div class="form-check my-2">
+                        <input class="form-check-input" type="checkbox" value="" id="garage">
+                        <label class="form-check-label" for="garage">
+                            must have garange
+                        </label>
+                    </div>
+
+
+                    <label for="" class="mt-2">Square Feet</label>
+                    <div class="d-flex ">
+                        <select class="form-select me-2 w-auto" id="">
+                            <option value="" selected>No Min</option>
+                            <option value="500">500</option>
+                            <option value="750">750</option>
+                        </select>
+                        <select class="form-select w-auto" id="">
+                            <option value="" selected>No max</option>
+                            <option value="">3500</option>
+                            <option value="">4000</option>
+                            <option value="">7000</option>
+                        </select>
+                    </div>
+
+                    <!-- Apply Button -->
+                    <div class="mt-3 apply-button d-grid gap-2">
+                        <button type="button" class="btn btn-primary fw-bold apply-filter">Apply</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="">
+
+            <button class="btn btn-primary fw-bold">Save Search</button>
         </div>
     </div>
 </div>
@@ -2799,12 +2741,17 @@
 <div class="container-fluid ">
     <div class="row ">
         <div class="col-md-5 ">
-            <iframe class="google_map"
+
+            {{-- <div class="zoom-message">Zoom in to see homes.</div> --}}
+            <div id="map" class="google_map"></div>
+
+            {{-- <iframe class="google_map"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d317716.6065035931!2d-0.43124885956926756!3d51.52860700576551!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C%20UK!5e0!3m2!1sen!2s!4v1735031784268!5m2!1sen!2s"
                 style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                referrerpolicy="no-referrer-when-downgrade"></iframe> --}}
         </div>
-        <div class="col-md-7">
+        <div class="col-md-7 scrollable">
+
             <div class="row mb-2">
                 <h6>Recently Sold Homes</h6>
                 <div class="d-flex justify-content-between">
@@ -2814,12 +2761,11 @@
                     <div>
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink"
-                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link " href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Sort: Search homes for you
+                                    <i class="fa fa-angle-down"></i>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-light"
-                                    aria-labelledby="navbarDarkDropdownMenuLink">
+                                <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
                                     <li><a class="dropdown-item" href="#">Price (Low to High)</a></li>
                                     <li><a class="dropdown-item" href="#">Price (High to Low)</a></li>
                                     <li><a class="dropdown-item" href="#">Homes for you</a></li>
@@ -2829,30 +2775,25 @@
                     </div>
                 </div>
             </div>
-            <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="row row-cols-1 row-cols-md-2 g-4 ">
                 <div class="col">
-                    <div class="card" role="button" data-bs-toggle="modal" data-bs-target="#saleModal">
+                    <div class="card" style="cursor: pointer" data-modal-id="saleModal">
                         <div class="card-img-top position-relative">
                             <!-- Badge -->
-                            <div
-                                class="z-3 position-absolute top-0 start-0 m-2 badge bg-secondary text-white px-3 py-1">
+                            <div class="z-3 position-absolute top-0 start-0 m-2 badge bg-secondary text-white px-3 py-1">
                                 Showcase
                             </div>
 
                             <!-- Heart Icon -->
                             <div class="z-3 position-absolute top-0 end-0 m-2">
-                                <i class="fa-regular fa-heart "></i>
+                                <i class="fa-regular fa-heart fs-3"></i>
                             </div>
 
-                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                            <div id="saleModalIndicators" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                        data-bs-slide-to="0" class="active" aria-current="true"
-                                        aria-label="Slide 1"></button>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                        data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                        data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                    <button type="button" data-bs-target="#saleModalIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#saleModalIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#saleModalIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                                 </div>
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
@@ -2865,13 +2806,11 @@
                                         <img src="{{ asset('web/img/h1.webp') }}" class="d-block w-100" alt="...">
                                     </div>
                                 </div>
-                                <button class="carousel-control-prev" type="button"
-                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#saleModalIndicators" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button"
-                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#saleModalIndicators" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -2880,7 +2819,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <h5 class="card-title">$500</h5>
-                                <a href="#"><i class="fas fa-ellipsis-h"></i> </a>
+                                <a href="#" onclick="event.stopPropagation();"><i class="fas fa-ellipsis-h"></i></a>
                             </div>
                             <p class="card-text small">
                                 4 bds | 3 ba | 2,652 sqft - House for sale 11310 Traverse Rd, Woodbury, MN 55129
@@ -2890,30 +2829,26 @@
                     </div>
 
 
+
                 </div>
-                <div class="col" role="button" data-bs-toggle="modal" data-bs-target="#rentModal">
-                    <div class="card">
+                <div class="col">
+                    <div class="card" style="cursor: pointer" data-modal-id="rentModal">
                         <div class="card-img-top position-relative">
                             <!-- Badge -->
-                            <div
-                                class="z-3 position-absolute top-0 start-0 m-2 badge bg-secondary text-white px-3 py-1">
+                            <div class="z-3 position-absolute top-0 start-0 m-2 badge bg-secondary text-white px-3 py-1">
                                 Showcase
                             </div>
 
                             <!-- Heart Icon -->
                             <div class="z-3 position-absolute top-0 end-0 m-2">
-                                <i class="fa-regular fa-heart "></i>
+                                <i class="fa-regular fa-heart fs-3"></i>
                             </div>
 
-                            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                            <div id="rentModalIndicators" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                        data-bs-slide-to="0" class="active" aria-current="true"
-                                        aria-label="Slide 1"></button>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                        data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                        data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                    <button type="button" data-bs-target="#rentModalIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#rentModalIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#rentModalIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                                 </div>
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
@@ -2926,13 +2861,11 @@
                                         <img src="{{ asset('web/img/h1.webp') }}" class="d-block w-100" alt="...">
                                     </div>
                                 </div>
-                                <button class="carousel-control-prev" type="button"
-                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#rentModalIndicators" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button"
-                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#rentModalIndicators" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -2956,25 +2889,20 @@
                     <div class="card">
                         <div class="card-img-top position-relative">
                             <!-- Badge -->
-                            <div
-                                class="z-3 position-absolute top-0 start-0 m-2 badge bg-secondary text-white px-3 py-1">
+                            <div class="z-3 position-absolute top-0 start-0 m-2 badge bg-secondary text-white px-3 py-1">
                                 Showcase
                             </div>
 
                             <!-- Heart Icon -->
                             <div class="z-3 position-absolute top-0 end-0 m-2">
-                                <i class="fa-regular fa-heart "></i>
+                                <i class="fa-regular fa-heart fs-3"></i>
                             </div>
 
                             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                        data-bs-slide-to="0" class="active" aria-current="true"
-                                        aria-label="Slide 1"></button>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                        data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                    <button type="button" data-bs-target="#carouselExampleIndicators"
-                                        data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                                 </div>
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
@@ -2987,13 +2915,11 @@
                                         <img src="{{ asset('web/img/h1.webp') }}" class="d-block w-100" alt="...">
                                     </div>
                                 </div>
-                                <button class="carousel-control-prev" type="button"
-                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button"
-                                    data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -3028,11 +2954,281 @@
     </div>
 </div>
 @endsection
-@push('styles')
-@endpush
+
 
 
 @push('scripts')
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7ks8X2YnLcxTuEC3qydL2adzA0NYbl6c&libraries=geometry,drawing">
+</script>
+<script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
+<script>
+    let map, drawingManager;
+    const properties = [{
+            coords: {
+                lat: 25.7617
+                , lng: -80.1918
+            }, // Miami
+            title: "Luxury Apartment"
+            , price: "$500,000"
+            , beds: 3
+            , baths: 2
+            , sqft: "2,000 sqft"
+            , address: "123 Miami St, Miami, FL"
+            , realtor: "Coldwell Banker Realty"
+            , images: [
+                "{{ asset('web/img/h1.webp') }}"
+                , "{{ asset('web/img/h2.webp') }}"
+                , "{{ asset('web/img/h1.webp') }}"
+            ]
+        }
+        , {
+            coords: {
+                lat: 28.5383
+                , lng: -81.3792
+            }, // Orlando
+            title: "Cozy Condo"
+            , price: "$400,000"
+            , beds: 2
+            , baths: 1
+            , sqft: "1,500 sqft"
+            , address: "456 Orlando Ave, Orlando, FL"
+            , realtor: "Coldwell Banker Realty"
+            , images: [
+                "{{ asset('web/img/h1.webp') }}"
+                , "{{ asset('web/img/h2.webp') }}"
+                , "{{ asset('web/img/h1.webp') }}"
+            ]
+        },
+        // Add more properties as needed
+    ];
+
+    function initMap() {
+        // Initialize the map
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: {
+                lat: 27.9944
+                , lng: -81.7603
+            }, // Florida
+            zoom: 6
+            , mapTypeId: "roadmap"
+            , fullscreenControl: false
+        });
+
+        // Add markers and popups
+        properties.forEach((property, index) => {
+            const marker = new google.maps.Marker({
+                position: property.coords
+                , icon: createCustomMarker(property.price)
+                , map: map
+            });
+
+            const popupContent = `
+                    <div class="card">
+                        <div class="card-img-top position-relative">
+                            <div class="z-3 position-absolute top-0 start-0 m-2 badge bg-secondary text-white px-3 py-1">
+                                Showcase
+                            </div>
+                            <div class="z-3 position-absolute top-0 end-0 m-2">
+                                <i class="fa-regular fa-heart fs-3"></i>
+                            </div>
+                            <div id="carouselPopupIndicators${index}" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    ${property.images.map((_, i) => `
+                                                        <button type="button" data-bs-target="#carouselPopupIndicators${index}" data-bs-slide-to="${i}" class="${i === 0 ? 'active' : ''}" aria-label="Slide ${i + 1}"></button>
+                                                    `).join('')}
+                                </div>
+                                <div class="carousel-inner">
+                                    ${property.images.map((img, i) => `
+                                                        <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                                                            <img src="${img}" class="d-block w-100" alt="${property.title}">
+                                                        </div>
+                                                    `).join('')}
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselPopupIndicators${index}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselPopupIndicators${index}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">${property.price}</h5>
+                                <a href="#" onclick="event.stopPropagation();"><i class="fas fa-ellipsis-h"></i></a>
+                            </div>
+                            <p class="card-text small">
+                                ${property.beds} bds | ${property.baths} ba | ${property.sqft} - ${property.title}<br>
+                                ${property.address}<br>
+                                <small class="small">${property.realtor}</small>
+                            </p>
+                        </div>
+                    </div>
+                `;
+            const infoWindow = new google.maps.InfoWindow({
+                content: popupContent
+            });
+
+            marker.addListener("click", () => {
+                infoWindow.open(map, marker);
+            });
+        });
+
+        // Add drawing tools
+        drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: null
+            , drawingControl: false
+        });
+        drawingManager.setMap(map);
+
+        // Add custom controls
+        addMapOptionsButton();
+        addDrawToggleButton();
+    }
+
+    function createCustomMarker(price) {
+        return {
+            url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+            , scaledSize: new google.maps.Size(40, 40)
+        , };
+    }
+
+    function addMapOptionsButton() {
+        // Create the button
+        const mapOptionsButton = document.createElement("button");
+        mapOptionsButton.innerHTML = `Map <i class="fa fa-angle-down"></i>`;
+        mapOptionsButton.classList.add("btn", "btn-light","px-3","map-options-button");
+        mapOptionsButton.style.position = "absolute";
+        mapOptionsButton.style.bottom = "5%";
+        mapOptionsButton.style.right = "15%";
+        mapOptionsButton.style.zIndex = "1";
+
+        // Create the menu
+        const mapOptionsMenu = document.createElement("div");
+        mapOptionsMenu.classList.add("map-options-menu", "d-none", "bg-white", "p-2", "rounded");
+        mapOptionsMenu.style.position = "absolute";
+        mapOptionsMenu.style.bottom = "calc(5% + 50px)"; // Position menu above the button
+        mapOptionsMenu.style.right = "15%";
+        mapOptionsMenu.style.zIndex = "1000";
+        mapOptionsMenu.style.width = "300px"; // Adjust width as needed
+        mapOptionsMenu.innerHTML = `
+        <div class="card border-0 w-100">
+            <div class="card-body">
+                <h5 class="card-title">Map Options</h5>
+                <form>
+                    <!-- Map Options -->
+                    <div class="mb-3">
+                        <label class="form-check">
+                            <input class="form-check-input" type="radio" name="mapType" value="automatic" checked>
+                            <span class="form-check-label">Automatic</span>
+                        </label>
+                        <label class="form-check">
+                            <input class="form-check-input" type="radio" name="mapType" value="satellite">
+                            <span class="form-check-label">Satellite</span>
+                        </label>
+                        <label class="form-check">
+                            <input class="form-check-input" type="radio" name="mapType" value="streetview">
+                            <span class="form-check-label">Street view</span>
+                        </label>
+                    </div>
+                    <!-- Climate Risks -->
+                    <h6 class="mt-4">Climate Risks</h6>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="climateRisk" value="none" checked>
+                                <span class="form-check-label">None selected</span>
+                            </label>
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="climateRisk" value="flood">
+                                <span class="form-check-label">Flood</span>
+                            </label>
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="climateRisk" value="fire">
+                                <span class="form-check-label">Fire</span>
+                            </label>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="climateRisk" value="wind">
+                                <span class="form-check-label">Wind</span>
+                            </label>
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="climateRisk" value="air">
+                                <span class="form-check-label">Air</span>
+                            </label>
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="climateRisk" value="heat">
+                                <span class="form-check-label">Heat</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>`;
+
+        // Toggle menu visibility on button click
+        mapOptionsButton.addEventListener("click", () => {
+            mapOptionsMenu.classList.toggle("d-none");
+        });
+
+        // Update map type on menu change
+        mapOptionsMenu.addEventListener("change", (event) => {
+            if (event.target.name === "mapType") {
+                map.setMapTypeId(event.target.value);
+            }
+        });
+
+        // Append button and menu directly to the map container
+        const mapContainer = map.getDiv();
+        mapContainer.appendChild(mapOptionsButton);
+        mapContainer.appendChild(mapOptionsMenu);
+    }
+
+
+
+
+
+    function addDrawToggleButton() {
+    // Create the button
+    const drawToggleButton = document.createElement("button");
+    drawToggleButton.textContent = "Draw";
+    drawToggleButton.classList.add("btn", "btn-primary", "draw-toggle-button");
+
+    // Toggle drawing mode on click
+    drawToggleButton.addEventListener("click", () => {
+        const currentMode = drawingManager.getDrawingMode();
+        drawingManager.setDrawingMode(currentMode ? null : "polygon");
+    });
+
+    // Create a container for the button
+    const controlDiv = document.createElement("div");
+    controlDiv.style.position = "absolute";
+    controlDiv.style.top = "5%";
+    controlDiv.style.right = "5%";
+    controlDiv.style.zIndex = "1"; // Ensure the button is above the map
+    controlDiv.appendChild(drawToggleButton);
+
+    // Append the controlDiv directly to the map's container
+    const mapContainer = map.getDiv();
+    mapContainer.appendChild(controlDiv);
+}
+
+
+    window.onload = initMap;
+
+</script>
+
+
+
+
+
+
+
 <script>
     $('.dropdown').each(function() {
         const dropdown = $(this);
@@ -3090,19 +3286,39 @@
 
 
     let myCarousel = document.querySelectorAll('.featureContainer .carousel .carousel-item');
-myCarousel.forEach((el) => {
-  const minPerSlide = 4
-  let next = el.nextElementSibling
-  for (var i=1; i<minPerSlide; i++) {
-    if (!next) {
-      // wrap carousel by using first child
-      next = myCarousel[0]
-    }
-    let cloneChild = next.cloneNode(true)
-    el.appendChild(cloneChild.children[0])
-    next = next.nextElementSibling
-  }
-})
+    myCarousel.forEach((el) => {
+        const minPerSlide = 4
+        let next = el.nextElementSibling
+        for (var i = 1; i < minPerSlide; i++) {
+            if (!next) {
+                // wrap carousel by using first child
+                next = myCarousel[0]
+            }
+            let cloneChild = next.cloneNode(true)
+            el.appendChild(cloneChild.children[0])
+            next = next.nextElementSibling
+        }
+    });
+
+    $(document).on('click', '.card', function(event) {
+        // Exclude certain elements from triggering the popup
+        if (!$(event.target).is(
+                'a, button, i, .indicator, .carousel-control-prev-icon, .carousel-control-next-icon')) {
+            var modalId = $(this).data('modal-id');
+
+            // Show the modal using the fetched modal ID
+            $('#' + modalId).modal('show');
+        }
+    });
+
+
+
+    $("#toggle_map_button,#toggle_property_listing_button").click(function(e) {
+        e.preventDefault(); // Prevent default action
+        $(".google_map").toggle(); // Toggle visibility of the map
+        $(".scrollable").toggle(); // Toggle visibility of the listing
+        $("#toggle_map_button,#toggle_property_listing_button,#toggle_sort_button").toggleClass('d-none');
+    });
 
 </script>
 @endpush
