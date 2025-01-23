@@ -11,4 +11,8 @@ class UserController extends Controller
     {
         return view('web.user.profile');
     }
+    public function chat()
+    {
+        return view('web.user.chat');
+    }
 }
