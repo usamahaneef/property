@@ -116,8 +116,8 @@
 
     @media (max-width: 767px) {
         .property-popup {
-            width: 9rem;
-            height: 10rem;
+            width: 10rem;
+            height: auto;
         }
 
         #map {
@@ -3132,169 +3132,180 @@ alt="...">
 </script>
 <script>
     let map, drawingManager;
-    const properties = [{
-            coords: {
-                lat: 25.7617
-                , lng: -80.1918
-            }, // Miami
-            title: "Luxury Apartment"
-            , price: "$500,000"
-            , beds: 3
-            , baths: 2
-            , sqft: "2,000 sqft"
-            , address: "123 Miami St, Miami, FL"
-            , realtor: "Coldwell Banker Realty"
-            , images: [
+
+    // Property data
+    const properties = [
+        {
+            coords: { lat: 25.7617, lng: -80.1918 }, // Miami
+            title: "Luxury Apartment",
+            price: "$500,000",
+            beds: 3,
+            baths: 2,
+            sqft: "2,000 sqft",
+            address: "123 Miami St, Miami, FL",
+            realtor: "Coldwell Banker Realty",
+            images: [
+                "{{ asset('web/img/h1.webp') }}",
+                "{{ asset('web/img/h2.webp') }}",
                 "{{ asset('web/img/h1.webp') }}"
-                , "{{ asset('web/img/h2.webp') }}"
-                , "{{ asset('web/img/h1.webp') }}"
-            ]
-        }
-        , {
-            coords: {
-                lat: 28.5383
-                , lng: -81.3792
-            }, // Orlando
-            title: "Cozy Condo"
-            , price: "$400,000"
-            , beds: 2
-            , baths: 1
-            , sqft: "1,500 sqft"
-            , address: "456 Orlando Ave, Orlando, FL"
-            , realtor: "Coldwell Banker Realty"
-            , images: [
-                "{{ asset('web/img/h1.webp') }}"
-                , "{{ asset('web/img/h2.webp') }}"
-                , "{{ asset('web/img/h1.webp') }}"
             ]
         },
-        // Add more properties as needed
+        {
+            coords: { lat: 28.5383, lng: -81.3792 }, // Orlando
+            title: "Cozy Condo",
+            price: "$400,000",
+            beds: 2,
+            baths: 1,
+            sqft: "1,500 sqft",
+            address: "456 Orlando Ave, Orlando, FL",
+            realtor: "Coldwell Banker Realty",
+            images: [
+                "{{ asset('web/img/h1.webp') }}",
+                "{{ asset('web/img/h2.webp') }}",
+                "{{ asset('web/img/h1.webp') }}"
+            ]
+        },
     ];
 
     function initMap() {
         // Initialize the map
         map = new google.maps.Map(document.getElementById("map"), {
-            center: {
-                lat: 27.9944
-                , lng: -81.7603
-            }, // Florida
-            zoom: 6
-            , mapTypeId: "roadmap"
-            , fullscreenControl: false
-            , zoomControl: window.innerWidth > 768,
-
+            center: { lat: 27.9944, lng: -81.7603 }, // Florida
+            zoom: 6,
+            mapTypeId: "roadmap",
+            fullscreenControl: false,
+            zoomControl: window.innerWidth > 768
         });
 
-        // Add markers and popups
-        properties.forEach((property, index) => {
-            const marker = new google.maps.Marker({
-                position: property.coords
-                , icon: createCustomMarker(property.price)
-                , map: map
-            });
-
-
-            const popupContent = `
-                     <div class="card property-popup" >
-                        <div class="card-img-top position-relative">
-                            <!-- Badge -->
-                            <div class="z-3 position-absolute top-0 start-0 m-2 badge bg-secondary text-white px-3 py-1">
-                                Showcase
-                            </div>
-
-                            <!-- Heart Icon -->
-                            <div class="z-3 position-absolute top-0 end-0 m-2">
-                                <i class="fa-regular fa-heart fs-3"></i>
-                            </div>
-
-                            <div id="${index}" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-indicators">
-                                   ${property.images.map((_, i) => `
-                                                        <button type="button" data-bs-target="#${index}" data-bs-slide-to="${i}" class="${i === 0 ? 'active' : ''}" aria-label="Slide ${i + 1}"></button>
-                                                `).join('')}
-                                </div>
-                            <div class="carousel-inner">
-                                  ${property.images.map((img, i) => `
-                                                        <div class="carousel-item ${i === 0 ? 'active' : ''}">
-                                                            <img src="${img}" class="d-block w-100" alt="${property.title}">
-                                                        </div>
-                                                    `).join('')}
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#${index}" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#${index}" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body p-1">
-                            <div class="d-flex justify-content-between mb-0">
-                                 <h5 class="card-title">${property.price}</h5>
-                                 <a href="#" onclick="event.stopPropagation();"><i class="fas fa-ellipsis-h"></i></a>
-                             </div>
-                             <p class="card-text small">
-                                 ${property.beds} bds | ${property.baths} ba | ${property.sqft} - ${property.title}
-                                 ${property.address}
-                             </p>
-                        </div>
-                    </div>
-                `;
-            const infoWindow = new google.maps.InfoWindow({
-                content: popupContent
-                , disableAutoPan: true, // Prevent auto-panning when the popup opens
-                
-            });
-
-            // Apply custom styles to the InfoWindow
-            google.maps.event.addListener(infoWindow, "domready", () => {
-                // Remove default close button
-                const closeButton = document.querySelector(".gm-ui-hover-effect");
-                if (closeButton) {
-                    closeButton.style.display = "none";
-                }
-
-                // Ensure no overflow issues with the content
-                const iwOuter = document.querySelector(".gm-style-iw");
-                if (iwOuter) {
-                    iwOuter.style.overflow = "visible";
-                    iwOuter.style.width = "auto";
-                    iwOuter.style.maxWidth = "none";
-                }
-            });
-
-
-
-            // Close the InfoWindow when clicking outside
-            google.maps.event.addListener(map, 'click', () => {
-                infoWindow.close();
-            });
-
-
-            marker.addListener("click", () => {
-                infoWindow.open(map, marker);
-            });
-        });
+        // Add markers and InfoWindows
+        addPropertyMarkers();
 
         // Add drawing tools
-        drawingManager = new google.maps.drawing.DrawingManager({
-            drawingMode: null
-            , drawingControl: false
-        });
-        drawingManager.setMap(map);
+        initDrawingTools();
 
-        // Add custom controls
+        // Add custom map controls
         addMapOptionsButton();
         addDrawToggleButton();
     }
 
-    function createCustomMarker(price) {
+    function addPropertyMarkers() {
+        properties.forEach((property, index) => {
+            const marker = new google.maps.Marker({
+                position: property.coords,
+                icon: createCustomMarkerIcon(property.price),
+                map: map,
+                title: 'Click to see details'
+            });
+
+            const popupContent = createPopupContent(property, index);
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: popupContent,
+                disableAutoPan: true
+            });
+
+            // Customize the InfoWindow styles
+            google.maps.event.addListener(infoWindow, "domready", () => {
+                customizeInfoWindow();
+            });
+
+            // Close the InfoWindow when clicking outside
+            google.maps.event.addListener(map, "click", () => {
+                infoWindow.close();
+            });
+
+            // Open custom popup on marker click
+            marker.addListener("click", () => {
+                // Custom popup positioning
+                const popupDiv = document.createElement('div');
+                popupDiv.innerHTML = popupContent;
+
+                // Add custom styles to position at the bottom-center
+                popupDiv.classList.add('custom-popup');
+                popupDiv.style.position = 'absolute';
+                popupDiv.style.bottom = '5%';
+                popupDiv.style.left = '40%';
+                popupDiv.style.transform = 'translateX(-50%)';
+                popupDiv.style.zIndex = '1';
+                popupDiv.style.height = 'auto';
+
+                const mapDiv = map.getDiv();
+                mapDiv.appendChild(popupDiv);
+
+                // Close the popup if clicked outside
+                google.maps.event.addListener(map, 'click', () => {
+                    popupDiv.remove();
+                });
+            });
+        });
+    }
+
+    function createCustomMarkerIcon(price) {
         return {
-            url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
-            , scaledSize: new google.maps.Size(40, 40)
-        , };
+            url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
+            scaledSize: new google.maps.Size(40, 40)
+        };
+    }
+
+    function createPopupContent(property, index) {
+        return `
+            <div class="card property-popup">
+                <div class="card-img-top position-relative">
+                    <div class="z-3 position-absolute top-0 start-0 m-2 badge bg-secondary text-white px-3 py-1">Showcase</div>
+                    <div class="z-3 position-absolute top-0 end-0 m-2"><i class="fa-regular fa-heart fs-3"></i></div>
+                    <div id="carousel-${index}" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            ${property.images.map((_, i) => `
+                                <button type="button" data-bs-target="#carousel-${index}" data-bs-slide-to="${i}" class="${i === 0 ? 'active' : ''}" aria-label="Slide ${i + 1}"></button>
+                            `).join('')}
+                        </div>
+                        <div class="carousel-inner">
+                            ${property.images.map((img, i) => `
+                                <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                                    <img src="${img}" class="d-block w-100" alt="${property.title}">
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${index}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-${index}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-1">
+                    <div class="d-flex justify-content-between mb-0">
+                        <h5 class="card-title">${property.price}</h5>
+                        <a href="#" onclick="event.stopPropagation();"><i class="fas fa-ellipsis-h"></i></a>
+                    </div>
+                    <p class="card-text small">
+                        ${property.beds} bds | ${property.baths} ba | ${property.sqft}<br>${property.address}
+                    </p>
+                </div>
+            </div>
+        `;
+    }
+
+    function customizeInfoWindow() {
+        const closeButton = document.querySelector(".gm-ui-hover-effect");
+        if (closeButton) closeButton.style.display = "none";
+        const iwOuter = document.querySelector(".gm-style-iw");
+        if (iwOuter) {
+            iwOuter.style.overflow = "visible";
+            iwOuter.style.width = "auto";
+            iwOuter.style.maxWidth = "none";
+        }
+    }
+
+    function initDrawingTools() {
+        drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: null,
+            drawingControl: false
+        });
+        drawingManager.setMap(map);
     }
 
     function addMapOptionsButton() {
@@ -3405,7 +3416,6 @@ alt="...">
         mapContainer.appendChild(mapOptionsMenu);
     }
 
-
     function addDrawToggleButton() {
         // Create the button
         const drawToggleButton = document.createElement("button");
@@ -3431,10 +3441,11 @@ alt="...">
         mapContainer.appendChild(controlDiv);
     }
 
-
     window.onload = initMap;
-
 </script>
+
+
+
 
 
 
