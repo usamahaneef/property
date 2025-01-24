@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>property</title>
+    <link rel="icon" type="image/png" href="{{ asset('web/img/favicon.png') }}">
+    <title>{{ env('APP_NAME') }}</title>
     <link rel="stylesheet" href="{{ asset('web/bootstrap/css/bootstrap.min.css') }}">
     <style>
         .form-floating-custom {
@@ -62,7 +63,7 @@
         <div class="row">
             <div class="col-md-4 mt-md-5 px-md-5 ">
                 <div class="">
-                    <img src="{{ asset('web/img/z-logo.svg') }}" class="img-fluid" alt="">
+                    <img src="{{ asset('web/img/z-logo.png') }}" width="100" alt="">
                     <div class="mt-4">
                         <h5 class="fw-bold">Sign in</h5>
                     </div>
@@ -78,7 +79,8 @@
                         </div>
                     </form>
 
-                    <div class="mt-3">New to Zillow? <a href="#" class="fw-bold text-decoration-none">Sign
+                    <div class="mt-3">New to {{ env('APP_NAME') }}? <a href="{{ route('user.register') }}"
+                            class="fw-bold text-decoration-none">Sign
                             up</a></div>
 
                     <div class="divider d-flex align-items-center my-4">
@@ -86,14 +88,21 @@
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button class="btn btn-outline-light py-2 text-normal text-black small border text-start" type="submit"><img class="pe-3" src="{{ asset('web/img/google.png') }}" height="30" alt="">Continue with Google</button>
-                        <button class="btn btn-outline-light py-2 text-normal text-black small border text-start" type="submit"><img class="pe-3" src="{{ asset('web/img/apple.png') }}" height="30" alt="">Continue with Apple</button>
-                        <button class="btn btn-outline-light py-2 text-normal text-black small border text-start" type="submit"><img class="pe-3" src="{{ asset('web/img/fb.png') }}" height="30" alt="">Continue with Facebook</button>
+                        <button class="btn btn-outline-light py-2 text-normal text-black small border text-start"
+                            type="submit"><img class="pe-3" src="{{ asset('web/img/google.png') }}" height="30"
+                                alt="">Continue with Google</button>
+                        <button class="btn btn-outline-light py-2 text-normal text-black small border text-start"
+                            type="submit"><img class="pe-3" src="{{ asset('web/img/apple.png') }}" height="30"
+                                alt="">Continue with Apple</button>
+                        {{-- <button class="btn btn-outline-light py-2 text-normal text-black small border text-start"
+                            type="submit"><img class="pe-3" src="{{ asset('web/img/fb.png') }}" height="30"
+                                alt="">Continue with Facebook</button> --}}
                     </div>
                     <div>
-                        <small  class="fw-small">By submitting, I accept Zillow's <a href="#" class="fw-bold text-decoration-none">terms of use</a></small>
+                        <small class="fw-small">By submitting, I accept {{ env('APP_NAME') }}'s <a href="#"
+                                class="fw-bold text-decoration-none">terms of use</a></small>
                     </div>
-                    
+
 
                 </div>
             </div>
