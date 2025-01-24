@@ -92,10 +92,34 @@
                     @endif
                     <li class="nav-header">Manage Panel</li>
                     <li class="nav-item">
+                        <a href="{{route('admin.member')}}" class="nav-link {{$menu_active == 'member' ? 'active' : ''}} text-white">
+                            <i class="nav-icon fas fa-user-shield"></i>
+                            <p>
+                                Members
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{route('admin.property')}}" class="nav-link {{$menu_active == 'property' ? 'active' : ''}} text-white">
                             <i class="nav-icon fas fa-building"></i>
                             <p>
                                 Properties
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('admin.chat')}}" class="nav-link {{$menu_active == 'chat' ? 'active' : ''}} text-white">
+                            <i class="nav-icon fas fa-comments"></i>
+                            <p>
+                                Chat
+                            </p>
+                        </a>
+                    </li>                    
+                    <li class="nav-item">
+                        <a href="{{route('admin.support')}}" class="nav-link {{$menu_active == 'support' ? 'active' : ''}} text-white">
+                            <i class="nav-icon fas fa-question-circle"></i>
+                            <p>
+                                Support
                             </p>
                         </a>
                     </li>

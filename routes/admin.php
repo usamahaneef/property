@@ -67,6 +67,16 @@ Route::name('admin.')->group(
                     // Route::post('/', [App\Http\Controllers\Admin\General\RoleController::class, 'updateRolePermissions']);
                 });
             });
+            /*
+             Member Routes
+            */
+            Route::get('/admin/member', [\App\Http\Controllers\Admin\MemberController::class, 'index'])->name('member');
+            Route::get('/admin/member/create', [\App\Http\Controllers\Admin\MemberController::class, 'create'])->name('member.create');
+            Route::post('/admin/member/create', [\App\Http\Controllers\Admin\MemberController::class, 'store'])->name('member.create');
+            Route::get('/admin/member/{member}/details', [\App\Http\Controllers\Admin\MemberController::class, 'show'])->name('member.details');
+            Route::get('/admin/member/{member}/edit', [\App\Http\Controllers\Admin\MemberController::class, 'edit'])->name('member.edit');
+            Route::post('/admin/member/{member}/edit', [\App\Http\Controllers\Admin\MemberController::class, 'update'])->name('member.edit');
+            Route::delete('/admin/member/{member}/delete', [\App\Http\Controllers\Admin\MemberController::class, 'destroy'])->name('member.delete');
             /**
              * Admin property Routes
              */
@@ -77,8 +87,26 @@ Route::name('admin.')->group(
             Route::get('/admin/property/{property}/edit', [\App\Http\Controllers\Admin\PropertyController::class, 'edit'])->name('property.edit');
             Route::post('/admin/property/{property}/edit', [\App\Http\Controllers\Admin\PropertyController::class, 'update'])->name('property.edit');
             Route::delete('/admin/property/{property}/delete', [\App\Http\Controllers\Admin\PropertyController::class, 'destroy'])->name('property.delete');
-            
-
+            /*
+             Chat Routes
+            */
+            Route::get('/admin/chat', [\App\Http\Controllers\Admin\ChatController::class, 'index'])->name('chat');
+            Route::get('/admin/chat/create', [\App\Http\Controllers\Admin\ChatController::class, 'create'])->name('chat.create');
+            Route::post('/admin/chat/create', [\App\Http\Controllers\Admin\ChatController::class, 'store'])->name('chat.create');
+            Route::get('/admin/chat/{chat}/details', [\App\Http\Controllers\Admin\ChatController::class, 'show'])->name('chat.details');
+            Route::get('/admin/chat/{chat}/edit', [\App\Http\Controllers\Admin\ChatController::class, 'edit'])->name('chat.edit');
+            Route::post('/admin/chat/{chat}/edit', [\App\Http\Controllers\Admin\ChatController::class, 'update'])->name('chat.edit');
+            Route::delete('/admin/chat/{chat}/delete', [\App\Http\Controllers\Admin\ChatController::class, 'destroy'])->name('chat.delete');
+            /*
+             support Routes
+            */
+            Route::get('/admin/support', [\App\Http\Controllers\Admin\SupportController::class, 'index'])->name('support');
+            Route::get('/admin/support/create', [\App\Http\Controllers\Admin\SupportController::class, 'create'])->name('support.create');
+            Route::post('/admin/support/create', [\App\Http\Controllers\Admin\SupportController::class, 'store'])->name('support.create');
+            Route::get('/admin/support/{support}/details', [\App\Http\Controllers\Admin\SupportController::class, 'show'])->name('support.details');
+            Route::get('/admin/support/{support}/edit', [\App\Http\Controllers\Admin\SupportController::class, 'edit'])->name('support.edit');
+            Route::post('/admin/support/{support}/edit', [\App\Http\Controllers\Admin\SupportController::class, 'update'])->name('support.edit');
+            Route::delete('/admin/support/{support}/delete', [\App\Http\Controllers\Admin\SupportController::class, 'destroy'])->name('support.delete');
             // setting
             Route::get('/admin/setting', [\App\Http\Controllers\Admin\SettingController::class,'index'])->name('setting');
             Route::post('/admin/setting/update', [\App\Http\Controllers\Admin\SettingController::class,'update'])->name('setting-update');
