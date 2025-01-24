@@ -32,7 +32,7 @@
                 <div class="mb-3">
                     <input type="password" name="password" class="form-control" id="password" placeholder="Create password"   autocomplete="new-password"  required>
                 </div>
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <select name="" id="" class="form-select">
                         <option value="">Real Estate Agent/Broker</option>
                         <option value="">Mortgage Lender</option>
@@ -44,7 +44,7 @@
                         <option value="">Property Manager</option>
                         <option value="">Other Real Esate Professional</option>
                     </select>
-                </div>
+                </div> --}}
                 <div class="row mb-3">
                     <div class="col">
                         <input type="text" class="form-control" id="first-name" placeholder="First Name" required>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                
-                <div class="row">
+                <div class="row align-items-center">
                     <div class="col">
                         <button type="submit" class="btn btn-primary w-100">Sign Up</button>
                     </div>
