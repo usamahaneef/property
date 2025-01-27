@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Admin\Chat as AdminChat;
+use App\Models\Chat as ModelsChat;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -33,7 +33,7 @@ class Chat extends Component
 
     public function render()
     {
-        $chats = AdminChat::query();
+        $chats = ModelsChat::query();
         if ($this->search) {
             $chats->where(function ($query) {
                 $query->where('id', 'like', '%' . $this->search . '%')

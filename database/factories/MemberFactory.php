@@ -2,15 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\University;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class UserFactory extends Factory
+class MemberFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -25,26 +22,14 @@ class UserFactory extends Factory
             'phone' => $this->faker->unique()->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password123'), // Or use Hash::make() for better security
             'gender' => $this->faker->randomElement(['male', 'female']),
-            'dob' => $this->faker->date,
+            'dob' => $this->faker->date(),
             'api_token' => Str::random(60),
-            'password_recovery_token' => null,
-            'bio' => $this->faker->text,
-            'status' => $this->faker->numberBetween(0 ,1),
+            'password_recovery_token' => $this->faker->numberBetween(100000, 999999),
+            'bio' => $this->faker->words(8, true),
+            'status' => $this->faker->boolean,
             'remember_token' => Str::random(10),
-            'created_at' => now(),
-            'updated_at' => now(),
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
     }
 }

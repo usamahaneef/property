@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Admin;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Support extends Model
+class Chat extends Model
 {
     use HasFactory;
 }

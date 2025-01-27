@@ -87,11 +87,11 @@
                                     <td>{{ $support->title}}</td>
                                     <td>{{ $support->description}}</td>
                                     <td>
-                                        {{-- <a href="{{ route('admin.support.invoice', $support) }}" class="btn btn-outline-info btn-xs">
-                                            <i class="fas fa-receipt"></i> Invoice
+                                        <a href="" class="btn btn-outline-info btn-xs">
+                                            <i class="fas fa-receipt"></i> Details
                                         </a>
 
-                                        <a href="{{ route('admin.support.edit', $support) }}" class="btn btn-primary btn-xs">
+                                        {{-- <a href="{{ route('admin.support.edit', $support) }}" class="btn btn-primary btn-xs">
                                             <i class="fas fa-edit"></i> Edit
                                         </a> --}}
                                         

@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Admin\Member as AdminMember;
+use App\Models\Member as ModelsMember;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -33,7 +33,7 @@ class Member extends Component
 
     public function render()
     {
-        $members = AdminMember::query();
+        $members = ModelsMember::query();
         if ($this->search) {
             $members->where(function ($query) {
                 $query->where('id', 'like', '%' . $this->search . '%')

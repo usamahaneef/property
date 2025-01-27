@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Admin\Support as AdminSupport;
+use App\Models\Support as ModelsSupport;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -33,7 +33,7 @@ class Support extends Component
 
     public function render()
     {
-        $supports = AdminSupport::query();
+        $supports = ModelsSupport::query();
         if ($this->search) {
             $supports->where(function ($query) {
                 $query->where('id', 'like', '%' . $this->search . '%')

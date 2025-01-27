@@ -20,7 +20,7 @@
             <div class="card-header">
                 <h3 class="card-title"><i class="fas fa-user-shield"></i> Members</h3>
                 {{-- <div class="card-tools">
-                    <a href="{{ route('admin.booking.create')}}" class="btn btn-sm btn-info"><i class="fas fa-plus-circle"></i> Create Booking</a>
+                    <a href="{{ route('admin.member.create')}}" class="btn btn-sm btn-info"><i class="fas fa-plus-circle"></i> Create Booking</a>
                 </div> --}}
             </div>
             <div class="card-body">
@@ -74,6 +74,7 @@
                         <thead class="table-borderless">
                             <tr>
                                 <th>Sr</th>
+                                <th>Profile</th>
                                 <th>Name</th>
                                 <th>Gender</th>
                                 <th>Bio</th>
@@ -87,19 +88,26 @@
                                 <tr>
                                     <td>{{$key+1}}</td>
                                     {{-- <td><span class="badge badge-info">{{ $member->date}}</span></td> --}}
+                                    <td>
+                                        <div>
+                                            <img src="{{$member->profile_url}}" alt=""
+                                            class="rounded-pill"
+                                            style="width:40px; height:40px; object-fit:cover;">
+                                        </div>
+                                    </td>
                                     <td>{{ $member->first_name}} {{ $member->last_name}}</td>
                                     <td>{{ $member->gender}}</td>
                                     <td>{{ $member->bio}}</td>
                                     <td>{{ $member->phone}}</td>
                                     <td>{{ $member->email}}</td>
                                     <td>
-                                        {{-- <a href="{{ route('admin.booking.invoice', $member) }}" class="btn btn-outline-info btn-xs">
-                                            <i class="fas fa-receipt"></i> Invoice
+                                        <a href="" class="btn btn-outline-success btn-xs">
+                                            <i class="fas fa-receipt"></i> Details
                                         </a>
 
-                                        <a href="{{ route('admin.booking.edit', $member) }}" class="btn btn-primary btn-xs">
+                                        <a href="" class="btn btn-primary btn-xs">
                                             <i class="fas fa-edit"></i> Edit
-                                        </a> --}}
+                                        </a>
                                         
                                         <button type="button" data-target="#modal-del{{ $member->id }}"
                                             data-toggle="modal" class="btn btn-xs btn-danger">
@@ -118,7 +126,7 @@
                                                         <p>Do you really wish to delete this Booking? This will delete permanently !</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <form action="{{route('admin.booking.delete' , $member)}}"
+                                                        <form action="{{route('admin.member.delete' , $member)}}"
                                                             method="post">
                                                             @csrf
                                                             @method('delete')
@@ -132,7 +140,7 @@
                                             </div>
                                         </div>
 
-                                        {{-- <a href="{{ route('admin.booking.detail', $member) }}" class="btn btn-info btn-xs">
+                                        {{-- <a href="{{ route('admin.member.detail', $member) }}" class="btn btn-info btn-xs">
                                             <i class="fas fa-info-circle"></i> Details
                                         </a> --}}
                                     </td>
