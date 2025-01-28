@@ -19,9 +19,9 @@
         <div class="card elevation-0">
             <div class="card-header">
                 <h3 class="card-title"><i class="fas fa-building"></i> Properties</h3>
-                {{-- <div class="card-tools">
-                    <a href="{{ route('admin.booking.create')}}" class="btn btn-sm btn-info"><i class="fas fa-plus-circle"></i> Create Booking</a>
-                </div> --}}
+                <div class="card-tools">
+                    <a href="{{ route('admin.property.create')}}" class="btn btn-sm btn-info"><i class="fas fa-plus-circle"></i> Create Property</a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -85,43 +85,43 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($properties as $key => $booking)
+                            @forelse ($properties as $key => $property)
                                 <tr>
                                     <td>{{$key+1}}</td>
-                                    {{-- <td><span class="badge badge-info">{{ $booking->date}}</span></td> --}}
-                                    <td>{{ $booking->society?->name}}</td>
-                                    <td>{{ $booking->customer?->name}}</td>
-                                    <td>{{ $booking->customer?->nic}}</td>
-                                    <td>{{ $booking->customer?->phone}}</td>
-                                    <td>{{ $booking->plot?->plot_no}} - {{ $booking->plot?->size}}</td>
-                                    <td>{{ $booking->amount}}</td>
+                                    {{-- <td><span class="badge badge-info">{{ $property->date}}</span></td> --}}
+                                    <td>{{ $property->society?->name}}</td>
+                                    <td>{{ $property->customer?->name}}</td>
+                                    <td>{{ $property->customer?->nic}}</td>
+                                    <td>{{ $property->customer?->phone}}</td>
+                                    <td>{{ $property->plot?->plot_no}} - {{ $property->plot?->size}}</td>
+                                    <td>{{ $property->amount}}</td>
                                     <td>
-                                        {{-- <a href="{{ route('admin.booking.invoice', $booking) }}" class="btn btn-outline-info btn-xs">
+                                        {{-- <a href="{{ route('admin.property.invoice', $property) }}" class="btn btn-outline-info btn-xs">
                                             <i class="fas fa-receipt"></i> Invoice
                                         </a>
 
-                                        <a href="{{ route('admin.booking.edit', $booking) }}" class="btn btn-primary btn-xs">
+                                        <a href="{{ route('admin.property.edit', $property) }}" class="btn btn-primary btn-xs">
                                             <i class="fas fa-edit"></i> Edit
                                         </a> --}}
                                         
-                                        <button type="button" data-target="#modal-del{{ $booking->id }}"
+                                        <button type="button" data-target="#modal-del{{ $property->id }}"
                                             data-toggle="modal" class="btn btn-xs btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                         
-                                        <div id="modal-del{{ $booking->id }}" class="modal fade" role="dialog">
+                                        <div id="modal-del{{ $property->id }}" class="modal fade" role="dialog">
                                             <div class="modal-dialog modal-md">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title">Delete Booking</h4>
+                                                        <h4 class="modal-title">Delete Property</h4>
                                                         <button type="button" class="close"
                                                             data-dismiss="modal">&times;</button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p>Do you really wish to delete this Booking? This will delete permanently !</p>
+                                                        <p>Do you really wish to delete this Property? This will delete permanently !</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <form action="{{route('admin.booking.delete' , $booking)}}"
+                                                        <form action="{{route('admin.property.delete' , $property)}}"
                                                             method="post">
                                                             @csrf
                                                             @method('delete')
@@ -135,7 +135,7 @@
                                             </div>
                                         </div>
 
-                                        {{-- <a href="{{ route('admin.booking.detail', $booking) }}" class="btn btn-info btn-xs">
+                                        {{-- <a href="{{ route('admin.property.detail', $property) }}" class="btn btn-info btn-xs">
                                             <i class="fas fa-info-circle"></i> Details
                                         </a> --}}
                                     </td>
