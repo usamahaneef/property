@@ -1,6 +1,12 @@
 @extends('admin.layout.app')
 @section('content')
 @push('css')
+<style>
+    #map_canvas {
+        height: 300px;
+        width: 100%;
+    }
+</style>
  <link type="text/css" rel="stylesheet" href="{{ asset('admin/css') }}/image-uploader.min.css">
 @endpush
     <div class="content-wrapper">
@@ -19,16 +25,16 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="event_title">Property  Title</label>
-                                                    <input type="text" id="event_title" name="event_title" class="form-control"
-                                                           value="{{old('event_title')}}"
+                                                    <label for="title">Property  Title</label>
+                                                    <input type="text" id="title" name="title" class="form-control"
+                                                           value="{{old('title')}}"
                                                            placeholder="Enter ">
-                                                    @error('event_title')
-                                                    <span class="text-danger text-sm pull-right">{{$errors->first('event_title')}}</span>
+                                                    @error('title')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('title')}}</span>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="date_time">Date Time</label>
                                                     <input type="datetime-local" id="date_time" name="date_time" class="form-control"
@@ -39,40 +45,25 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
-                                                    <div class="d-flex justify-content-between mb-1">
-                                                        <label for="ticket_price">Ticket Price</label>
-                                                        <input type="hidden" name="is_free" value="0">
-                                                        <input id="is-free" type="checkbox" name="is_free" data-on-text="Free" data-off-text="Paid" value="1" class="bt-switch float-right" style="height:32px;">
-                                                    </div>
-                                                    <input type="number" id="ticket-price" name="ticket_price" class="form-control"
-                                                           value="{{old('ticket_price')}}"
-                                                           placeholder="Enter ">
-                                                    @error('ticket_price')
-                                                    <span class="text-danger text-sm pull-right">{{$errors->first('ticket_price')}}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="event_type">Property  Type</label>
-                                                    <select id="event_type" name="event_type" class="form-control"
+                                                    <label for="type">Property  Type</label>
+                                                    <select id="type" name="type" class="form-control"
                                                             data-placeholder="Select ">
-                                                        <option value="indoor">Indoor</option>
-                                                        <option value="outdoor">Outdoor</option>
+                                                        <option value="sale">Sale</option>
+                                                        <option value="rent">Rent</option>
                                                     </select>
-                                                    @error('event_type')
-                                                    <span class="text-danger text-sm pull-right">{{$errors->first('event_type')}}</span>
+                                                    @error('type')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('type')}}</span>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="society_id">Location</label>
-                                                    <input class="form-control" name="location" placeholder="Enter Location" value="{{ old('location') }}">
-                                                    @error('location')
-                                                    <span class="text-danger text-sm pull-right">{{$errors->first('location')}}</span>
+                                                    <label for="detail">Details</label>
+                                                    <textarea class="form-control editor" name="detail">{{ old('detail') }}</textarea>
+                                                    @error('detail')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('detail')}}</span>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -80,58 +71,41 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="contact_name">Contact name</label>
-                                                    <input type="text" id="contact_name" name="contact_name" class="form-control"
-                                                           value="{{old('contact_name')}}"
-                                                           placeholder="Enter contact name">
-                                                    @error('contact_name')
-                                                    <span class="text-danger text-sm pull-right">{{$errors->first('contact_name')}}</span>
+                                                    <label for="place">City Name</label>
+                                                    <input id="places_input" value="{{ old('name') }}"
+                                                        class="form-control" name="place" />
+                                                    @error('place')
+                                                        <span class="text-sm text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="contact_email">Contact email</label>
-                                                    <input type="text" id="contact_email" name="contact_email" class="form-control"
-                                                           value="{{old('contact_email')}}"
-                                                           placeholder="Enter contact email">
-                                                    @error('contact_email')
-                                                    <span class="text-danger text-sm pull-right">{{$errors->first('contact_email')}}</span>
+                                                    <label>Longitude</label>
+                                                    <input class="form-control" id="place_lng" type="text"
+                                                        name="longitude" placeholder="Longitude"
+                                                        value="{{ old('longitude') }}" readonly />
+                                                    @error('longitude')
+                                                        <span class="text-sm text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-8">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Latitude</label>
+                                                    <input class="form-control" id="place_lat" type="text"
+                                                        name="latitude" placeholder="Latitude" value="{{ old('latitude') }}"
+                                                        readonly />
+                                                    @error('latitude')
+                                                        <span class="text-sm text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-5">
-                                                <div class="form-group">
-                                                    <label for="contact_website">Contact website</label>
-                                                    <input type="text" id="contact_website" name="contact_website" class="form-control"
-                                                           value="{{old('contact_website')}}"
-                                                           placeholder="Enter contact website">
-                                                    @error('contact_website')
-                                                    <span class="text-danger text-sm pull-right">{{$errors->first('contact_website')}}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="entry_requirements">Entry requirements</label>
-                                                    <textarea class="form-control editor" name="entry_requirements">{{ old('entry_requirements') }}</textarea>
-                                                    @error('entry_requirements')
-                                                    <span class="text-danger text-sm pull-right">{{$errors->first('entry_requirements')}}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="details">Details</label>
-                                                    <textarea class="form-control" rows="5" id="details" name="details"
-                                                              placeholder="Enter ">{{old('details')}}</textarea>
-                                                    @error('details')
-                                                    <span
-                                                        class="text-danger text-sm pull-right">{{$errors->first('details')}}</span>
-                                                    @enderror
-                                                </div>
+                                            <div class="col-md-12 ">
+                                                <div id="map_canvas"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -151,34 +125,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-7">
-                                                <div class="form-group">
-                                                   <label for="image_input_field">Upload Cover Image (optional)</label><br>
-                                                   <img
-                                                      id="image_preview"
-                                                      src="{{asset('admin/img/cover/placeholder.png')}}"
-                                                      class="w-100"
-                                                      alt="">
-                                                      <br>
-                                                   <input type="file" id="image_input_field" class="mt-2" name="event_cover_img"><br>
-                                                   @error('')
-                                                   <span class="text-danger text-sm pull-right">{{$errors->first('')}}</span>
-                                                   @enderror
-                                                </div>
-                                            </div>
-                                            <div class="cold-md-5">
-                                                <div class="form-group">
-                                                  <label for="status"></label><br>
-                                                  <input type="hidden" name="status" value="0">
-                                                  <input type="checkbox" id="status" name="status"
-                                                         class="bt-switch"
-                                                         data-size="small" data-on-text="Active" data-off-text="Inactive"
-                                                         value="1"
-                                                         {{old('status')== 1?'checked="checked"':''}}>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -193,22 +139,75 @@
             </div>
         </section>
     </div>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map_canvas'), {
+                zoom: 5,
+                center: new google.maps.LatLng(50, 50),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            var myMarker = new google.maps.Marker({
+                position: new google.maps.LatLng(50, 50),
+                draggable: true,
+                title: ''
+            });
+
+            map.setCenter(myMarker.position);
+            myMarker.setMap(map);
+
+            var input = document.getElementById('places_input');
+            var types = {
+                types: ['(cities)'],
+            };
+
+            var autocomplete = new google.maps.places.Autocomplete(input, types);
+            autocomplete.setFields(
+                ['place_id', 'formatted_address', 'address_components', 'geometry', 'icon', 'name', 'vicinity']
+            );
+
+            var infowindow = new google.maps.InfoWindow();
+            var infowindowContent = document.getElementById('infowindow-content');
+
+            autocomplete.addListener('place_changed', function() {
+                infowindow.close();
+                var place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    window.alert("No details available for input: '" + place.name + "'");
+                    return;
+                }
+                document.getElementById('places_input').value = place.name;
+                document.getElementById('place_lat').value = place.geometry.location.lat();
+                document.getElementById('place_lng').value = place.geometry.location.lng();
+                myMarker.setPosition(place.geometry.location);
+                map.setCenter(myMarker.position);
+                for (var i = place.address_components.length - 1; i >= 0; i--) {
+                    var addressType = place.address_components[i].types[0];
+                    if (addressType == "country") {
+                        document.getElementById('place_country').value = place.address_components[i].long_name;
+                    } else if (addressType == 'locality') {
+                        document.getElementById('place_city').value = place.address_components[i].long_name;
+                        break;
+                    }
+                }
+                console.log(place);
+            });
+
+            myMarker.addListener('dragend', function() {
+                var position = myMarker.getPosition();
+                document.getElementById('place_lat').value = position.lat();
+                document.getElementById('place_lng').value = position.lng();
+            });
+        }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAse-TvvmvUxCiXhJ_SbFrDpjQekaYULdo&libraries=places&types=cities&callback=initMap">
+    </script>
 @endsection
 @push('script')
 <script type="text/javascript" src="{{ asset('admin/js') }}/image-uploader.min.js"></script>
 <script>
     $(function(){
-        $('#is-free').on('switchChange.bootstrapSwitch', function (event, state) {
-            if(state)
-            {
-                $("#ticket-price").val("")
-                $("#ticket-price").prop('readonly', true)
-            }
-            else{
-                $("#ticket-price").prop('readonly', false)
-            }
-        });
-
         $('.input-images').imageUploader();
         $('.editor').summernote({
             height: 140

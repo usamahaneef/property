@@ -58,8 +58,16 @@ class Permission extends Model
             "members" =>  [
                 "members.bulk-view",
                 "members.view",
+                "members.edit",
                 "members.detail",
                 "members.delete",
+            ],
+            "language" =>  [
+                "language.bulk-view",
+                "language.view",
+                "language.edit",
+                "language.detail",
+                "language.delete",
             ],
         ];
     }

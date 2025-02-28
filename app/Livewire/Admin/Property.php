@@ -43,9 +43,9 @@ class Property extends Component
                     //     $q->where('nic', 'like', '%' . $this->search . '%');
                     //     $q->where('phone', 'like', '%' . $this->search . '%');
                     // })
-                    ->orWhere('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('size', 'like', '%' . $this->search . '%')
-                    ->orWhere('location', 'like', '%' . $this->search . '%');
+                    ->orWhere('type', 'like', '%' . $this->search . '%')
+                    ->orWhere('title', 'like', '%' . $this->search . '%')
+                    ->orWhere('place', 'like', '%' . $this->search . '%');
             });
         }
         

@@ -29,20 +29,23 @@ class PropertyController extends Controller
     public function store(Request $request)
     {   
         $request->validate([
-            'name' => 'required',
-            'opening' => 'nullable',
-            'contact' => 'required',   
-            'email' => 'required',     
-            'address' => 'required',   
-            'society_logo' => 'nullable',   
+            'title' => 'required',
+            'date_time' => 'nullable',
+            'type' => 'required',   
+            'detail' => 'nullable',     
+            'place' => 'required',   
+            'longitude' => 'nullable',   
+            'latitude' => 'nullable',   
         ], []);
 
         $property = new Property();
-        $property->name = $request->name;
-        $property->opening = $request->opening;
-        $property->contact = $request->contact;
-        $property->email = $request->email;
-        $property->address = $request->address;
+        $property->title = $request->title;
+        $property->date_time = $request->date_time;
+        $property->type = $request->type;
+        $property->detail = $request->detail;
+        $property->place = $request->place;
+        $property->longitude = $request->longitude;
+        $property->latitude = $request->latitude;
         $property->save();
         return redirect()->route('admin.property')->with('success' , 'Property Added Successfully');
     }
@@ -61,19 +64,22 @@ class PropertyController extends Controller
     public function update(Request $request ,Property $property)
     {
         $request->validate([
-            'name' => 'required',
-            'opening' => 'nullable',
-            'contact' => 'required',   
-            'email' => 'required',     
-            'address' => 'required',   
-            'society_logo' => 'nullable',   
+            'title' => 'required',
+            'date_time' => 'nullable',
+            'type' => 'required',   
+            'detail' => 'nullable',     
+            'place' => 'required',   
+            'longitude' => 'nullable',   
+            'latitude' => 'nullable',   
         ], []);
 
-        $property->name = $request->name;
-        $property->opening = $request->opening;
-        $property->contact = $request->contact;
-        $property->email = $request->email;
-        $property->address = $request->address;
+        $property->title = $request->title;
+        $property->date_time = $request->date_time;
+        $property->type = $request->type;
+        $property->detail = $request->detail;
+        $property->place = $request->place;
+        $property->longitude = $request->longitude;
+        $property->latitude = $request->latitude;
         $property->save();
 
         return redirect()->route('admin.property')->with('success' , 'Property Updated Successfully');
@@ -81,13 +87,11 @@ class PropertyController extends Controller
 
     public function show(Property $property)
     {
-        $reports = Report::wherePartnerId($property->id)->get();
         return view('admin.sections.property.detail', [
             'title' => 'Property',
             'menu_active' => 'property',
             'nav_sub_menu' => '',
             'property' => $property,
-            'reports' => $reports,
         ]);
     }
 

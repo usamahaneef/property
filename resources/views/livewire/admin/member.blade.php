@@ -35,7 +35,7 @@
                                 @enderror
                             </div>
                             
-                            <div class="form-group">
+                            <div class="form-group px-2">
                                 <label for="end_date">End Date</label>
                                 <input wire:model="end_date" type="date" id="end_date" name="end_date" class="form-control" placeholder="Enter ">
                                 @error('end_date')
@@ -101,13 +101,13 @@
                                     <td>{{ $member->phone}}</td>
                                     <td>{{ $member->email}}</td>
                                     <td>
-                                        <a href="" class="btn btn-outline-success btn-xs">
+                                        {{-- <a href="" class="btn btn-outline-success btn-xs">
                                             <i class="fas fa-receipt"></i> Details
                                         </a>
 
                                         <a href="" class="btn btn-primary btn-xs">
                                             <i class="fas fa-edit"></i> Edit
-                                        </a>
+                                        </a> --}}
                                         
                                         <button type="button" data-target="#modal-del{{ $member->id }}"
                                             data-toggle="modal" class="btn btn-xs btn-danger">

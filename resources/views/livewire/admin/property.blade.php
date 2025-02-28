@@ -35,7 +35,7 @@
                                 @enderror
                             </div>
                             
-                            <div class="form-group">
+                            <div class="form-group px-2">
                                 <label for="end_date">End Date</label>
                                 <input wire:model="end_date" type="date" id="end_date" name="end_date" class="form-control" placeholder="Enter ">
                                 @error('end_date')
@@ -52,7 +52,7 @@
                     <div class="col-md-4 offset-md-2 float-right">
                         <div class="form-group">
                             <label for="search">Search</label>
-                            <input type="text" class="form-control" wire:model.live="search" placeholder="search by type , size , amount">
+                            <input type="text" class="form-control" wire:model.live="search" placeholder="search by type , title , place">
                         </div>
                     </div>
                 </div>
@@ -76,11 +76,8 @@
                                 <th>Sr</th>
                                 <th>Date</th>
                                 <th>Type</th>
-                                <th>Size</th>
-                                <th>Amount</th>
-                                <th>Title</th>
-                                <th>Location</th>
-                                <th>Description</th>
+                                <th>Title</th>  
+                                <th>Place</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -88,21 +85,18 @@
                             @forelse ($properties as $key => $property)
                                 <tr>
                                     <td>{{$key+1}}</td>
-                                    {{-- <td><span class="badge badge-info">{{ $property->date}}</span></td> --}}
-                                    <td>{{ $property->society?->name}}</td>
-                                    <td>{{ $property->customer?->name}}</td>
-                                    <td>{{ $property->customer?->nic}}</td>
-                                    <td>{{ $property->customer?->phone}}</td>
-                                    <td>{{ $property->plot?->plot_no}} - {{ $property->plot?->size}}</td>
-                                    <td>{{ $property->amount}}</td>
+                                    <td><span class="badge badge-info">{{ $property->date_time}}</span></td>
+                                    <td>{{ $property->type}}</td>
+                                    <td>{{ $property->title}}</td>
+                                    <td>{{ $property->place}}</td>
                                     <td>
-                                        {{-- <a href="{{ route('admin.property.invoice', $property) }}" class="btn btn-outline-info btn-xs">
-                                            <i class="fas fa-receipt"></i> Invoice
+                                        <a href="{{ route('admin.property.details', $property) }}" class="btn btn-outline-info btn-xs">
+                                            <i class="fas fa-receipt"></i> Details
                                         </a>
 
                                         <a href="{{ route('admin.property.edit', $property) }}" class="btn btn-primary btn-xs">
                                             <i class="fas fa-edit"></i> Edit
-                                        </a> --}}
+                                        </a>
                                         
                                         <button type="button" data-target="#modal-del{{ $property->id }}"
                                             data-toggle="modal" class="btn btn-xs btn-danger">

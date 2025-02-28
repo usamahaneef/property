@@ -52,13 +52,13 @@
                                     <span class="font-weight-bold">{{ $user->role_to_display }}</span>
                                 </div>
                                 <div class="col-md-2">
-                                    @if($user->role_to_display !== 'SuperAdmin')
+                                    {{-- @if($user->role_to_display !== 'SuperAdmin')
                                         @can('users.permissions')
                                         <a title="Assign custom permissions" href="{{ route('admin.user.permissions.create', $user) }}" class="btn btn-xs btn-outline-info">
                                             <i class="fas fa-user-shield"></i>
                                         </a>
                                         @endcan
-                                    @endif
+                                    @endif --}}
                                     @can('users.edit')
                                     <a title="Edit User" onclick="editUserModal({{ $user->id }})" style="cursor: pointer;" class="btn btn-outline-success btn-xs"><i class="fas fa-edit"></i></a>
                                     @endcan

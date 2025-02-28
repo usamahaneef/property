@@ -74,6 +74,7 @@
                         <thead class="table-borderless">
                             <tr>
                                 <th>Sr</th>
+                                <th>Email</th>
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Action</th>
@@ -84,12 +85,13 @@
                                 <tr>
                                     <td>{{$key+1}}</td>
                                     {{-- <td><span class="badge badge-info">{{ $support->date}}</span></td> --}}
+                                    <td>{{ $support->email}}</td>
                                     <td>{{ $support->title}}</td>
                                     <td>{{ $support->description}}</td>
                                     <td>
-                                        <a href="" class="btn btn-outline-info btn-xs">
+                                        {{-- <a href="" class="btn btn-outline-info btn-xs">
                                             <i class="fas fa-receipt"></i> Details
-                                        </a>
+                                        </a> --}}
 
                                         {{-- <a href="{{ route('admin.support.edit', $support) }}" class="btn btn-primary btn-xs">
                                             <i class="fas fa-edit"></i> Edit

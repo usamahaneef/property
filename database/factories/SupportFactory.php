@@ -18,6 +18,7 @@ class SupportFactory extends Factory
     {
         return [
             'title' => $this->faker->words(4, true),
+            'email' => $this->faker->unique()->safeEmail,
             'description' => $this->faker->words(12, true),
             'status' => $this->faker->boolean,
         ];
