@@ -85,6 +85,7 @@ Route::name('admin.')->group(
             Route::post('/admin/property/create', [\App\Http\Controllers\Admin\PropertyController::class, 'store'])->name('property.create');
             Route::get('/admin/property/{property}/details', [\App\Http\Controllers\Admin\PropertyController::class, 'show'])->name('property.details');
             Route::get('/admin/property/{property}/edit', [\App\Http\Controllers\Admin\PropertyController::class, 'edit'])->name('property.edit');
+            Route::get('/admin/property/gallery/{property}/{image}', [\App\Http\Controllers\Admin\PropertyController::class, 'gallery'])->name('property.gallery');
             Route::post('/admin/property/{property}/edit', [\App\Http\Controllers\Admin\PropertyController::class, 'update'])->name('property.edit');
             Route::delete('/admin/property/{property}/delete', [\App\Http\Controllers\Admin\PropertyController::class, 'destroy'])->name('property.delete');
             /*

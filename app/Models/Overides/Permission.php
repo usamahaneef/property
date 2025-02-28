@@ -62,13 +62,6 @@ class Permission extends Model
                 "members.detail",
                 "members.delete",
             ],
-            "language" =>  [
-                "language.bulk-view",
-                "language.view",
-                "language.edit",
-                "language.detail",
-                "language.delete",
-            ],
         ];
     }
 

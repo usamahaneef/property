@@ -116,6 +116,40 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="input-fiels">
+                                                        <label>Property Images <span class="text-xs mx-2">(Choose multiple images with same dimensions)</span></label>
+                                                        <div class="input-images w-100" style="border:1px solid black;"></div>
+                                                        @error('images')
+                                                        <span class="text-danger text-sm">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-3">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                   <label for="image_input_field">Upload Cover Image</label><br>
+                                                   <img
+                                                      id="image_preview"
+                                                      src="{{asset('admin/img/cover/placeholder.png')}}"
+                                                      class="w-100 rounded"
+                                                      alt="">
+                                                      <br>
+                                                   <input type="file" id="image_input_field" class="mt-2" name="cover_img"><br>
+                                                   @error('')
+                                                   <span class="text-danger text-sm pull-right">{{$errors->first('')}}</span>
+                                                   @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- <div class="col-md-4">
+                                    <div class="card p-3">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="input-fiels">
                                                         <label>Property  Images <span class="text-xs mx-2">(Choose multiple images with same dimensions)</span></label>
                                                         <div class="input-images w-100" style="border:1px solid black;"></div>
                                                         @error('images')
@@ -126,7 +160,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary btn-sm float-right">

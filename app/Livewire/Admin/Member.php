@@ -43,7 +43,9 @@ class Member extends Component
                     //     $q->where('phone', 'like', '%' . $this->search . '%');
                     // })
                     ->orWhere('first_name', 'like', '%' . $this->search . '%')
-                    ->orWhere('last_name', 'like', '%' . $this->search . '%');
+                    ->orWhere('last_name', 'like', '%' . $this->search . '%')
+                    ->orWhere('email', 'like', '%' . $this->search . '%')
+                    ->orWhere('phone', 'like', '%' . $this->search . '%');
             });
         }
         

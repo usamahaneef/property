@@ -52,7 +52,7 @@
                     <div class="col-md-4 offset-md-2 float-right">
                         <div class="form-group">
                             <label for="search">Search</label>
-                            <input type="text" class="form-control" wire:model.live="search" placeholder="search by type , size , amount">
+                            <input type="text" class="form-control" wire:model.live="search" placeholder="search by name , phone , email">
                         </div>
                     </div>
                 </div>

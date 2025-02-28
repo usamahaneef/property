@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PropertyController extends Controller
 {
@@ -35,7 +36,8 @@ class PropertyController extends Controller
             'detail' => 'nullable',     
             'place' => 'required',   
             'longitude' => 'nullable',   
-            'latitude' => 'nullable',   
+            'latitude' => 'nullable',     
+            'cover_img' => 'nullable',    
         ], []);
 
         $property = new Property();
@@ -46,6 +48,16 @@ class PropertyController extends Controller
         $property->place = $request->place;
         $property->longitude = $request->longitude;
         $property->latitude = $request->latitude;
+
+        if ($request->cover_img) {
+            $property->addMedia($request->cover_img)->toMediaCollection('cover_img');
+        }
+
+        if($request->images) {
+            foreach($request->images as $image) {
+                $property->addMedia($image)->toMediaCollection('property_images');
+            }
+        }
         $property->save();
         return redirect()->route('admin.property')->with('success' , 'Property Added Successfully');
     }
@@ -61,6 +73,12 @@ class PropertyController extends Controller
         ]);
     }
 
+    public function gallery(Property $property , Media $image)
+    {
+        $image->delete();
+        return redirect()->back()->with('success', 'Property gallery removed successfully');
+    }
+
     public function update(Request $request ,Property $property)
     {
         $request->validate([
@@ -70,7 +88,8 @@ class PropertyController extends Controller
             'detail' => 'nullable',     
             'place' => 'required',   
             'longitude' => 'nullable',   
-            'latitude' => 'nullable',   
+            'latitude' => 'nullable',     
+            'cover_img' => 'nullable',    
         ], []);
 
         $property->title = $request->title;
@@ -80,6 +99,16 @@ class PropertyController extends Controller
         $property->place = $request->place;
         $property->longitude = $request->longitude;
         $property->latitude = $request->latitude;
+
+        if ($request->cover_img) {
+            $property->addMedia($request->cover_img)->toMediaCollection('cover_img');
+        }
+
+        if($request->images) {
+            foreach($request->images as $image) {
+                $property->addMedia($image)->toMediaCollection('property_images');
+            }
+        }
         $property->save();
 
         return redirect()->route('admin.property')->with('success' , 'Property Updated Successfully');
