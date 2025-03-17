@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Artisan;
+Route::get('/link/storage', function () {
+    Artisan::call('storage:link');
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+});
 
 Route::name('admin.')->group(
     function () {

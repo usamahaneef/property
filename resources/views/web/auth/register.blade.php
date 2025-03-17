@@ -25,7 +25,8 @@
 
         <div class="card p-4 shadow-sm  col-md-6 m-auto" >
             <h2 class="text-center mb-4 fw-bold">Create a Free Profile</h2>
-            <form>
+            <form action="{{route('user.registor.post')}}" method="POST" >
+                @csrf
                 <div class="mb-3">
                     <input type="email" class="form-control" id="email" placeholder="Enter email" required>
                 </div>

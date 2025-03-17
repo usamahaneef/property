@@ -15,4 +15,12 @@ class AuthController extends Controller
     {
         return view('web.auth.register');
     }
+
+     public function store(Request $request )
+    {
+        dd(1);
+        $request->all();
+            
+    }
+    
 }

@@ -22,6 +22,7 @@ Route::get('/', function () {
 Route::get('/', [\App\Http\Controllers\Web\HomeController::class, 'index'])->name('home');
 Route::get('login', [AuthController::class, 'login'])->name('user.login');
 Route::get('register', [AuthController::class, 'register'])->name('user.register');
+Route::post('register', [AuthController::class, 'store'])->name('user.registor.post');
 // user controller in web
 Route::get('profile', [UserController::class, 'profile']);
 Route::get('chat', [UserController::class, 'chat'])->name('user.chat');
