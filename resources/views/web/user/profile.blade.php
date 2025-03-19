@@ -4,11 +4,12 @@
     <div class="container-fluid px-4 bg-light">
         <div>
             <a href="#" class="text-decoration-none">
-                <span class="me-3">
-                    < </span> back to Account settings</a>
+                <span class="me-3"> </span> 
+                back to Account settings
+            </a>
         </div>
         <div>
-            <h2 class="fw-bold mt-3     ">Profile</h2>
+            <h2 class="fw-bold mt-3">Profile</h2>
         </div>
         <div class="row bg-white">
             <h4 class="fw-bold mt-3">Personal Info</h4>

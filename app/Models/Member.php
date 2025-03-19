@@ -35,4 +35,6 @@ class Member extends Authenticatable implements HasMedia
         }
         return $url ? asset($url): asset('admin/img/avatar.png');
     }   use HasFactory;
+
+    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'zip'];
 }

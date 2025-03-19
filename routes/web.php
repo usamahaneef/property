@@ -15,18 +15,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect()->route('admin.login');
-});
+// Route::get('/', function () {
+//     return redirect()->route('admin.login');
+// });
 
-Route::get('/', [\App\Http\Controllers\Web\HomeController::class, 'index'])->name('home');
-Route::get('login', [AuthController::class, 'login'])->name('user.login');
-Route::get('register', [AuthController::class, 'register'])->name('user.register');
-Route::post('register', [AuthController::class, 'store'])->name('user.registor.post');
-// user controller in web
-Route::get('profile', [UserController::class, 'profile']);
-Route::get('chat', [UserController::class, 'chat'])->name('user.chat');
-// Route::get('/become-partner',[\App\Http\Controllers\Web\HomeController::class,'becomePartner'])->name('web.partner');
-// Route::get('/privacy-policy',[\App\Http\Controllers\Web\HomeController::class,'privacyPolicy'])->name('web.privacy-policy');
-// Route::get('/account-deletion',[\App\Http\Controllers\Web\HomeController::class,'accountDeletion'])->name('web.account.deletion');
-// Route::get('/send',[\App\Http\Controllers\Web\HomeController::class,'sendNotification']);
+Route::view('/login', 'web.auth.login')->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('user.login');
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('user.register');
+Route::post('/register', [AuthController::class, 'register'])->name('user.registor.store');
+
+Route::middleware('auth:member')->group(function () {
+    // Route::fallback(function () {
+        //     return redirect()->back();
+        // });
+        Route::get('/user/logout', [AuthController::class, 'logout'])->name('user.logout');
+    });
+    
+    Route::get('/', [\App\Http\Controllers\Web\HomeController::class, 'index'])->name('home');
+    Route::get('profile', [UserController::class, 'profile']);
+    Route::get('chat', [UserController::class, 'chat'])->name('user.chat');

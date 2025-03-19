@@ -25,53 +25,40 @@
 
         <div class="card p-4 shadow-sm  col-md-6 m-auto" >
             <h2 class="text-center mb-4 fw-bold">Create a Free Profile</h2>
-            <form action="{{route('user.registor.post')}}" method="POST" >
+            <form action="{{route('user.registor.store')}}" method="POST" >
                 @csrf
                 <div class="mb-3">
-                    <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
                 </div>
                 <div class="mb-3">
-                    <input type="password" name="password" class="form-control" id="password" placeholder="Create password"   autocomplete="new-password"  required>
-                </div>
-                {{-- <div class="mb-3">
-                    <select name="" id="" class="form-select">
-                        <option value="">Real Estate Agent/Broker</option>
-                        <option value="">Mortgage Lender</option>
-                        <option value="">Home Imporvent services</option>
-                        <option value="">Landlord</option>
-                        <option value="">Photgrapher</option>
-                        <option value="">Home Builder</option>
-                        <option value="">Home Inspector</option>
-                        <option value="">Property Manager</option>
-                        <option value="">Other Real Esate Professional</option>
-                    </select>
-                </div> --}}
-                <div class="row mb-3">
-                    <div class="col">
-                        <input type="text" class="form-control" id="first-name" placeholder="First Name" required>
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control" id="last-name" placeholder="Last Name" required>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <input type="text" class="form-control" id="" placeholder="Zip/Postal Code" required>
+                    <input type="password" name="password" class="form-control" name="password" id="password" placeholder="Create password"   autocomplete="new-password"  required>
                 </div>
                 <div class="row mb-3">
                     <div class="col">
-                        <input type="text" class="form-control" id="" placeholder="555" required>
+                        <input type="text" class="form-control" id="first-name" name="first_name" placeholder="First Name" required>
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" id="" placeholder="555" required>
+                        <input type="text" class="form-control" id="last-name" name="last_name" placeholder="Last Name" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="" name="zip" placeholder="Zip/Postal Code" required>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="text" class="form-control" id="" placeholder="555">
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" id="" placeholder="5555" required>
+                        <input type="text" class="form-control" id="" placeholder="555">
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" id="" placeholder="5555">
                     </div>
                     <div class="col align-items-center pt-2">
                         Ext.
                     </div>
                     <div class="col">
-                        <input type="text" class="form-control" id="" placeholder="5555" required>
+                        <input type="text" class="form-control" id="" placeholder="5555">
                     </div>
                 </div>
                

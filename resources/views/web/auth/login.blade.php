@@ -68,18 +68,20 @@
                         <h5 class="fw-bold">Sign in</h5>
                     </div>
 
-                    <form class="mt-4">
+                    <form class="mt-4" action="{{route('user.login')}}" method="POST">
+                        @csrf
                         <div class="form-floating-custom mb-3">
-                            <input type="email" class="form-control form-control-lg rounded-3" id="email"
-                                placeholder=" " required>
+                            <input type="email" name="email" class="form-control form-control-lg rounded-3" id="email"
+                                placeholder="Email" required>
                             <label for="email">Email address*</label>
                         </div>
+                        
                         <div class="d-grid gap-2">
                             <button class="btn btn-primary btn-lg" type="submit">Continue</button>
                         </div>
                     </form>
 
-                    <div class="mt-3">New to {{ env('APP_NAME') }}? <a href="{{ route('user.register') }}"
+                    <div class="mt-3">New to {{ env('APP_NAME') }}? <a href="{{route('user.register')}}"
                             class="fw-bold text-decoration-none">Sign
                             up</a></div>
 

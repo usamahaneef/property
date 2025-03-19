@@ -305,7 +305,14 @@
                     <div class="navbar-nav ms-auto">
                         <a class="nav-link text-black px-md-3 border-bottom-md" href="#">Help</a>
                         <a class="nav-link text-black px-md-3 border-bottom-md" href="{{ route('user.chat') }}">Messages</a>
-                        <a class="nav-link text-black px-md-3 border-bottom-md" href="{{ route('user.login') }}">Sign In</a>
+                        @if(auth()->guard('member')->check())
+                            <a class="nav-link text-black px-md-3 border-bottom-md" href="#" data-bs-toggle="modal" data-bs-target="#memberPopup">
+                                <i class="fa fa-user"></i>
+                            </a>
+                        @else
+                            <a class="nav-link text-black px-md-3 border-bottom-md" href="{{ route('user.login') }}">Sign In</a>
+                        @endif
+                    
                         <a class="nav-link text-black px-md-3 border-bottom-md" href="#" data-bs-toggle="modal" data-bs-target="#languagePopup">
                             <i class="fa fa-globe"></i>
                         </a>
@@ -315,6 +322,19 @@
             </div>
         </div>
     </nav>
+    <div class="modal fade" id="memberPopup" tabindex="-1" aria-labelledby="memberPopupLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="languagePopupLabel">User Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <a href="{{route('user.logout')}}" class="">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="languagePopup" tabindex="-1" aria-labelledby="languagePopupLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -438,8 +458,6 @@
                                 </ul>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>

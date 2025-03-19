@@ -40,9 +40,9 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-        'society' => [
+        'member' => [
             'driver' => 'session',
-            'provider' => 'societies',
+            'provider' => 'members',
         ],
         'user_api' => [
             'driver' => 'token',
@@ -73,9 +73,9 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
-        'societies' => [
+        'members' => [
             'driver' => 'eloquent',
-            'model' => App\Models\SocietyUser::class,
+            'model' => App\Models\Member::class,
         ],
         'users' => [
             'driver' => 'eloquent',
@@ -109,8 +109,8 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-        'societies' => [
-            'provider' => 'societies',
+        'members' => [
+            'provider' => 'members',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

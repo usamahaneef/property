@@ -278,14 +278,9 @@
 
 </div>
 <div class="container-fluid">
-
-
-    <!-- Modal for sale-->
     <div class="modal fade modal-xl " id="saleModal" tabindex="-1" aria-labelledby="saleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-
-
                 <div class="modal-header sticky-top bg-light bg-gradient">
                     <div class="">
                         <p class="d-md-block d-none"><b>$729,000 4</b> bds <b>2</b> ba <b>19,998</b> sqft</p>
@@ -338,16 +333,6 @@
                                     <img src="{{ asset('web/img/h1.webp') }}" class="d-block w-100" alt="...">
                                 </div>
                             </div>
-                            {{-- <button class="carousel-control-prev" type="button"
-                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button"
-                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button> --}}
                         </div>
                     </div>
                     <div class="container-fluid px-4">
@@ -480,220 +465,71 @@
                                         </div>
                                     </div>
 
-                                    {{-- <div class="row g-3 my-3">
-                                        <!-- All Photos -->
-                                        <div class="col-md-4">
-                                            <div class="position-relative rounded overflow-hidden">
-                                                <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid"
-                                    alt="All Photos">
-                                    <div class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 text-white text-center py-2">
-                                        All photos
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Floor Plans -->
-                            <div class="col-md-4">
-                                <div class="position-relative rounded overflow-hidden">
-                                    <img src="{{ asset('web/img/h2.webp') }}" class="img-fluid" alt="Floor Plans">
-                                    <div class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 text-white text-center py-2">
-                                        Floor plans
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- 3D Home -->
-                            <div class="col-md-4">
-                                <div class="position-relative rounded overflow-hidden">
-                                    <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" alt="3D Home">
-                                    <div class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 text-white text-center py-2">
-                                        3D home
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
-
-                        <div class="row my-3">
-                            <div class="col-md-12">
-                                <div class="position-relative bg-light rounded" style="height: 500px;">
-                                    <!-- Placeholder for Google Map -->
-                                    <iframe class="w-100 h-100 border rounded" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24176.231892173613!2d-73.98930819999999!3d40.748817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1689182866251!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                                    <!-- Street View Overlay -->
-                                    <div class="position-absolute top-0 start-0 p-2">
-                                        <div class="bg-white border rounded shadow-sm">
-                                            <img src="{{ asset('web/img/h2.webp') }}" width="100" class="img-fluid rounded" alt="Street View">
-                                            <div class="text-center">Street View</div>
+                                    <div class="row my-3">
+                                        <div class="col-md-12">
+                                            <div class="position-relative bg-light rounded" style="height: 500px;">
+                                                <!-- Placeholder for Google Map -->
+                                                <iframe class="w-100 h-100 border rounded" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24176.231892173613!2d-73.98930819999999!3d40.748817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1689182866251!5m2!1sen!2sus" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                                <!-- Street View Overlay -->
+                                                <div class="position-absolute top-0 start-0 p-2">
+                                                    <div class="bg-white border rounded shadow-sm">
+                                                        <img src="{{ asset('web/img/h2.webp') }}" width="100" class="img-fluid rounded" alt="Street View">
+                                                        <div class="text-center">Street View</div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Legend Section -->
-                        <div class="row my-3">
-                            <div class="col">
-                                <div class="d-flex align-items-center">
-                                    <div class="me-2">
-                                        <i class="bi bi-zoom-out"></i>
-                                    </div>
-                                    <span>Zoom out</span>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="d-flex align-items-center">
-                                    <div class="rounded bg-success" style="width: 20px; height: 20px; margin-right: 8px;"></div>
-                                    <span>Kitchen</span>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="d-flex align-items-center">
-                                    <div class="rounded bg-danger" style="width: 20px; height: 20px; margin-right: 8px;"></div>
-                                    <span>Living Room</span>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="d-flex align-items-center">
-                                    <div class="rounded bg-primary" style="width: 20px; height: 20px; margin-right: 8px;"></div>
-                                    <span>Dining Room</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row my-3">
-                            <div class="input-group flex-nowrap">
-                                <span class="input-group-text bg-white" id="addon-wrapping"><i class="fa-solid fa-car-side text-primary"></i></span>
-                                <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="addon-wrapping">
-                            </div>
-                        </div>
-
-                        {{-- <div class="row my-3">
-
-                                        <ul class="nav nav-pills mb-3 justify-content-between align-items-center"
-                                            id="pills-tab" role="tablist">
-                                            <li class="nav-item h6 fw-bold">Kitchen</li>
-                                            <li class="nav-item " role="presentation" aria-label="Basic example">
-                                                <div class="btn-group" role="group">
-
-                                                    <button class="nav-link rounded-pill active p-2"
-                                                        id="pills-photoes-kitchen-tab" data-bs-toggle="pill"
-                                                        data-bs-target="#pills-photoes-kitchen" type="button" role="tab"
-                                                        aria-controls="pills-photoes-kitchen"
-                                                        aria-selected="true">Photoes</button>
-                                                    <button class="nav-link rounded-pill" id="pills-3d-kitchen-tab"
-                                                        data-bs-toggle="pill" data-bs-target="#pills-3d-kitchen"
-                                                        type="button" role="tab" aria-controls="pills-3d-kitchen"
-                                                        aria-selected="false">3D
-                                                        Tour</button>
+                                    <div class="row my-3">
+                                        <div class="col">
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-2">
+                                                    <i class="bi bi-zoom-out"></i>
                                                 </div>
-                                            </li>
-                                            <li class="nav-item"><img src="{{ asset('web/img/floor1.png') }}"
-                        width="100" alt=""></li>
-                        </ul>
-                        <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade show active" id="pills-photoes-kitchen" role="tabpanel" aria-labelledby="pills-photoes-kitchen-tab">
-                                <div class="row">
-                                    <div class="col-12 pb-2">
-                                        <img class="img-fluid" src="{{ asset('web/img/h1.webp') }}" alt="">
-                                    </div>
-                                    <div class="col-md-6 pe-0">
-                                        <img class="img-fluid" src="{{ asset('web/img/h2.webp') }}" alt="">
-                                    </div>
-                                    <div class="col-md-6 ps-2">
-                                        <img class="img-fluid" src="{{ asset('web/img/h1.webp') }}" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="pills-3d-kitchen" role="tabpanel" aria-labelledby="pills-3d-kitchen-tab">
-                                <div class="d-flex justify-content-center">
-                                    <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" alt="3D Image">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row my-3">
-
-                        <ul class="nav nav-pills mb-3 justify-content-between align-items-center" id="pills-tab" role="tablist">
-                            <li class="nav-item h6 fw-bold">Living Room</li>
-                            <li class="nav-item " role="presentation" aria-label="Basic example">
-                                <div class="btn-group" role="group">
-
-                                    <button class="nav-link rounded-pill active p-2" id="pills-photoes-living-room-tab" data-bs-toggle="pill" data-bs-target="#pills-photoes-living-room" type="button" role="tab" aria-controls="pills-photoes-living-room" aria-selected="true">Photoes</button>
-                                    <button class="nav-link rounded-pill" id="pills-3d-living-room-tab" data-bs-toggle="pill" data-bs-target="#pills-3d-living-room" type="button" role="tab" aria-controls="pills-3d-living-room" aria-selected="false">3D
-                                        Tour</button>
-                                </div>
-                            </li>
-                            <li class="nav-item"><img src="{{ asset('web/img/floor1.png') }}" width="100" alt=""></li>
-                        </ul>
-                        <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade show active" id="pills-photoes-living-room" role="tabpanel" aria-labelledby="pills-photoes-living-room-tab">
-                                <div class="row">
-
-                                    <div class="col-md-6 pe-0">
-                                        <img class="img-fluid" src="{{ asset('web/img/h2.webp') }}" alt="">
-                                    </div>
-                                    <div class="col-md-6 ps-2">
-                                        <img class="img-fluid" src="{{ asset('web/img/h1.webp') }}" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="pills-3d-living-room" role="tabpanel" aria-labelledby="pills-3d-living-room-tab">
-                                <div class="d-flex justify-content-center">
-                                    <img src="{{ asset('web/img/h2.webp') }}" class="img-fluid" alt="3D Image">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row my-3">
-
-                        <ul class="nav nav-pills mb-3 justify-content-between align-items-center" id="pills-tab" role="tablist">
-                            <li class="nav-item h6 fw-bold">Primary Bedroom</li>
-                            <li class="nav-item " role="presentation" aria-label="Basic example">
-                                <div class="btn-group" role="group">
-
-                                    <button class="nav-link rounded-pill active p-2" id="pills-photoes-bedroom-tab" data-bs-toggle="pill" data-bs-target="#pills-photoes-bedroom" type="button" role="tab" aria-controls="pills-photoes-bedroom" aria-selected="true">Photoes</button>
-                                    <button class="nav-link rounded-pill" id="pills-3d-bedroom-tab" data-bs-toggle="pill" data-bs-target="#pills-3d-bedroom" type="button" role="tab" aria-controls="pills-3d-bedroom" aria-selected="false">3D
-                                        Tour</button>
-                                </div>
-                            </li>
-                            <li class="nav-item"><img src="{{ asset('web/img/floor1.png') }}" width="100" alt=""></li>
-                        </ul>
-                        <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade show active" id="pills-photoes-bedroom" role="tabpanel" aria-labelledby="pills-photoes-bedroom-tab">
-                                <div class="row">
-
-                                    <div class="col-md-6 pe-0">
-                                        <img class="img-fluid" src="{{ asset('web/img/h2.webp') }}" alt="">
-                                    </div>
-                                    <div class="col-md-6 ps-2">
-                                        <img class="img-fluid" src="{{ asset('web/img/h1.webp') }}" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="pills-3d-bedroom" role="tabpanel" aria-labelledby="pills-3d-bedroom-tab">
-                                <div class="d-flex justify-content-center">
-                                    <img src="{{ asset('web/img/h2.webp') }}" class="img-fluid" alt="3D Image">
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-                    {{-- <div class="row">
-                                        <div class="col-12 ms-md-3 align-items-center">
-                                            <button
-                                                class="btn btn-outline-light text-primary fw-bold border border-primary align-items-center btn-block">See
-                                                all media <i class="fa fa-arrow-right"></i> </button>
+                                                <span>Zoom out</span>
+                                            </div>
                                         </div>
-                                    </div> --}}
-                    <hr>
-                    <div class="row my-3">
-                        <p class="small fw-light my-1">
-                            Listed by: Dj Della Sala 904-643-6199, DJ & Lindsey Real Estate, Gage King
-                            386-546-6557, DJ & Lindsey Real Estate</p>
-                        <p class="small fw-light my-1">Source: St Augustine St Johns County BOR,
-                            MLS#:
-                            245880</p>
-                        <p class="small fw-light my-1">
-                            {{ env('APP_NAME') }} last checked: 15 hours ago</p>
-                        <p class="small fw-light my-1">
-                            Listing updated: December 13, 2024 at 07:35am</p>
-                    </div>
+                                        <div class="col">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded bg-success" style="width: 20px; height: 20px; margin-right: 8px;"></div>
+                                                <span>Kitchen</span>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded bg-danger" style="width: 20px; height: 20px; margin-right: 8px;"></div>
+                                                <span>Living Room</span>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded bg-primary" style="width: 20px; height: 20px; margin-right: 8px;"></div>
+                                                <span>Dining Room</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row my-3">
+                                        <div class="input-group flex-nowrap">
+                                            <span class="input-group-text bg-white" id="addon-wrapping"><i class="fa-solid fa-car-side text-primary"></i></span>
+                                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="addon-wrapping">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row my-3">
+                                        <p class="small fw-light my-1">
+                                            Listed by: Dj Della Sala 904-643-6199, DJ & Lindsey Real Estate, Gage King
+                                            386-546-6557, DJ & Lindsey Real Estate</p>
+                                        <p class="small fw-light my-1">Source: St Augustine St Johns County BOR,
+                                            MLS#:
+                                            245880</p>
+                                        <p class="small fw-light my-1">
+                                            {{ env('APP_NAME') }} last checked: 15 hours ago</p>
+                                        <p class="small fw-light my-1">
+                                            Listing updated: December 13, 2024 at 07:35am</p>
+                                    </div>
                 </div>
                 <hr>
                 <div id="Details">
@@ -1503,22 +1339,11 @@
                 </div>
             </div>
         </div>
-
-        <!-- Request Tour Card -->
-        {{-- <div class="card">
-                                    <button class="btn btn-primary btn-block">
-                                        <span class="fw-bold">Request a tour</span><br>
-                                        <small class="small-text">as early as today at 11:00 am</small>
-                                    </button>
-                                </div> --}}
     </div>
 </div>
 
 </div>
 </div>
-{{-- <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div> --}}
 </div>
 </div>
 </div>
@@ -1730,50 +1555,6 @@
 
                             </div>
 
-
-                            {{-- <div class="row my-3">
-                                    <div class=" p-4">
-                                        <h5 class="mb-4">Office hours</h5>
-                                        <table class="table table-borderless table-sm">
-                                            <thead>
-                                                <tr>
-                                                    <th>Day</th>
-                                                    <th>Open Hours</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Mon - Fri</td>
-                                                    <td>By appointment only</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Sat</td>
-                                                    <td>By appointment only</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Sun</td>
-                                                    <td>By appointment only</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-
-                                        <h5 class="mt-4">Listed by management company</h5>
-                                        <div class="d-flex align-items-center mt-3">
-                                            <div class="management-logo">
-                                                <img src="{{ asset('web/img/dreamLiveProsper.jpg') }}" width="70"
-                            alt="Logo">
-                        </div>
-                        <div class="ms-3">
-                            <p class="mb-0 fw-bold">Leasing Agent</p>
-                            <span class="verified-source">✔ Verified Source</span>
-                            <p class="mb-0">(213) 401-9986</p>
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-primary mt-4">Ask a question</button>
-                    </div>
-                </div>
-            </div> --}}
             <hr>
             <div>
                 <div class="details-section px-3">
@@ -1916,40 +1697,6 @@
                         </tbody>
                     </table>
                 </div>
-                {{-- <div class="row my-3">
-                                        <h5 class="mb-3">One-time costs</h5>
-                                        <table class="table border">
-                                            <caption style="font-size: 10px">Pricing is subject to change. All
-                                                calculations
-                                                are estimates and provided for informational purposes only. Actual
-                                                amounts
-                                                may include additional mandatory or optional fees. Please consult the
-                                                community manager for a complete breakdown of all rental costs.
-                                            </caption>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Security deposit</td>
-                                                    <td class="text-end">Contact for details</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Application fee</td>
-                                                    <td class="text-end">Contact for details</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Administration fee</td>
-                                                    <td class="text-end">Contact for details</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Pet deposit</td>
-                                                    <td class="text-end">$0</td>
-                                                </tr>
-                                                <tr class="highlight">
-                                                    <th scope="col">Est. one-time cost</th>
-                                                    <th class="text-end" scope="col">$0</th>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div> --}}
 
                 <div class="row">
                     <!-- Neighborhood Section -->
@@ -1995,641 +1742,10 @@
 
                 </div>
 
-                {{-- <div class="row my-3">
-                                        <h4>Travel times</h4>
-
-                                        <div class="input-group flex-nowrap mt-3">
-                                            <span class="input-group-text bg-white " id="addon-wrapping"><i
-                                                    class="fa-solid fa-car-side text-primary"></i></span>
-                                            <input type="text" class="form-control" placeholder="" aria-label=""
-                                                aria-describedby="addon-wrapping">
-                                        </div>
-                                    </div> --}}
-
-                {{--
-                                    <hr>
-                                    <div class="row mb-3">
-                                        <h3>Walk, Transit & Bike Scores</h3>
-
-                                        <div class="col-md-6">
-                                            <div class="d-flex align-items-center">
-                                                <div class="score-circle">
-                                                    <i class="fa-solid fa-person-walking fs-2"></i>
-                                                </div>
-                                                <div>
-                                                    <h4 class="mb-0">Walk Score®</h4>
-                                                    <p class="mb-1">18 / 100</p>
-                                                    <p class="text-muted">Car-Dependent</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="d-flex align-items-center">
-                                                <div class="score-circle">
-                                                    <i class="fa-solid fa-bicycle fs-2"></i>
-                                                </div>
-                                                <div>
-                                                    <h4 class="mb-0">Bike Score®</h4>
-                                                    <p class="mb-1">37 / 100</p>
-                                                    <p class="text-muted">Somewhat Bikeable</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                {{--
-                                    <hr>
-                                    <div class="row">
-                                        <h4 class="fw-bold">Nearby Schools</h4>
-
-                                        <div class="col-md-12">
-                                            <h6>GreatSchools rating</h6>
-                                            <div class="d-flex">
-                                                <div>
-                                                    <div
-                                                        class="bg-primary rounded-circle p-2 m-auto text-white me-md-2">
-                                                        <strong class="fs-3">8</strong>/10
-
-                                                    </div>
-                                                </div>
-                                                <div>
-
-                                                    <a href=""><strong>Otis A. Mason Elementary School</strong></a>
-                                                    <div>
-                                                        Grades <b>PK-5</b> Distance <b>4.3 mi</b>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-12 my-2">
-                                            <div class="d-flex">
-                                                <div>
-                                                    <div
-                                                        class="bg-primary rounded-circle p-2 m-auto text-white me-md-2">
-                                                        <strong class="fs-3">5</strong>/10
-
-                                                    </div>
-                                                </div>
-                                                <div>
-
-                                                    <a href=""><strong>Gamble Rogers Middle School</strong></a>
-                                                    <div>
-                                                        Grades <b>6-8</b> Distance <b>1.1 mi</b>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-12 my-2">
-                                            <div class="d-flex">
-                                                <div>
-                                                    <div
-                                                        class="bg-primary rounded-circle p-2 m-auto text-white me-md-2">
-                                                        <strong class="fs-3">5</strong>/10
-
-                                                    </div>
-                                                </div>
-                                                <div>
-
-                                                    <a href=""><strong>Gamble Rogers Middle School</strong></a>
-                                                    <div>
-                                                        Grades <b>9-12</b> Distance <b>2.3 mi</b>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-12 my-2">
-                                            <h6 class="my-2">About GreatSchools</h6>
-                                            <p>The GreatSchools Summary Rating is based on several metrics.</p>
-                                            <p>
-                                                <b>About the ratings:</b> GreatSchools Ratings are designed to be a
-                                                starting
-                                                point
-                                                to help parents compare schools, and should not be the only factor used
-                                                in
-                                                selecting the right school for your family. {{ env('APP_NAME') }} and
-                GreatSchools
-                recommend that parents tour multiple schools in-person to inform that
-                choice. As of October 2020, the GreatSchools Ratings methodology
-                continues
-                to move beyond proficiency and standardized test scores. The latest
-                methodology prioritizes student growth through measures of equity and
-                school
-                quality. <a href="#">Learn more</a>
-
-
-                </p>
-                <p><b>Disclaimer:</b> School attendance zone boundaries are provided by a
-                    third
-                    party
-                    and are subject to change. They are not guaranteed to be accurate, up to
-                    date, or complete. Check with the applicable school district prior to
-                    making
-                    a decision based on these boundaries.</p>
-            </div>
-
-        </div> --}}
-        {{-- <div class="row my-3 form-container">
-                                        <h4 class="mb-3">Request a tour</h4>
-                                        <form>
-                                            <!-- Name Field -->
-                                            <div class="mb-3">
-                                                <label for="name" class="form-label">First & last name</label>
-                                                <input type="text" class="form-control" id="name" value="Mahr Zohaib"
-                                                    placeholder="Enter your name">
-                                            </div>
-
-                                            <!-- Phone Field -->
-                                            <div class="mb-3">
-                                                <label for="phone" class="form-label">Phone</label>
-                                                <input type="text" class="form-control " id="phone" placeholder="Phone">
-
-                                            </div>
-
-                                            <!-- Email Field -->
-                                            <div class="mb-3">
-                                                <label for="email" class="form-label">Signed in email</label>
-                                                <input type="email" class="form-control" id="email"
-                                                    value="abc@gmail.com" readonly>
-                                            </div>
-
-                                            <!-- Message Field -->
-                                            <div class="mb-3">
-                                                <label for="message" class="form-label">Message</label>
-                                                <textarea class="form-control" id="message"
-                                                    rows="3">I would like to schedule a tour </textarea>
-                                            </div>
-
-                                            <!-- Submit Button -->
-                                            <div>
-                                                <button type="submit" class="btn btn-primary w-100">Send tour
-                                                    request</button>
-                                            </div>
-                                        </form>
-                                    </div> --}}
-        {{-- <div class="row">
-                                        <!-- Header Section -->
-                                        <h6 class="mb-3">Will be sent to</h6>
-                                        <div class="d-flex align-items-center mb-3">
-                                            <div class="rounded-circle bg-light d-flex justify-content-center align-items-center me-3"
-                                                style="width: 60px; height: 60px;">
-                                                <i class="bi bi-person text-muted fs-3"></i>
-                                            </div>
-                                            <div>
-                                                <h5 class="mb-0">Leasing Agent</h5>
-                                                <p class="mb-1 text-muted">Leasing consultant</p>
-                                                <span class="text-success ">Verified <i
-                                                        class="fa-solid fa-circle-info"></i></span>
-                                                <i class="bi bi-info-circle text-muted" title="Verified agent"> </i>
-                                            </div>
-                                        </div>
-                                        <p class="mb-0">
-                                            <a href="tel:(213)401-9986"
-                                                class="text-decoration-none text-primary fw-bold">(213) 401-9986</a>
-                                        </p>
-
-                                        <!-- Divider -->
-                                        <hr class="my-4">
-
-                                        <!-- Actions Section -->
-                                        <h6 class="mb-3">Other things you can do:</h6>
-                                        <div class=" row">
-                                            <div class="col-6">
-
-                                                <button
-                                                    class="btn btn-outline-light text-primary border fw-bold w-100 ">Ask
-                                                    a question</button>
-                                            </div>
-                                            <div class="col-6">
-                                                <button
-                                                    class="btn btn-outline-light text-primary border fw-bold w-100 ">Request
-                                                    to apply</button>
-
-                                            </div>
-                                        </div>
-
-                                        <!-- Disclaimer -->
-                                        <p class="mt-4 text-muted small">
-                                            By contacting this property, you agree to our
-                                            <a href="#" class="text-primary text-decoration-none">Terms of
-                                                Use</a>. Visit
-                                            our
-                                            <a href="#" class="text-primary text-decoration-none">Privacy
-                                                Portal</a> for
-                                            more information.
-                                            When you click Send request, we’ll send your inquiry to the property manager
-                                            so
-                                            they can reach out and answer your questions.
-                                        </p>
-
-                                    </div> --}}
-        {{-- <div class="row my-3">
-                                        <div class="container featureContainer my-3 mt-5">
-                                            <div class="row mx-auto my-auto justify-content-center">
-                                                <div id="featureCarousel" class="carousel slide"
-                                                    data-bs-ride="carousel">
-                                                    <!-- Carousel Controls. OPTIONAL -->
-                                                    <div class="float-start">
-                                                        <h4> Nearby apartments for rent</h4>
-                                                    </div>
-                                                    <div class="float-end mb-2">
-                                                        <a class="indicator" href="#featureCarousel" role="button"
-                                                            data-bs-slide="prev">
-                                                            <i class="fa-solid fa-less-than"></i>
-                                                        </a> &nbsp;&nbsp;
-                                                        <a class="w-aut indicator" href="#featureCarousel" role="button"
-                                                            data-bs-slide="next">
-                                                            <i class="fa-solid fa-greater-than"></i>
-                                                        </a>
-                                                    </div>
-                                                    <!-- Add Slides To The Carousel -->
-                                                    <div class="carousel-inner" role="listbox">
-                                                        <div class="carousel-item active">
-                                                            <div class="col-md-3 mx-1 border">
-                                                                <div class="card">
-                                                                    <img src="{{ asset('web/img/h1.webp') }}"
-        class="img-fluid" class="card-img-top"
-        alt="...">
-        <div class="card-body p-1">
-            <h5 class="card-title">$500 - $700</h5>
-            <p class="card-text small">
-                <b>4</b> bds | <b>3</b> ba | <b>1.6</b> sqft
-                <br>
-                Devon Circle Apartments
-                <br>
-                For Rent
-
-            </p>
-        </div>
-    </div>
-</div>
-</div>
-<div class="carousel-item">
-    <div class="col-md-3 mx-1 border">
-        <div class="card">
-            <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" class="card-img-top" alt="...">
-            <div class="card-body p-1">
-                <h5 class="card-title">$500 - $700</h5>
-                <p class="card-text small">
-                    <b>4</b> bds | <b>3</b> ba | <b>1.6</b> sqft
-                    <br>
-                    Devon Circle Apartments
-                    <br>
-                    For Rent
-
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="carousel-item">
-    <div class="col-md-3 mx-1 border">
-        <div class="card">
-            <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" class="card-img-top" alt="...">
-            <div class="card-body p-1">
-                <h5 class="card-title">$500 - $700</h5>
-                <p class="card-text small">
-                    <b>4</b> bds | <b>3</b> ba | <b>1.6</b> sqft
-                    <br>
-                    Devon Circle Apartments
-                    <br>
-                    For Rent
-
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div> --}}
-{{-- <div class="row my-3">
-                                        <h2 class="mb-3">Local legal protections</h2>
-                                        <p class="text-muted">
-                                            Current <a href="#" class="text-decoration-underline">legal
-                                                protections</a> at
-                                            the city level in Saint Augustine
-                                        </p>
-
-                                        <div class="row">
-                                            <!-- Housing Column -->
-                                            <div class="col-md-4">
-                                                <h6 class="">Housing</h6>
-                                                <small class="text-muted mb-2">
-                                                    Including protection from being unfairly evicted, denied housing, or
-                                                    refused the ability to rent or buy housing.
-                                                </small>
-                                                <div class="d-flex flex-column gap-2">
-                                                    <div
-                                                        class="border p-2 d-flex align-items-center justify-content-between rounded">
-                                                        <span><i class="fa-regular fa-circle-xmark"></i> Gender
-                                                            identity</span>
-                                                    </div>
-                                                    <div
-                                                        class="border p-2 d-flex align-items-center justify-content-between rounded">
-                                                        <span><i class="fa-regular fa-circle-check"></i> Sexual
-                                                            orientation</span>
-                                                    </div>
-                                                    <div
-                                                        class="border p-2 d-flex align-items-center justify-content-between rounded">
-                                                        <span><i class="fa-regular fa-circle-xmark"></i> Housing choice
-                                                            voucher (Section 8)</span>
-                                                    </div>
-                                                    <div
-                                                        class="border p-2 d-flex align-items-center justify-content-between rounded">
-                                                        <span><i class="fa-regular fa-circle-xmark"></i> Source of
-                                                            income</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Employment Column -->
-                                            <div class="col-md-4">
-                                                <h6 class="">Employment</h6>
-                                                <small class="text-muted mb-2">
-                                                    Including protection from being fired, denied employment, or
-                                                    otherwise
-                                                    discriminated against by an employer.
-                                                </small>
-                                                <div class="d-flex flex-column gap-2">
-                                                    <div
-                                                        class="border p-2 d-flex align-items-center justify-content-between rounded">
-                                                        <span><i class="fa-regular fa-circle-xmark"></i> Gender
-                                                            identity</span>
-                                                    </div>
-                                                    <div
-                                                        class="border p-2 d-flex align-items-center justify-content-between rounded">
-                                                        <span><i class="fa-regular fa-circle-xmark"></i> Sexual
-                                                            orientation</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Public Accommodations Column -->
-                                            <div class="col-md-4">
-                                                <h6 class="">Public accommodations</h6>
-                                                <small class="text-muted mb-2">
-                                                    Including protection from being unfairly refused services or entry
-                                                    to
-                                                    places accessible to the public (stores, restaurants, parks, etc.).
-                                                </small>
-                                                <div class="d-flex flex-column gap-2">
-                                                    <div
-                                                        class="border p-2 d-flex align-items-center justify-content-between rounded">
-                                                        <span><i class="fa-regular fa-circle-xmark"></i> Gender
-                                                            identity</span>
-                                                    </div>
-                                                    <div
-                                                        class="border p-2 d-flex align-items-center justify-content-between rounded">
-                                                        <span><i class="fa-regular fa-circle-xmark"></i> Sexual
-                                                            orientation</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <p class="text-muted mt-4">
-                                            Data Source: <a href="#" class="text-decoration-underline">Movement
-                                                Advancement
-                                                Project (MAP)</a>
-                                        </p>
-                                    </div> --}}
-{{-- <div class="row my-3">
-                                        <div class="container featureContainer my-3 mt-5">
-                                            <div class="row mx-auto my-auto justify-content-center">
-                                                <div id="featureCarousel2" class="carousel slide "
-                                                    data-bs-ride="carousel">
-                                                    <!-- Carousel Controls. OPTIONAL -->
-                                                    <div class="float-start">
-                                                        <h4> Similar apartments for rent</h4>
-                                                    </div>
-                                                    <div class="float-end mb-2">
-                                                        <a class="indicator" href="#featureCarousel2" role="button"
-                                                            data-bs-slide="prev">
-                                                            <i class="fa-solid fa-less-than"></i>
-                                                        </a> &nbsp;&nbsp;
-                                                        <a class="w-aut indicator" href="#featureCarousel2"
-                                                            role="button" data-bs-slide="next">
-                                                            <i class="fa-solid fa-greater-than"></i>
-                                                        </a>
-                                                    </div>
-                                                    <!-- Add Slides To The Carousel -->
-                                                    <div class="carousel-inner" role="listbox">
-                                                        <div class="carousel-item active">
-                                                            <div class="col-md-3 mx-1 border">
-                                                                <div class="card">
-                                                                    <img src="{{ asset('web/img/h1.webp') }}"
-class="img-fluid" class="card-img-top"
-alt="...">
-<div class="card-body p-1">
-    <h5 class="card-title">$500 - $700</h5>
-    <p class="card-text small">
-        <b>4</b> bds | <b>3</b> ba | <b>1.6</b> sqft
-        <br>
-        Devon Circle Apartments
-        <br>
-        For Rent
-
-    </p>
-</div>
-</div>
-</div>
-</div>
-<div class="carousel-item">
-    <div class="col-md-3 mx-1 border">
-        <div class="card">
-            <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" class="card-img-top" alt="...">
-            <div class="card-body p-1">
-                <h5 class="card-title">$500 - $700</h5>
-                <p class="card-text small">
-                    <b>4</b> bds | <b>3</b> ba | <b>1.6</b> sqft
-                    <br>
-                    Devon Circle Apartments
-                    <br>
-                    For Rent
-
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="carousel-item">
-    <div class="col-md-3 mx-1 border">
-        <div class="card">
-            <img src="{{ asset('web/img/h1.webp') }}" class="img-fluid" class="card-img-top" alt="...">
-            <div class="card-body p-1">
-                <h5 class="card-title">$500 - $700</h5>
-                <p class="card-text small">
-                    <b>4</b> bds | <b>3</b> ba | <b>1.6</b> sqft
-                    <br>
-                    Devon Circle Apartments
-                    <br>
-                    For Rent
-
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div> --}}
-{{-- <div class="row my-3">
-                                        <h2 class="mb-4">Frequently asked questions</h2>
-                                        <div class="mb-4">
-                                            <h5>What is the walk score of DLP Portofino?</h5>
-                                            <p class="text-muted">DLP Portofino has a walk score of 21, it's
-                                                car-dependent.
-                                            </p>
-                                        </div>
-                                        <div class="mb-4">
-                                            <h5>What schools are assigned to DLP Portofino?</h5>
-                                            <p class="text-muted">
-                                                The schools assigned to DLP Portofino include W. Douglas Hartley
-                                                Elementary
-                                                School, Gamble Rogers Middle School, and Pedro Menendez High School.
-                                            </p>
-                                        </div>
-                                        <div class="mb-4">
-                                            <h5>Does DLP Portofino have in-unit laundry?</h5>
-                                            <p class="text-muted">Yes, DLP Portofino has in-unit laundry for some or all
-                                                of
-                                                the units.</p>
-                                        </div>
-                                        <div>
-                                            <h5>What neighborhood is DLP Portofino in?</h5>
-                                            <p class="text-muted">DLP Portofino is in the 32086 neighborhood in
-                                                Augustine,
-                                                FL.</p>
-                                        </div>
-                                    </div> --}}
-{{-- <div>
-                                        <div class="nearby-section">
-                                            <h5 class="fw-bold my-3">Nearby cities</h5>
-                                            <div class="row nearby-links">
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#" class="d-block text-decoration-none text-primary">Elkton
-                                                        Real
-                                                        estate</a>
-                                                    <a href="#"
-                                                        class="d-block text-decoration-none text-primary">Hastings
-                                                        Real
-                                                        estate</a>
-                                                </div>
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#" class="d-block text-decoration-none text-primary">Ponte
-                                                        Vedra Real
-                                                        estate</a>
-                                                    <a href="#" class="d-block text-decoration-none text-primary">Ponte
-                                                        Vedra
-                                                        Beach
-                                                        Real estate</a>
-                                                </div>
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#" class="d-block text-decoration-none text-primary">Saint
-                                                        Augustine
-                                                        Real estate</a>
-                                                    <a href="#" class="d-block text-decoration-none text-primary">Saint
-                                                        Augustine
-                                                        Beach Real estate</a>
-                                                </div>
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#" class="d-block text-decoration-none text-primary">Saint
-                                                        Johns Real
-                                                        estate</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Nearby Neighborhoods -->
-                                        <div class="nearby-section">
-                                            <h5 class="fw-bold my-3">Nearby neighborhoods</h5>
-                                            <div class="row nearby-links">
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#" class="d-block text-decoration-none text-primary">Butler
-                                                        Beach
-                                                        Real
-                                                        estate</a>
-                                                </div>
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#"
-                                                        class="d-block text-decoration-none text-primary">Crescent
-                                                        Beach
-                                                        Real estate</a>
-                                                </div>
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#"
-                                                        class="d-block text-decoration-none text-primary">Marineland
-                                                        Real
-                                                        estate</a>
-                                                </div>
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#"
-                                                        class="d-block text-decoration-none text-primary">Villano
-                                                        Beach
-                                                        Real estate</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Nearby Zip Codes -->
-                                        <div class="nearby-section">
-                                            <h5 class="fw-bold my-3">Nearby zip codes</h5>
-                                            <div class="row nearby-links">
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#" class="d-block text-decoration-none text-primary">32080
-                                                        Real
-                                                        estate</a>
-                                                    <a href="#" class="d-block text-decoration-none text-primary">32084
-                                                        Real
-                                                        estate</a>
-                                                </div>
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#" class="d-block text-decoration-none text-primary">32085
-                                                        Real
-                                                        estate</a>
-                                                    <a href="#" class="d-block text-decoration-none text-primary">32086
-                                                        Real
-                                                        estate</a>
-                                                </div>
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#" class="d-block text-decoration-none text-primary">32092
-                                                        Real
-                                                        estate</a>
-                                                </div>
-                                                <div class="col-md-3 col-sm-6">
-                                                    <a href="#" class="d-block text-decoration-none text-primary">32095
-                                                        Real
-                                                        estate</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                    </div> --}}
 </div>
 </div>
 <div class="col-md-4 mt-3 position-sticky" style="height: 100vh;overflow-y: auto;top:16%;">
 
-
-    <!-- Request Tour Card -->
-    {{-- <div class="card">
-
-                                    <div class="d-grid gap-2 p-3">
-                                        <button class="btn btn-primary btn-lg  mb-3  border bold">Request a
-                                            tour</button>
-                                        <button class="btn btn-outline-light btn-lg  text-primary border bold">Request
-                                            to Apply</button>
-
-                                    </div>
-                                </div> --}}
     <div class="card card-body">
         <a href="{{ route('user.chat') }}" class="btn btn-primary btn-block">
             <span class="fw-bold">Request a tour</span><br>
@@ -2908,14 +2024,8 @@ alt="...">
 <div class="container-fluid ">
     <div class="row ">
         <div class="col-md-5 ">
-
-            {{-- <div class="zoom-message">Zoom in to see homes.</div> --}}
             <div id="map" class="google_map"></div>
 
-            {{-- <iframe class="google_map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d317716.6065035931!2d-0.43124885956926756!3d51.52860700576551!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C%20UK!5e0!3m2!1sen!2s!4v1735031784268!5m2!1sen!2s"
-                style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe> --}}
         </div>
         <div class="col-md-7 scrollable">
 
@@ -3103,19 +2213,7 @@ alt="...">
                             </p>
                         </div>
                     </div>
-
-
                 </div>
-                {{-- <div class="col">
-                    <div class="card">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">This is a longer card with supporting text below as a natural lead-in
-                                to additional content. This content is a little bit longer.</p>
-                        </div>
-                    </div>
-                </div> --}}
             </div>
         </div>
     </div>
