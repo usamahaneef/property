@@ -330,7 +330,7 @@
                                     <li class="my-5 d-flex flex-wrap"><img class="rounded-circle border" width="20" src="{{ asset('web/img/languages/Us@3x.png') }}" alt=""> English
                                         (US)</li>
                                     <li class="my-5 d-flex flex-wrap"><img class="rounded-circle border" width="20" src="{{ asset('web/img/languages/Is@3x.png') }}" alt=""> Íslenska
-                                    </li>
+                                    </li>   
 
                                     <li class="my-5 d-flex flex-wrap"><img class="rounded-circle border" width="20" src="{{ asset('web/img/languages/It@3x.png') }}" alt=""> Italiano
                                     </li>
