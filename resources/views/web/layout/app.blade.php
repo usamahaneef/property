@@ -10,58 +10,7 @@
     <link rel="stylesheet" href="{{ asset('web/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @stack('styles')
-    <style>
-        /* Remove dropdown icon */
-        .nav-item.dropdown a.nav-link::after {
-            content: none;
-        }
-
-        /* Show dropdown on hover */
-        .nav-item.dropdown:hover .dropdown-menu {
-            display: block;
-        }
-
-        /* Optional: Prevent dropdown menu from hiding on mouseout */
-        .nav-item.dropdown .dropdown-menu {
-            display: none;
-            position: absolute;
-        }
-
-        .nav-item.dropdown:hover .dropdown-menu {
-            display: block;
-            position: absolute;
-            z-index: 1000;
-        }
-
-        /* Make the dropdown menu full-width and responsive */
-        .dropdown-menu {
-            max-width: 100vw;
-            /* Ensure the menu doesn't exceed the screen width */
-            left: 0;
-            /* Align to the left */
-            right: 0;
-            /* Align to the right */
-            margin: 0 auto;
-            /* Center the mega menu */
-        }
-
-        /* Ensure the container doesn't overflow */
-        .mega-content .container-fluid {
-            max-width: 100%;
-            /* Adjust as per your design */
-        }
-
-        @media (max-width: 767px) {
-            .mega-content {
-                overflow: auto;
-                height: 80vh;
-            }
-            .border-bottom-md{
-                border-bottom: 1px solid #e5e5e5;
-            }
-        }
-
-    </style>
+    <link rel="stylesheet" href="{{ asset("web/style.css") }}">
 </head>
 
 <body>
