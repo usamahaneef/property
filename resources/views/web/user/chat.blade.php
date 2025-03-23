@@ -1,6 +1,6 @@
 @extends('web.layout.app')
 @push('styles')
-<link rel="stylesheet" href="{{ asset('web/css/chat.css') }}">
+<link rel="stylesheet" href="{{ asset('web/chat.css') }}">
 @endpush
 @section('content')
 <div class="container-fluid h-100 chat-container">
