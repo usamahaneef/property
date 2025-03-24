@@ -92,11 +92,17 @@
     .featureContainer {
         width: 750px;
     }
+    .input-group-width{
+        width: 30%;
+    }
 }
 
 @media (min-width: 992px) {
     .featureContainer {
         width: 970px;
+    }
+    .input-group-width{
+        width: 40%;
     }
 }
 
@@ -236,6 +242,9 @@
 /* Show dropdown on hover */
 .nav-item.dropdown:hover .dropdown-menu {
     display: block;
+}
+.dropdown .btn-outline-light:hover{
+    background-color: #f1f1f4;
 }
 
 /* Optional: Prevent dropdown menu from hiding on mouseout */
