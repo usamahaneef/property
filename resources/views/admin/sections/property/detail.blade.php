@@ -60,9 +60,83 @@
                                         <p>{{ ucfirst($property->type) }}</p>
                                     </div>
                                 </div>
-                                <div class="mt-2">
-                                    <label for="">Details</label>
-                                        <span class="">{!! $property->detail !!}</span>
+                            </div>
+                            <div class="row p-3 mx-3">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="unit_no">Unit Number</label>
+                                        <p>{{$property->unit_no}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="room_sq">Room Square</label>
+                                        <p>{{$property->room_sq}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="property_sq">Property Square</label>
+                                        <p>{{$property->property_sq}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row p-3 mx-3">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="bedroom">Total Bedroom</label>
+                                        <p>{{$property->bedroom}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="bathroom">Total Bathroom</label>
+                                        <p>{{$property->bathroom}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="cat">Cats Cottage</label>
+                                        <p>{{$property->cat}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="dog">Dogs Cottage</label>
+                                        <p>{{$property->dog}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row p-3 mx-3">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="amount">Monthly / Total Amount</label>
+                                        <p>{{$property->amount}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="security">Security Deposit</label>
+                                        <p>{{$property->security }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="available_day">Available Day</label>
+                                        <p>{{ucfirst($property->available_day)}}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="detail">Details</label>
+                                        <p>{!! $property->detail !!}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="lease">Lease Terms</label>
+                                        <p>{!! $property->lease !!}</p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row p-3 mx-3">
@@ -100,7 +174,6 @@
             </div>
         </section>
     </div>
-
     <script>
         function initMap() {
             var propertyLat = parseFloat("{{ $property->latitude }}");

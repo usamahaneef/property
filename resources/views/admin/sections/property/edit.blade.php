@@ -56,14 +56,149 @@
                                                     @enderror
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="unit_no">Unit Number</label>
+                                                    <input type="text" id="unit_no" name="unit_no" class="form-control"
+                                                           value="{{$property->unit_no ,old('unit_no')}}"
+                                                           placeholder="Enter Unit Number">
+                                                    @error('unit_no')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('unit_no')}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="room_sq">Room Square</label>
+                                                    <input type="text" id="room_sq" name="room_sq" class="form-control"
+                                                           value="{{$property->room_sq ,old('room_sq')}}"
+                                                           placeholder="Enter Room Square">
+                                                    @error('room_sq')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('room_sq')}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="property_sq">Property Square</label>
+                                                    <input type="text" id="property_sq" name="property_sq" class="form-control"
+                                                           value="{{$property->property_sq ,old('property_sq')}}"
+                                                           placeholder="Enter Property Square">
+                                                    @error('property_sq')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('property_sq')}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="bedroom">Total Bedroom</label>
+                                                    <input type="number" id="bedroom" name="bedroom" class="form-control"
+                                                           value="{{$property->bedroom ,old('bedroom')}}"
+                                                           placeholder="Enter Total Bedroom">
+                                                    @error('bedroom')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('bedroom')}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="bathroom">Total Bathroom</label>
+                                                    <input type="number" id="bathroom" name="bathroom" class="form-control"
+                                                           value="{{$property->bathroom ,old('bathroom')}}"
+                                                           placeholder="Enter Total Bathroom">
+                                                    @error('bathroom')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('bathroom')}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="cat">Cats Cottage</label>
+                                                    <input type="number" id="cat" name="cat" class="form-control"
+                                                           value="{{$property->cat ,old('cat')}}"
+                                                           placeholder="Enter Cats Cottage">
+                                                    @error('cat')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('cat')}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="dog">Dogs Cottage</label>
+                                                    <input type="number" id="dog" name="dog" class="form-control"
+                                                           value="{{$property->dog ,old('dog')}}"
+                                                           placeholder="Enter Dogs Cottage">
+                                                    @error('dog')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('dog')}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="amount">Monthly / Total Amount</label>
+                                                    <input type="number" id="amount" name="amount" class="form-control"
+                                                           value="{{$property->amount  ,old('amount')}}"
+                                                           placeholder="Enter Monthly / Total Amount">
+                                                    @error('amount')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('amount')}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="security">Security Deposit</label>
+                                                    <input type="number" id="security" name="security" class="form-control"
+                                                           value="{{$property->security ,old('security')}}"
+                                                           placeholder="Enter Security Deposit">
+                                                    @error('security')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('security')}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="available_day">Available Day</label>
+                                                    <select id="available_day" name="available_day" class="form-control"
+                                                            data-placeholder="Select Available Day">
+                                                        <option value="saturday" {{ old('available_day', $property->available_day) == 'saturday' ? 'selected' : '' }}>Saturday</option>
+                                                        <option value="sunday" {{ old('available_day', $property->available_day) == 'sunday' ? 'selected' : '' }}>Sunday</option>
+                                                        <option value="monday" {{ old('available_day', $property->available_day) == 'monday' ? 'selected' : '' }}>Monday</option>
+                                                        <option value="tuesday" {{ old('available_day', $property->available_day) == 'tuesday' ? 'selected' : '' }}>Tuesday</option>
+                                                        <option value="wednesday" {{ old('available_day', $property->available_day) == 'wednesday' ? 'selected' : '' }}>Wednesday</option>
+                                                        <option value="thursday" {{ old('available_day', $property->available_day) == 'thursday' ? 'selected' : '' }}>Thursday</option>
+                                                        <option value="friday" {{ old('available_day', $property->available_day) == 'friday' ? 'selected' : '' }}>Friday</option>
+                                                    </select>
+                                                    @error('available_day')
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('available_day')}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="detail">Details</label>
-                                                    <textarea class="form-control editor" name="detail">{{ old('detail', $property->detail) }}</textarea>
+                                                    <textarea class="form-control editor" name="detail">{{$property->detail, old('detail') }}</textarea>
                                                     @error('detail')
-                                                    <span class="text-danger text-sm pull-right">{{$message}}</span>
+                                                    <span class="text-danger text-sm pull-right">{{$errors->first('detail')}}</span>
                                                     @enderror
                                                 </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="lease">Lease Terms</label>
+                                                    <textarea class="form-control editor" rows="5" id="lease" name="lease"
+                                                              placeholder="Enter ">{{$property->lease ,old('lease')}}</textarea>
+                                                    @error('lease')
+                                                    <span
+                                                        class="text-danger text-sm pull-right">{{$errors->first('lease')}}</span>
+                                                    @enderror
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                         <div class="row">
