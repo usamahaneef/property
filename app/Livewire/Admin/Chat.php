@@ -9,55 +9,44 @@ use Livewire\WithPagination;
 class Chat extends Component
 {
     use WithPagination;
+    public $checkedData = [];
+
     public $search = '';
     public $paginate = 10;
-    public $start_date;
-    public $end_date;
-    public $dateFilter = false;
-
-    public function clearFilters()
-    {
-        $this->reset('search', 'start_date', 'end_date', 'dateFilter');
-    }
-
+    
+    
     public function paginationView()
     {
         return 'livewire.pagination';
     }
 
-    public function applyDateFilter()
-    {
-        $this->dateFilter = true;
-    }
-
-
     public function render()
     {
-        $chats = ModelsChat::query();
-        if ($this->search) {
-            $chats->where(function ($query) {
-                $query->where('id', 'like', '%' . $this->search . '%')
-                    // ->orWhereHas('customer', function ($q) {
-                    //     $q->where('name', 'like', '%' . $this->search . '%');
-                    //     $q->where('nic', 'like', '%' . $this->search . '%');
-                    //     $q->where('phone', 'like', '%' . $this->search . '%');
-                    // })
-                    ->orWhere('title', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%');
-            });
-        }
-        
-        if ($this->dateFilter && $this->start_date && $this->end_date) {
-            $startDate = $this->start_date;
-            $endDate = $this->end_date;
-            $chats->whereBetween('date', [$startDate, $endDate]);
-        }
-        
-        $chats = $chats->orderBy('id', 'DESC')
+        $latestMessagesSubquery = ModelsChat::select('member_id', ModelsChat::raw('MAX(id) as latest_id'))
+        ->whereNull('admin_id')
+        ->groupBy('member_id');
+    
+        $chats = ModelsChat::joinSub($latestMessagesSubquery, 'latest_messages', function ($join) {
+                $join->on('chats.id', '=', 'latest_messages.latest_id');
+            })
+            ->where(function ($query) {
+                $query->where('chats.id', 'like', '%' . $this->search . '%')
+                    ->orWhere('chats.message', 'like', '%' . $this->search . '%');
+            })
+            ->orderBy('chats.id', 'DESC')
             ->paginate($this->paginate);
-            
+        
         return view('livewire.admin.chat', [
             'chats' => $chats,
         ]);
+                       
+    }
+
+    public function bulkDelete()
+    {
+        ModelsChat::whereIn('id', $this->checkedData)->delete();
+        session()->flash('success', count($this->checkedData) . 'Chats (s) deleted successfully');
+        $this->checkedData = [];
+        $this->redirect()->back();
     }
 }

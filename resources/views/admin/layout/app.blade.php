@@ -106,20 +106,20 @@
                                 Properties
                             </p>
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{route('admin.chat')}}" class="nav-link {{$menu_active == 'chat' ? 'active' : ''}} text-white">
-                            <i class="nav-icon fas fa-comments"></i>
-                            <p>
-                                Chat
-                            </p>
-                        </a>
-                    </li>                    
+                    </li>                   
                     <li class="nav-item">
                         <a href="{{route('admin.support')}}" class="nav-link {{$menu_active == 'support' ? 'active' : ''}} text-white">
                             <i class="nav-icon fas fa-question-circle"></i>
                             <p>
                                 Support
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('admin.member.chat')}}" class=" nav-link {{$menu_active == 'chat' ? 'active' : ''}} text-white">
+                            <i class="nav-icon fas fa-headset"></i>
+                            <p>
+                                Chat Service
                             </p>
                         </a>
                     </li>

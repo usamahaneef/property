@@ -1,124 +1,144 @@
 @extends('web.layout.app')
 @push('styles')
-<link rel="stylesheet" href="{{ asset('web/chat.css') }}">
-@endpush
-@section('content')
-<div class="container-fluid h-100 chat-container">
-    <div class="row h-100">
-        <!-- Sidebar -->
-        <div class="col-md-3 sidebar">
-            {{-- <div class="sidebar-header">
-                <img src="{{ asset('web/img/user.png') }}" alt="Profile">
-            <button class="btn btn-sm text-white"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-        </div> --}}
-        <div class="list-group scrollbar-hidden">
-            <a href="#" class="list-group-item border-bottom">
-                <div class="d-flex align-items-center">
-                    <img src="{{ asset('web/img/user.png') }}" alt="Contact" class="me-3">
-                    <div>
-                        <h6 class="mb-0">Contact 1</h6>
-                        <small>Last message...</small>
-                    </div>
-                </div>
-            </a>
-            <a href="#" class="list-group-item border-bottom">
-                <div class="d-flex align-items-center">
-                    <img src="{{ asset('web/img/user.png') }}" alt="Contact" class="me-3">
-                    <div>
-                        <h6 class="mb-0">Contact 2</h6>
-                        <small>Last message...</small>
-                    </div>
-                </div>
-            </a>
-            <a href="#" class="list-group-item border-bottom">
-                <div class="d-flex align-items-center">
-                    <img src="{{ asset('web/img/user.png') }}" alt="Contact" class="me-3">
-                    <div>
-                        <h6 class="mb-0">Contact 3</h6>
-                        <small>Last message...</small>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-
-    <!-- Chat Area -->
-    <div class="col-md-9 chat-area d-flex flex-column">
-        <!-- Chat Header -->
-        <div class="chat-header">
-            <div class="d-flex align-items-center">
-                <button class="btn btn-sm  back-button"><i class="fas fa-arrow-left"></i></button>
-                <img src="{{ asset('web/img/user.png') }}" alt="Contact">
-                <h6 class="mb-0">Contact Name</h6>
-            </div>
-            {{-- <button class="btn btn-sm text-white"><i class="fa-solid fa-ellipsis-vertical"></i></button> --}}
-        </div>
-
-        <!-- Chat Messages -->
-        <div class="chat-messages d-flex flex-column scrollbar-hidden">
-            <div class="message received">Hi! How are you?</div>
-            <div class="message sent">I'm good, thanks!</div>
-            <div class="message received">What are you up to?</div>
-        </div>
-
-        <!-- Chat Footer -->
-        <div class="chat-footer">
-            <input type="text" autocomplete="off" id="messageInput" placeholder="Type a message">
-            <button id="sendMessage">➤</button>
-        </div>
-    </div>
-</div>
-</div>
-@endsection
-@push('scripts')
-<script>
-    $(document).ready(function() {
-        const chatMessages = $('.chat-messages');
-        const chatFooter = $('.chat-footer');
-
-        function scrollToBottom() {
-            chatMessages.scrollTop(chatMessages[0].scrollHeight);
+    <style>
+        input[type="file"] {
+            display: none;
+        }
+    
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
         }
 
-        $('#sendMessage').click(function(event) {
-            event.preventDefault();
-            const messageInput = $('#messageInput');
-            const message = messageInput.val().trim();
+        .direct-chat-messages {
+        max-height: 500px; /* Adjust as needed */
+        overflow-y: auto;
+        padding: 15px;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+    }
+    
+    /* General Message Box */
+    .direct-chat-msg {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+    
+    .direct-chat-msg.right {
+        flex-direction: row-reverse;
+    }
+    
+    /* Chat Image */
+    .direct-chat-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+    }
+    
+    .direct-chat-msg.right .direct-chat-img {
+        margin-left: 10px;
+        margin-right: 0;
+    }
+    
+    /* Chat Message Text */
+    .direct-chat-text {
+        max-width: 60%;
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-size: 14px;
+        line-height: 1.4;
+        position: relative;
+        word-wrap: break-word;
+    }
+    
+    /* Admin Message */
+    .direct-chat-msg .direct-chat-text {
+        background-color: #fff;
+        color: #333;
+        border: 1px solid #ddd;
+    }
+    
+    /* User Message */
+    .direct-chat-msg.right .direct-chat-text {
+        background-color: #007bff;
+        color: #fff;
+        border: 1px solid #007bff;
+    }
+    
+    /* Timestamps & Names */
+    .direct-chat-infos {
+        font-size: 12px;
+        color: #666;
+    }
+    
+    .direct-chat-name {
+        font-weight: bold;
+    }
+    
+    .direct-chat-timestamp {
+        font-size: 12px;
+        opacity: 0.8;
+    }
+    
+    /* Message Bubble Styling */
+    .direct-chat-text {
+        position: relative;
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-size: 14px;
+        line-height: 1.4;
+        max-width: 60%;
+        word-wrap: break-word;
+    }
 
-            if (message) {
-                chatMessages.append(`<div class="message sent">${message}</div>`);
-                messageInput.val(''); // Clear input
+    /* Left (Admin) Message Bubble Tail */
+    .direct-chat-msg .direct-chat-text::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: -7px;
+        width: 12px;
+        height: 12px;
+        background: inherit;
+        transform: rotate(45deg);
+        border-left: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+    /* Right (User) Message Bubble Tail on Left Side */
+    .direct-chat-msg.right .direct-chat-text::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: -7px;
+        width: 12px;
+        height: 12px;
+        background: inherit;
+        transform: rotate(45deg);
+        border-left: 1px solid #007bff;
+        border-bottom: 1px solid #007bff;
+    }
 
-                // Refocus input to prevent keyboard from closing
-                setTimeout(() => messageInput.focus(), 0);
 
-                scrollToBottom();
-            }
-        });
-
-
-        $('#messageInput').keypress(function(e) {
-            if (e.which === 13) {
-                e.preventDefault();
-                $('#sendMessage').click();
-            }
-        });
-
-
-
-        // Sidebar toggle for mobile
-        $('.back-button, .list-group-item').click(function() {
-            if (window.innerWidth < 768) {
-                $('.sidebar').toggle();
-                $('.chat-area').toggleClass('d-none');
-                scrollToBottom();
-            }
-        });
-
-        // Initial scroll to bottom
-        scrollToBottom();
-    });
-
-</script>
-
+    
+    /* Attachment Image */
+    .direct-chat-text img {
+        max-width: 100%;
+        border-radius: 5px;
+        margin-top: 5px;
+    }
+    </style>
+    
 @endpush
+@section('content')
+    <div class="content-wrapper">
+        <section class="content">
+            <livewire:web.chat />
+        </section>
+    </div>
+@endsection
+

@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->boolean('status')->default(false);
+            $table->unsignedBigInteger('admin_id')->nullable();
+            $table->unsignedBigInteger('member_id')->nullable();
+            $table->text('message');
+            $table->dateTime('read_at')->nullable();
             $table->timestamps();
         });
     }

@@ -116,6 +116,11 @@ Route::name('admin.')->group(
             Route::get('/admin/support/{support}/edit', [\App\Http\Controllers\Admin\SupportController::class, 'edit'])->name('support.edit');
             Route::post('/admin/support/{support}/edit', [\App\Http\Controllers\Admin\SupportController::class, 'update'])->name('support.edit');
             Route::delete('/admin/support/{support}/delete', [\App\Http\Controllers\Admin\SupportController::class, 'destroy'])->name('support.delete');
+            // customer service 
+            Route::get('/admin/member/chat', [\App\Http\Controllers\Admin\ChatController::class,'index'])->name('member.chat');
+            Route::get('/admin/member/chat/{chat}/details', [\App\Http\Controllers\Admin\ChatController::class,'show'])->name('member.chat.details');
+            Route::post('/admin/member/chat/{chat}/store', [\App\Http\Controllers\Admin\ChatController::class,'store'])->name('member.chat.store');
+            Route::delete('/admin/member/chat/{chat}/delete', [\App\Http\Controllers\Admin\ChatController::class,'destroy'])->name('member.chat.delete');
             // setting
             Route::get('/admin/setting', [\App\Http\Controllers\Admin\SettingController::class,'index'])->name('setting');
             Route::post('/admin/setting/update', [\App\Http\Controllers\Admin\SettingController::class,'update'])->name('setting-update');

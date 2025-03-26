@@ -253,8 +253,8 @@
                     <!-- Right Section -->
                     <div class="navbar-nav ms-auto">
                         <a class="nav-link text-black px-md-3 border-bottom-md" href="#">Help</a>
-                        <a class="nav-link text-black px-md-3 border-bottom-md" href="{{ route('user.chat') }}">Messages</a>
                         @if(auth()->guard('member')->check())
+                            <a class="nav-link text-black px-md-3 border-bottom-md" href="{{ route('user.chat') }}">Messages</a>
                             <a class="nav-link text-black px-md-3 border-bottom-md" href="#" data-bs-toggle="modal" data-bs-target="#memberPopup">
                                 <i class="fa fa-user"></i>
                             </a>

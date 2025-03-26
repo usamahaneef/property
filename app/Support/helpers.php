@@ -6,10 +6,12 @@ function displayGBPFormatted($amount): string
     return '£' . number_format($amount, 2);
 }
 
-function loggedInSociety()
+function loggedInMember()
 {
-    return auth('society')->user()->society;
+    return auth()->user('member');
 }
+
+
 
 function checkAdminPermissions($role, $permission)
 {
