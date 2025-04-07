@@ -308,9 +308,26 @@
     </div>
     <div class="container-fluid ">
         <div class="row">
-            <div class="col-md-5 ">
-                <div id="map" class="google_map"></div>
+            <div class="col-md-5">
+                <div id="map" class="google_map" style="height: 600px;"></div>
             </div>
+            
+            <!-- 👇 Modal OUTSIDE of the row/column/map -->
+            <div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="propertyModalLabel">Property Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="propertyModalBody">
+                            <!-- Property info will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
             <div class="col-md-7 scrollable">
                 <div class="row mb-2">
                     <h6>Recently Sold Homes</h6>
