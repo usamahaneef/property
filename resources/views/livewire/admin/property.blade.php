@@ -90,18 +90,24 @@
                                     <td>{{ $property->title}}</td>
                                     <td>{{ $property->place}}</td>
                                     <td>
+                                        @can('properties.detail')
                                         <a href="{{ route('admin.property.details', $property) }}" class="btn btn-outline-info btn-xs">
                                             <i class="fas fa-receipt"></i> Details
                                         </a>
+                                        @endcan
 
+                                        @can('properties.edit')
                                         <a href="{{ route('admin.property.edit', $property) }}" class="btn btn-primary btn-xs">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
+                                        @endcan
                                         
+                                        @can('properties.delete')
                                         <button type="button" data-target="#modal-del{{ $property->id }}"
                                             data-toggle="modal" class="btn btn-xs btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </button>
+                                        @endcan
                                         
                                         <div id="modal-del{{ $property->id }}" class="modal fade" role="dialog">
                                             <div class="modal-dialog modal-md">

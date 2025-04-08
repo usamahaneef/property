@@ -14,11 +14,10 @@ class Permission extends Model
         return [
             "dashboard" =>  [
                 "dashboard.view",
-                "dashboard.universities-view",
-                "dashboard.societies-view",
-                "dashboard.students-view",
-                "dashboard.venues-view",
-                "dashboard.events-view",
+                "dashboard.roles-view",
+                "dashboard.members-view",
+                "dashboard.properties-view",
+                "dashboard.support-view",
             ],
             "users" =>  [
                 "users.view",
@@ -48,7 +47,6 @@ class Permission extends Model
     {
         return [
             "properties" =>  [
-                "properties.bulk-view",
                 "properties.view",
                 "properties.detail",
                 "properties.create",
@@ -56,11 +54,20 @@ class Permission extends Model
                 "properties.delete",
             ],
             "members" =>  [
-                "members.bulk-view",
                 "members.view",
                 "members.edit",
                 "members.detail",
                 "members.delete",
+            ],
+            "support" =>  [
+                "support.view",
+                "support.detail",
+                "support.delete",
+            ],
+            "chats" =>  [
+                "chats.view",
+                "chats.detail",
+                "chats.delete",
             ],
         ];
     }

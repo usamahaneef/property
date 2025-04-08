@@ -101,18 +101,15 @@
                                     <td>{{ $member->phone}}</td>
                                     <td>{{ $member->email}}</td>
                                     <td>
-                                        {{-- <a href="" class="btn btn-outline-success btn-xs">
-                                            <i class="fas fa-receipt"></i> Details
-                                        </a>
-
-                                        <a href="" class="btn btn-primary btn-xs">
-                                            <i class="fas fa-edit"></i> Edit
+                                        {{-- <a href="{{ route('admin.member.detail', $member) }}" class="btn btn-info btn-xs">
+                                            <i class="fas fa-info-circle"></i> Details
                                         </a> --}}
-                                        
+                                        @can('members.delete')
                                         <button type="button" data-target="#modal-del{{ $member->id }}"
                                             data-toggle="modal" class="btn btn-xs btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </button>
+                                        @endcan
                                         
                                         <div id="modal-del{{ $member->id }}" class="modal fade" role="dialog">
                                             <div class="modal-dialog modal-md">
@@ -139,10 +136,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        {{-- <a href="{{ route('admin.member.detail', $member) }}" class="btn btn-info btn-xs">
-                                            <i class="fas fa-info-circle"></i> Details
-                                        </a> --}}
                                     </td>
                                 </tr>
                             @empty

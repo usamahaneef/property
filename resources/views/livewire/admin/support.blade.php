@@ -19,55 +19,7 @@
         <div class="card elevation-0">
             <div class="card-header">
                 <h3 class="card-title"><i class="fas fa-question-circle"></i> Supports</h3>
-                {{-- <div class="card-tools">
-                    <a href="{{ route('admin.support.create')}}" class="btn btn-sm btn-info"><i class="fas fa-plus-circle"></i> Create support</a>
-                </div> --}}
             </div>
-            {{-- <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="d-flex">
-                            <div class="form-group">
-                                <label for="start_date">Start Date</label>
-                                <input wire:model="start_date" type="date" id="start_date" name="start_date" class="form-control" placeholder="Enter ">
-                                @error('start_date')
-                                    <span class="text-danger text-sm pull-right">{{$message}}</span>
-                                @enderror
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="end_date">End Date</label>
-                                <input wire:model="end_date" type="date" id="end_date" name="end_date" class="form-control" placeholder="Enter ">
-                                @error('end_date')
-                                    <span class="text-danger text-sm pull-right">{{$message}}</span>
-                                @enderror
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="">Search</label> <br>
-                                <button wire:click="applyDateFilter" class="btn btn-outline-info"> <i class="fas fa-search"></i></button>
-                            </div>
-                        </div>                               
-                    </div>
-                    <div class="col-md-4 offset-md-2 float-right">
-                        <div class="form-group">
-                            <label for="search">Search</label>
-                            <input type="text" class="form-control" wire:model.live="search" placeholder="search by type , size , amount">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <button wire:click="clearFilters()" class="btn btn-xs btn-primary float-right">Clear Filter</button>
-                </div>
-            </div> --}}
-            {{-- <div class="card-header">
-                <div class="col-md-4 float-right">
-                    <div class="form-group">
-                        <label for="search">Search</label>
-                        <input type="text" class="form-control" wire:model.live="search" placeholder="search by name , marfat name ,contact ">
-                    </div>
-                </div>
-            </div> --}}
             <div class="card-body pt-0">
                 <div class="table-responsive">
                     <table class="table">
@@ -97,10 +49,12 @@
                                             <i class="fas fa-edit"></i> Edit
                                         </a> --}}
                                         
+                                        @can('support.delete')
                                         <button type="button" data-target="#modal-del{{ $support->id }}"
                                             data-toggle="modal" class="btn btn-xs btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </button>
+                                        @endcan
                                         
                                         <div id="modal-del{{ $support->id }}" class="modal fade" role="dialog">
                                             <div class="modal-dialog modal-md">

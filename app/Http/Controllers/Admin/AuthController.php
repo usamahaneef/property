@@ -38,6 +38,42 @@ class AuthController extends Controller
         ]);
     }
 
+    public function updatePassword()
+    {
+        return view('admin.update-password',[
+            'title' => 'Update Password',
+            'menu_active' => 'password',
+            'tab_active' => 'active',
+        ]);
+    }
+        
+    public function storePassword(Request $request)
+    {
+        $user = Auth::user();
+        $this->validate($request, [
+            'current_password' => [
+                'required',
+                Rule::requiredIf(function () use ($user, $request) {
+                    return Hash::check($request->current_password, $user->password);
+                }),
+            ],
+            'change_password' => 'required|min:8',
+            'confirm_password' => 'required|same:change_password'
+        ], [
+            'current_password.required' => 'The current password is incorrect.',
+        ]);
+    
+        if ($request->current_password && Hash::check($request->current_password, $user->password)) {
+            $user->password = Hash::make($request->change_password);
+            $user->save();
+            Auth::logout();
+            return redirect(route('admin.login'));
+        } else {
+            return redirect()->back()->withErrors(['current_password' => 'The current password is incorrect.']);
+        }
+    }
+    
+
 
     public function broker()
     {

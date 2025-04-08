@@ -70,7 +70,7 @@ class UserController extends Controller
           ]);
 
         $details = [
-            'title' => 'Welcome to AURA platform',
+            'title' => 'Welcome to ZEHRII platform',
             'name' => $admin->name,
             'token' => $token,
             'email' => $admin->email,

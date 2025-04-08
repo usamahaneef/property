@@ -69,8 +69,8 @@
                         </a>
                     </li>
                     @endif
-                    <li class="nav-header">GENERAL</li>
                     @if(checkAdminPermissions('SuperAdmin', 'roles.view') )
+                    <li class="nav-header">GENERAL</li>
                     <li class="nav-item">
                         <a href="{{route('admin.roles')}}" class=" nav-link {{$menu_active == 'roles' ? 'active' : ''}} text-white">
                             <i class="nav-icon fas fa-user-tag"></i>
@@ -91,6 +91,7 @@
                     </li>
                     @endif
                     <li class="nav-header">Manage Panel</li>
+                    @can('members.view')
                     <li class="nav-item">
                         <a href="{{route('admin.member')}}" class="nav-link {{$menu_active == 'member' ? 'active' : ''}} text-white">
                             <i class="nav-icon fas fa-user-shield"></i>
@@ -99,6 +100,8 @@
                             </p>
                         </a>
                     </li>
+                    @endcan
+                    @can('properties.view')
                     <li class="nav-item">
                         <a href="{{route('admin.property')}}" class="nav-link {{$menu_active == 'property' ? 'active' : ''}} text-white">
                             <i class="nav-icon fas fa-building"></i>
@@ -106,7 +109,9 @@
                                 Properties
                             </p>
                         </a>
-                    </li>                   
+                    </li>
+                    @endcan
+                    @can('support.view')
                     <li class="nav-item">
                         <a href="{{route('admin.support')}}" class="nav-link {{$menu_active == 'support' ? 'active' : ''}} text-white">
                             <i class="nav-icon fas fa-question-circle"></i>
@@ -115,6 +120,8 @@
                             </p>
                         </a>
                     </li>
+                    @endcan
+                    @can('chats.view')
                     <li class="nav-item">
                         <a href="{{route('admin.member.chat')}}" class=" nav-link {{$menu_active == 'chat' ? 'active' : ''}} text-white">
                             <i class="nav-icon fas fa-headset"></i>
@@ -123,6 +130,8 @@
                             </p>
                         </a>
                     </li>
+                    @endcan
+                    @if(checkAdminPermissions('SuperAdmin', 'roles.view') )
                     <li class="nav-header">CONFIGURATION</li>
                     <li class="nav-item">
                         <a href="{{route('admin.setting')}}" class="nav-link {{$menu_active == 'setting' ? 'active' : ''}} text-white">
@@ -140,6 +149,7 @@
                             </p>
                         </a>
                     </li>
+                    @endif
                 </ul>
             </nav>
         </div>
