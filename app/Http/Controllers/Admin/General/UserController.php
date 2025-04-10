@@ -76,7 +76,7 @@ class UserController extends Controller
             'email' => $admin->email,
             'password_reset_url' => 'admin/reset-password/{token}' . $token
         ];
-        // Mail::to($admin->email)->send(new adminUserInvitation($details));
+        Mail::to($admin->email)->send(new adminUserInvitation($details));
         return redirect()->route('admin.user.index')->with('success', 'User Added successfully');
     }
 
