@@ -121,6 +121,28 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="password" class="form-control"
+                                           value="{{old('password')}}"
+                                           placeholder="Enter Password">
+                                    @error('password')
+                                    <span class="text-danger text-sm pull-right">{{$errors->first('password')}}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="confirm_password">Confirm Password</label>
+                                    <input type="password" id="confirm_password" name="confirm_password" class="form-control"
+                                           value="{{old('confirm_password')}}"
+                                           placeholder="Enter Confirm Password">
+                                    @error('confirm_password')
+                                    <span class="text-danger text-sm pull-right">{{$errors->first('confirm_password')}}</span>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">Upload Image</label>
@@ -182,6 +204,28 @@
                                     </select>
                                     @error('add_phone')
                                         <span class="text-danger text-sm"> {{ $message }} </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="password" class="form-control"
+                                           value="{{old('password')}}"
+                                           placeholder="Enter Password">
+                                    @error('password')
+                                    <span class="text-danger text-sm pull-right">{{$errors->first('password')}}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="confirm_password">Confirm Password</label>
+                                    <input type="password" id="confirm_password" name="confirm_password" class="form-control"
+                                           value="{{old('confirm_password')}}"
+                                           placeholder="Enter Confirm Password">
+                                    @error('confirm_password')
+                                    <span class="text-danger text-sm pull-right">{{$errors->first('confirm_password')}}</span>
                                     @enderror
                                 </div>
                             </div>

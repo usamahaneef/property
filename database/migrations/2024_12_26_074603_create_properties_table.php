@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('member_id')->nullable();
             $table->string('title')->nullable();
             $table->dateTime('date_time')->nullable();
             $table->string('type')->nullable();

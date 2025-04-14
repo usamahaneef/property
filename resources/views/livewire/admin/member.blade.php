@@ -75,11 +75,11 @@
                             <tr>
                                 <th>Sr</th>
                                 <th>Profile</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Bio</th>
                                 <th>Phone</th>
                                 <th>Email</th>
+                                <th>Rent</th>
+                                <th>Sale</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -93,17 +93,21 @@
                                             <img src="{{$member->profile_url}}" alt=""
                                             class="rounded-pill"
                                             style="width:40px; height:40px; object-fit:cover;">
+                                            <span>{{ $member->first_name}} {{ $member->last_name}}</span>
                                         </div>
                                     </td>
-                                    <td>{{ $member->first_name}} {{ $member->last_name}}</td>
-                                    <td>{{ $member->gender}}</td>
-                                    <td>{{ $member->bio}}</td>
                                     <td>{{ $member->phone}}</td>
                                     <td>{{ $member->email}}</td>
+                                    <td>{{ $member->rent_count }}</td>
+                                    <td>{{ $member->sale_count }}</td>                                    
+                                    <td>{!! $member->status_badge !!}</td>
                                     <td>
-                                        {{-- <a href="{{ route('admin.member.detail', $member) }}" class="btn btn-info btn-xs">
+                                        @can('members.detail')
+                                        <a href="{{ route('admin.member.detail', $member) }}" class="btn btn-info btn-xs">
                                             <i class="fas fa-info-circle"></i> Details
-                                        </a> --}}
+                                        </a>
+                                        @endcan
+
                                         @can('members.delete')
                                         <button type="button" data-target="#modal-del{{ $member->id }}"
                                             data-toggle="modal" class="btn btn-xs btn-danger">
@@ -115,7 +119,7 @@
                                             <div class="modal-dialog modal-md">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title">Delete Booking</h4>
+                                                        <h4 class="modal-title">Delete Member</h4>
                                                         <button type="button" class="close"
                                                             data-dismiss="modal">&times;</button>
                                                     </div>
@@ -131,6 +135,43 @@
                                                                 data-dismiss="modal">No</button>
                                                             <button type="submit"
                                                                 class="btn btn-sm btn-danger">Yes</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @can('members.status')
+                                        <button title="Status" type="button" data-target="#modal-status{{ $member->id }}"
+                                            data-toggle="modal" class="btn btn-xs btn-success">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                        </button>
+                                        @endcan
+                                        
+                                        <div id="modal-status{{ $member->id }}" class="modal fade" role="dialog">
+                                            <div class="modal-dialog modal-md">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Status Member</h4>
+                                                        <button type="button" class="close"
+                                                            data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="{{route('admin.member.status' , $member)}}"
+                                                            method="post">
+                                                            @csrf
+                                                            <div class="form-group">
+                                                                <label for="status">Update Status</label>
+                                                                <select id="status" name="status" class="form-control select2"
+                                                                        data-placeholder="Select Update Status">
+                                                                    <option value="0">Block</option>
+                                                                    <option value="1">Active</option>
+                                                                </select>
+                                                                @error('status')
+                                                                <span class="text-danger text-sm pull-right">{{$errors->first('status')}}</span>
+                                                                @enderror
+                                                            </div>
+                                                            <button type="submit"
+                                                                class="btn btn-sm btn-success">Update Status</button>
                                                         </form>
                                                     </div>
                                                 </div>

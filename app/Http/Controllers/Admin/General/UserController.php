@@ -38,6 +38,8 @@ class UserController extends Controller
             "add_first_name"   =>  ['required', 'max:50',"regex:/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u"],
             "add_email"        =>  ['required', 'unique:admins,email'],
             "role"              =>  ["required", "exists:roles,id"],
+            'password'          => 'required|min:8',
+            'confirm_password' => 'required|same:password',
             "avatar"
         ], [
             "add_first_name.regex" => "Name should not contain numbers",
@@ -56,27 +58,27 @@ class UserController extends Controller
         $admin = new Admin();
         $admin->name = $request->add_first_name;
         $admin->email = $request->add_email;
-        $admin->password = Hash::make('password');
+        $admin->password = Hash::make($request->password);
         $admin->save();
         $admin->syncRoles($request->role);  
         if ($request->avatar) {
             $admin->addMedia($request->avatar->path())->usingFileName(Str::random(34))->toMediaCollection('profile_picture');
         }
 
-        $token = Str::random(64);
-        $admin->update([
-            'remember_token' => $token, 
-            'created_at' => Carbon::now()
-          ]);
+        // $token = Str::random(64);
+        // $admin->update([
+        //     'remember_token' => $token, 
+        //     'created_at' => Carbon::now()
+        //   ]);
 
-        $details = [
-            'title' => 'Welcome to ZEHRII platform',
-            'name' => $admin->name,
-            'token' => $token,
-            'email' => $admin->email,
-            'password_reset_url' => 'admin/reset-password/{token}' . $token
-        ];
-        Mail::to($admin->email)->send(new adminUserInvitation($details));
+        // $details = [
+        //     'title' => 'Welcome to ZEHRII platform',
+        //     'name' => $admin->name,
+        //     'token' => $token,
+        //     'email' => $admin->email,
+        //     'password_reset_url' => 'admin/reset-password/{token}' . $token
+        // ];
+        // Mail::to($admin->email)->send(new adminUserInvitation($details));
         return redirect()->route('admin.user.index')->with('success', 'User Added successfully');
     }
 
@@ -121,6 +123,8 @@ class UserController extends Controller
         $validate = Validator::make($request->all(), [
             "edit_first_name"   =>  ['required', 'max:50',"regex:/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u"],
             "edit_email"        =>  ['required', 'email', Rule::unique('admins', 'email')->ignore($request->edit_user_id, 'id')],
+            'password'          => 'required|min:8',
+            'confirm_password'  => 'required|same:password',
             "edit_role"         =>  [Rule::requiredIf(function () use ($user) {
                                         return $user->roles?->first()?->name != "SuperAdmin";
             }), "exists:roles,id"],
@@ -140,6 +144,7 @@ class UserController extends Controller
         }
         $user->name = $request->edit_first_name;
         $user->email = $request->edit_email;
+        $user->password = Hash::make($request->password);
         $user->save();
         $user->syncRoles($request->edit_role);
 

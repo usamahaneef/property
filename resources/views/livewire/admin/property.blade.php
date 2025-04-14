@@ -20,7 +20,9 @@
             <div class="card-header">
                 <h3 class="card-title"><i class="fas fa-building"></i> Properties</h3>
                 <div class="card-tools">
+                    @can('properties.create')
                     <a href="{{ route('admin.property.create')}}" class="btn btn-sm btn-info"><i class="fas fa-plus-circle"></i> Create Property</a>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">
@@ -74,8 +76,9 @@
                         <thead class="table-borderless">
                             <tr>
                                 <th>Sr</th>
-                                <th>Date</th>
+                                <th>Created At</th>
                                 <th>Type</th>
+                                <th>Created By</th>
                                 <th>Title</th>  
                                 <th>Place</th>
                                 <th>Action</th>
@@ -86,7 +89,14 @@
                                 <tr>
                                     <td>{{$key+1}}</td>
                                     <td><span class="badge badge-info">{{ $property->date_time}}</span></td>
-                                    <td>{{ $property->type}}</td>
+                                    <td>{{ ucfirst($property->type)}}</td>
+                                    <td>
+                                        @if($property->member_id)
+                                            {{$property->member?->name}}
+                                        @else
+                                            Super Admin
+                                        @endif
+                                    </td>
                                     <td>{{ $property->title}}</td>
                                     <td>{{ $property->place}}</td>
                                     <td>

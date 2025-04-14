@@ -81,10 +81,11 @@ Route::name('admin.')->group(
             Route::get('/admin/member', [\App\Http\Controllers\Admin\MemberController::class, 'index'])->name('member');
             Route::get('/admin/member/create', [\App\Http\Controllers\Admin\MemberController::class, 'create'])->name('member.create');
             Route::post('/admin/member/create', [\App\Http\Controllers\Admin\MemberController::class, 'store'])->name('member.create');
-            Route::get('/admin/member/{member}/details', [\App\Http\Controllers\Admin\MemberController::class, 'show'])->name('member.details');
+            Route::get('/admin/member/{member}/details', [\App\Http\Controllers\Admin\MemberController::class, 'show'])->name('member.detail');
             Route::get('/admin/member/{member}/edit', [\App\Http\Controllers\Admin\MemberController::class, 'edit'])->name('member.edit');
             Route::post('/admin/member/{member}/edit', [\App\Http\Controllers\Admin\MemberController::class, 'update'])->name('member.edit');
             Route::delete('/admin/member/{member}/delete', [\App\Http\Controllers\Admin\MemberController::class, 'destroy'])->name('member.delete');
+            Route::post('/admin/member/{member}/status', [\App\Http\Controllers\Admin\MemberController::class, 'status'])->name('member.status');
             /**
              * Admin property Routes
              */

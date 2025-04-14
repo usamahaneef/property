@@ -8,6 +8,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Property extends Model implements HasMedia
@@ -40,5 +41,10 @@ class Property extends Model implements HasMedia
             $url = optional($this->cover)->getUrl();
         }
         return $url ? asset($url): asset('admin/img/cover/placeholder.png');
+    }
+
+    public function member(): BelongsTo
+    {
+        return $this->belongsTo(Member::class);
     }
 }

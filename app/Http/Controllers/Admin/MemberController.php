@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Member;
+use App\Models\Property;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -80,30 +82,28 @@ class MemberController extends Controller
 
     public function show(Member $member)
     {
-        $reports = Report::wherePartnerId($member->id)->get();
+        $properties = Property::whereMemberId($member->id)->get();
         return view('admin.sections.member.detail', [
             'title' => 'Member',
             'menu_active' => 'member',
             'nav_sub_menu' => '',
             'member' => $member,
-            'reports' => $reports,
+            'properties' => $properties,
         ]);
     }
 
-    public function print(Staff $staff)
-    {
-        return view('admin.sections.staff.print', [
-            'title' => 'Staff',
-            'menu_active' => 'staff',
-            'nav_sub_menu' => '',
-            'staff' => $staff,
-        ]);
-            
-    }
 
     public function destroy(Member $member)
     {
         $member->delete();
         return redirect()->route('admin.member')->with('success', 'Member deleted successfully.');
     }
+
+    public function status(Request $request ,Member $member)
+    {
+        $member->status = $request->status;
+        $member->save();
+        return redirect()->route('admin.member')->with('success', 'Member Status Update successfully.');
+    }
+    
 }

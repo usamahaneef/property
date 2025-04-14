@@ -14,10 +14,10 @@ class Permission extends Model
         return [
             "dashboard" =>  [
                 "dashboard.view",
-                "dashboard.roles-view",
                 "dashboard.members-view",
                 "dashboard.properties-view",
                 "dashboard.support-view",
+                "dashboard.chat-view",
             ],
             "users" =>  [
                 "users.view",
@@ -55,7 +55,7 @@ class Permission extends Model
             ],
             "members" =>  [
                 "members.view",
-                "members.edit",
+                "members.status",
                 "members.detail",
                 "members.delete",
             ],
